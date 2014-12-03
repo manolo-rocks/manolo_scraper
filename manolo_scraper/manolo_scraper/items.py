@@ -8,7 +8,15 @@
 import scrapy
 
 
-class ManoloScraperItem(scrapy.Item):
-    # define the fields for your item here like:
-    # name = scrapy.Field()
-    pass
+class ManoloItem(scrapy.Item):
+    full_name = scrapy.Field()  # Full name of visitor
+    id_document = scrapy.Field()  # DNI, Brevete?
+    id_number = scrapy.Field()
+    institution = scrapy.Field()  # institution visited: OSCE, Vivienda?
+    entity = scrapy.Field()  # Entity that the visitor represents
+    reason = scrapy.Field()  # Reason behind the meeting
+    host_name = scrapy.Field()  # Name of person that receives visitor
+    title = scrapy.Field()  # Official title of host person, "cargo"
+    office = scrapy.Field()  # Office that visitor visits
+    time_start = scrapy.Field()
+    time_end = scrapy.Field()

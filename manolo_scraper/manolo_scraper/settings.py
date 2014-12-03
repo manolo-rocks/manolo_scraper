@@ -29,6 +29,9 @@ def get_secret(setting, secrets=secrets):
         print(error_msg)
         sys.exit(1)
 
+CONCURRENT_REQUESTS = 10
+CONCURRENT_REQUESTS_PER_DOMAIN = 10
+DOWNLOAD_DELAY = 2
 
 BOT_NAME = 'manolo_scraper'
 
