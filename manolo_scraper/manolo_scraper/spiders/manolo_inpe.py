@@ -1,7 +1,13 @@
 # -*- coding: utf-8 -*-
+import datetime
+from datetime import date
+from datetime import timedelta
+
+import sqlite3
 import scrapy
 
 from manolo_scraper.items import ManoloItem
+from manolo_scraper.models import db_connect
 
 
 class INPESpider(scrapy.Spider):
@@ -10,9 +16,41 @@ class INPESpider(scrapy.Spider):
                        "visitasadm.inpe.gob.pe"]
 
     def start_requests(self):
-        return [scrapy.FormRequest("http://visitasadm.inpe.gob.pe/VisitasadmInpe/Controller",
-                                   formdata={'vis_fec_ing': '01/12/2014'},
-                                   callback=self.parse)]
+        """
+        Get starting date to scrape from our database
+
+        :return: set of URLs
+        """
+        last_date_in_db = ''
+
+        db = db_connect()
+        start_urls = []
+        append = start_urls.append
+
+        query = "select distinct date from manolo_inpe_manolo order by date desc limit 1"
+        try:
+            res = db.query(query)
+            for i in res:
+                last_date_in_db = i['date']
+        except sqlite3.OperationalError:
+            pass
+
+        if last_date_in_db == '':
+            last_date_in_db = '2011-07-28'
+
+        d1 = datetime.datetime.strptime(last_date_in_db, '%Y-%m-%d').date()
+        d2 = date.today()
+        # range to fetch
+        delta = d2 - d1
+
+        for i in range(delta.days + 1):
+            my_date = d1 + timedelta(days=i)
+            my_date = my_date.strftime("%d/%m/%Y")
+            print("SCRAPING: %s" % my_date)
+
+            yield scrapy.FormRequest("http://visitasadm.inpe.gob.pe/VisitasadmInpe/Controller",
+                                      formdata={'vis_fec_ing': my_date},
+                                      callback=self.parse)
 
     def parse(self, response):
         item = ManoloItem()
@@ -31,7 +69,7 @@ class INPESpider(scrapy.Spider):
         selectors = response.xpath("//tr")
         for sel in selectors:
             fields = sel.xpath("td/text() | td/p/text()").extract()
-            if len(fields) > 1:
+            if len(fields) > 5:
                 item['time_start'] = fields[1]
                 item['full_name'] = fields[2]
                 item['id_document'] = fields[3]

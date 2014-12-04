@@ -51,3 +51,9 @@ DOWNLOADER_MIDDLEWARES = {
 
 LOG_LEVEL = 'DEBUG'
 LOG_ENABLED = True
+
+# also create a test_manolo for unittests
+DATABASE = {
+    'drivername': get_secret('drivername'),
+    'database': get_secret('database'),
+}

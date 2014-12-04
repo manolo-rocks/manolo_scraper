@@ -9,6 +9,7 @@ import scrapy
 
 
 class ManoloItem(scrapy.Item):
+    date = scrapy.Field()
     full_name = scrapy.Field()  # Full name of visitor
     id_document = scrapy.Field()  # DNI, Brevete?
     id_number = scrapy.Field()
