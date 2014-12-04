@@ -24,8 +24,6 @@ class INPESpider(scrapy.Spider):
         last_date_in_db = ''
 
         db = db_connect()
-        start_urls = []
-        append = start_urls.append
 
         query = "select distinct date from manolo_inpe_manolo order by date desc limit 1"
         try:
@@ -69,7 +67,7 @@ class INPESpider(scrapy.Spider):
         selectors = response.xpath("//tr")
         for sel in selectors:
             fields = sel.xpath("td/text() | td/p/text()").extract()
-            if len(fields) > 5:
+            if len(fields) > 7:
                 item['time_start'] = fields[1]
                 item['full_name'] = fields[2]
                 item['id_document'] = fields[3]
@@ -78,6 +76,12 @@ class INPESpider(scrapy.Spider):
                 item['reason'] = fields[6]
                 item['host_name'] = fields[7]
                 item['title'] = fields[8]
-                item['office'] = fields[9]
                 item['time_start'] = fields[1]
                 item['time_start'] = fields[1]
+                try:
+                    item['office'] = fields[9]
+                except IndexError:
+                    item['office'] = ''
+
+                yield item
+
