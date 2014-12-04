@@ -95,7 +95,7 @@ class INPESpider(scrapy.Spider):
 
                 time_end = times[10].xpath("text()").extract()
                 if len(time_end) > 1:
-                    item['time_end'] = times_end[0]
+                    item['time_end'] = time_end[0]
                 else:
                     item['time_end'] = ''
 
