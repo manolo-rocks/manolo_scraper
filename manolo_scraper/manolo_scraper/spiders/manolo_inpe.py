@@ -53,12 +53,13 @@ class INPESpider(scrapy.Spider):
             yield  request
 
     def parse(self, response):
+        #with open("page_" + response.meta['date'].strftime("%d-%m-%Y") + "_.html", "w") as handle:
+            #handle.write(response.body)
         item = ManoloItem()
-        item['date'] = response.meta['date']
         item['full_name'] = ''
         item['id_document'] = ''
         item['id_number'] = ''
-        item['institution'] = ''
+        item['institution'] = 'inpe'
         item['entity'] = ''
         item['reason'] = ''
         item['host_name'] = ''
@@ -69,22 +70,36 @@ class INPESpider(scrapy.Spider):
 
         selectors = response.xpath("//tr")
         for sel in selectors:
-            fields = sel.xpath("td/text() | td/p/text()").extract()
+            fields = sel.xpath("td/p")
             if len(fields) > 7:
-                item['time_start'] = fields[1]
-                item['full_name'] = fields[2]
-                item['id_document'] = fields[3]
-                item['id_number'] = fields[4]
-                item['entity'] = fields[5]
-                item['reason'] = fields[6]
-                item['host_name'] = fields[7]
-                item['title'] = fields[8]
-                item['time_start'] = fields[1]
-                item['time_start'] = fields[1]
-                try:
-                    item['office'] = fields[9]
-                except IndexError:
-                    item['office'] = ''
+                # This is a sentinel to flag it as scraped item
+                item['date'] = response.meta['date']
 
+                item['full_name'] = fields[0].xpath("text()").extract()[0].strip()
+
+                try:
+                    item['id_document'] = fields[1].xpath("text()").extract()[0].strip()
+                except IndexError:
+                    item['id_document'] = ''
+
+                item['id_number'] = fields[2].xpath("text()").extract()[0].strip()
+                item['entity'] = fields[3].xpath("text()").extract()[0].strip()
+                item['reason'] = fields[4].xpath("text()").extract()[0].strip()
+                item['host_name'] = fields[5].xpath("text()").extract()[0].strip()
+                item['title'] = fields[6].xpath("text()").extract()[0].strip()
+                item['office'] = fields[7].xpath("text()").extract()[0].strip()
+
+            times = sel.xpath("td")
+            if len(times) > 10:
+                item['time_start'] = times[1].xpath("text()").extract()[0].strip()
+
+                time_end = times[10].xpath("text()").extract()
+                if len(time_end) > 1:
+                    item['time_end'] = times_end[0]
+                else:
+                    item['time_end'] = ''
+
+            # Our item has the sentinel?
+            if 'date' in item:
                 yield item
 
