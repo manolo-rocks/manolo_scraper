@@ -43,15 +43,18 @@ class INPESpider(scrapy.Spider):
 
         for i in range(delta.days + 1):
             my_date = d1 + timedelta(days=i)
-            my_date = my_date.strftime("%d/%m/%Y")
+            my_date_str = my_date.strftime("%d/%m/%Y")
             print("SCRAPING: %s" % my_date)
 
-            yield scrapy.FormRequest("http://visitasadm.inpe.gob.pe/VisitasadmInpe/Controller",
-                                      formdata={'vis_fec_ing': my_date},
+            request = scrapy.FormRequest("http://visitasadm.inpe.gob.pe/VisitasadmInpe/Controller",
+                                      formdata={'vis_fec_ing': my_date_str},
                                       callback=self.parse)
+            request.meta['date'] = my_date
+            yield  request
 
     def parse(self, response):
         item = ManoloItem()
+        item['date'] = response.meta['date']
         item['full_name'] = ''
         item['id_document'] = ''
         item['id_number'] = ''
