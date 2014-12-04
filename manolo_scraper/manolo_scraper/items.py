@@ -21,3 +21,4 @@ class ManoloItem(scrapy.Item):
     office = scrapy.Field()  # Office that visitor visits
     time_start = scrapy.Field()
     time_end = scrapy.Field()
+    sha512 = scrapy.Field()

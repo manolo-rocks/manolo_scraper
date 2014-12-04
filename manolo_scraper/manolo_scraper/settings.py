@@ -57,3 +57,7 @@ DATABASE = {
     'drivername': get_secret('drivername'),
     'database': get_secret('database'),
 }
+
+ITEM_PIPELINES = {
+    'manolo_scraper.pipelines.DuplicatesPipeline': 300,
+}

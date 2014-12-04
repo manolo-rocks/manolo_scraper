@@ -2,6 +2,7 @@
 import datetime
 from datetime import date
 from datetime import timedelta
+import hashlib
 
 import sqlite3
 import scrapy
@@ -37,6 +38,7 @@ class INPESpider(scrapy.Spider):
             last_date_in_db = '2011-07-28'
 
         d1 = datetime.datetime.strptime(last_date_in_db, '%Y-%m-%d').date()
+        d1 = date(2014, 12, 2)
         d2 = date.today()
         # range to fetch
         delta = d2 - d1
@@ -98,6 +100,24 @@ class INPESpider(scrapy.Spider):
                     item['time_end'] = time_end[0]
                 else:
                     item['time_end'] = ''
+
+                try:
+                    x = datetime.datetime.strptime(item['time_start'], '%H:%M:%S')
+                    item['time_start'] = datetime.datetime.strftime(x, '%H:%M')
+                except ValueError:
+                    pass
+
+                try:
+                    x = datetime.datetime.strptime(item['time_end'], '%H:%M:%S')
+                    item['time_end'] = datetime.datetime.strftime(x, '%H:%M')
+                except ValueError:
+                    pass
+
+                mystring = str(item['date']) + str(item['id_number'])
+                mystring += str(item['time_start'])
+                m = hashlib.sha1()
+                m.update(mystring.encode("utf-8"))
+                item['sha512'] = m.hexdigest()
 
             # Our item has the sentinel?
             if 'date' in item:
