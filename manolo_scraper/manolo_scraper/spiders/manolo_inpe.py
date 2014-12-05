@@ -38,7 +38,7 @@ class INPESpider(scrapy.Spider):
             last_date_in_db = '2011-07-28'
 
         d1 = datetime.datetime.strptime(last_date_in_db, '%Y-%m-%d').date()
-        d1 = date(2014, 12, 2)
+        # d1 = date(2014, 12, 2)
         d2 = date.today()
         # range to fetch
         delta = d2 - d1
@@ -96,7 +96,7 @@ class INPESpider(scrapy.Spider):
                 item['time_start'] = times[1].xpath("text()").extract()[0].strip()
 
                 time_end = times[10].xpath("text()").extract()
-                if len(time_end) > 1:
+                if len(time_end) > 0:
                     item['time_end'] = time_end[0]
                 else:
                     item['time_end'] = ''
