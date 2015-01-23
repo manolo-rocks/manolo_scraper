@@ -4,6 +4,7 @@ from datetime import date
 from datetime import timedelta
 import hashlib
 import re
+from unidecode import unidecode
 
 import scrapy
 import sqlite3
@@ -38,7 +39,7 @@ class MinemSpider(scrapy.Spider):
             last_date_in_db = '2011-07-28'
 
         d1 = datetime.datetime.strptime(last_date_in_db, '%Y-%m-%d').date()
-        d1 = date(2014, 12, 2)
+        d1 = date(2014, 1, 1)
         d2 = date.today()
         # range to fetch
         delta = d2 - d1
@@ -62,30 +63,34 @@ class MinemSpider(scrapy.Spider):
             request.meta['date'] = my_date
             yield request
 
+    '''
     def get_number_items(self, response):
         try:
             number_items = response.xpath("//input/@value").extract()[0]
         except IndexError:
             pass
         url = re.sub('Pagina=20', 'Pagina=' + number_items, response.url)
-        print(">>>>>>url", url)
         request = scrapy.Request(url, callback=self.parse)
         request.meta['date'] = response.meta['date']
         yield request
+    '''
 
     def parse(self, response):
         with open("page_" + response.meta['date'].strftime("%d-%m-%Y") + "_.html", "w") as handle:
             handle.write(response.body)
         item = ManoloItem()
-        item['visitor'] = ''
-        item['id_document'] = ''
-        item['id_number'] = ''
-        item['institution'] = 'minem'
+        item['full_name'] = ''
         item['entity'] = ''
-        item['reason'] = ''
-        item['host_name'] = ''
-        item['title'] = ''
+        item['meeting_place'] = ''
         item['office'] = ''
+        item['host_name'] = ''
+        item['reason'] = ''
+        item['institution'] = 'minem'
+        item['location'] = ''
+        item['id_number'] = ''
+        item['id_document'] = ''
+        item['date'] = response.meta['date']
+        item['title'] = ''
         item['time_start'] = ''
         item['time_end'] = ''
 
@@ -93,41 +98,64 @@ class MinemSpider(scrapy.Spider):
         for sel in selectors:
             fields = sel.xpath("td/center")
 
-            # This is a sentinel to flag it as scraped item
-            item['date'] = response.meta['date']
-
-            visitor = fields[1].xpath("text()").extract()
+            # full name of visitor
+            full_name = fields[1].xpath("text()").extract()
             try:
-                visitor = visitor[0]
+                full_name = full_name[0]
             except IndexError:
                 pass
-            visitor = re.sub("\s+", " ", visitor)
-            item['visitor'] = visitor.strip()
-
-            try:
-                id_document = fields[2].xpath("text()").extract()[0].strip()
-                item['id_document'] = id_document.replace(':', ' ')
-            except IndexError:
-                item['id_document'] = ''
+            full_name = re.sub("\s+", " ", full_name)
+            item['full_name'] = full_name.strip()
 
             item['entity'] = re.sub("\s+", " ", fields[3].xpath("text()").extract()[0].strip())
-            item['reason'] = re.sub("\s+", " ", fields[4].xpath("text()").extract()[0].strip())
             item['host_name'] = re.sub("\s+", " ", fields[5].xpath("text()").extract()[0].strip())
+            item['reason'] = re.sub("\s+", " ", fields[4].xpath("text()").extract()[0].strip())
             item['title'] = re.sub("\s+", " ", fields[6].xpath("text()").extract()[0].strip())
             item['office'] = re.sub("\s+", " ", fields[7].xpath("text()").extract()[0].strip())
             item['time_start'] = re.sub("\s+", " ", fields[8].xpath("text()").extract()[0].strip())
+
+            try:
+                document_identity = fields[2].xpath("text()").extract()[0].strip()
+            except IndexError:
+                document_identity = ''
+
+            if document_identity != '':
+                item['id_document'], item['id_number'] = self.get_dni(document_identity)
 
             try:
                 item['time_end'] = re.sub("\s+", " ", fields[9].xpath("text()").extract()[0].strip())
             except IndexError:
                 item['time_end'] = ''
 
-            mystring = str(item['date']) + str(item['id_number'])
-            mystring += str(item['time_start'])
-            m = hashlib.sha1()
-            m.update(mystring.encode("utf-8"))
-            item['sha512'] = m.hexdigest()
+            hash_input = str(
+                str(item['institution']) +
+                str(unidecode(item['full_name'])) +
+                str(item['id_document']) +
+                str(item['id_number']) +
+                str(item['date']) +
+                str(item['time_start'])
+            )
+            hash_output = hashlib.sha1()
+            hash_output.update(hash_input.encode("utf-8"))
+            item['sha1'] = hash_output.hexdigest()
 
-            # Our item has the sentinel?
-            if 'date' in item:
-                yield item
+            yield item
+
+    def get_dni(self, document_identity):
+        id_document = ''
+        id_number = ''
+
+        document_identity = document_identity.replace(':', ' ')
+        document_identity = re.sub('\s+', ' ', document_identity)
+        document_identity = document_identity.strip()
+        document_identity = re.sub('^', ' ', document_identity)
+
+        res = re.search("(.*)\s(([A-Za-z0-9]+\W*)+)$", document_identity)
+        if res:
+            id_document = res.groups()[0].strip()
+            id_number = res.groups()[1].strip()
+
+        if id_document == '':
+            id_document = 'DNI'
+
+        return id_document, id_number
