@@ -50,20 +50,40 @@ class TcSpider(scrapy.Spider):
             if len(record) > 6:
                 if this_date < datetime.date(2008, 5, 29):
                     item = ManoloItem()
-                    item['full_name'] = record[2]
-                    item['id_document'] = record[3]
-                    item['id_number'] = record[4]
-                    item['reason'] = record[5]
-                    item['host_name'] = record[6]
                     try:
-                        item['time_start'] = record[1].replace('.', ':')
-                    except AttributeError:
-                        item['time_start'] = record[1]
+                        item['full_name'] = sel.xpath('td')[2].xpath('text()').extract()[0]
+                    except IndexError:
+                        item['full_name'] = ''
 
                     try:
-                        item['time_end'] = record[8].replace('.', ':')
-                    except AttributeError:
-                        item['time_end'] = record[8]
+                        item['id_document'] = sel.xpath('td')[3].xpath('text()').extract()[0]
+                    except IndexError:
+                        item['id_document'] = ''
+
+                    try:
+                        item['id_number'] = sel.xpath('td')[4].xpath('text()').extract()[0]
+                    except IndexError:
+                        item['id_number'] = ''
+
+                    try:
+                        item['reason'] = sel.xpath('td')[5].xpath('text()').extract()[0]
+                    except IndexError:
+                        item['reason'] = ''
+
+                    try:
+                        item['host_name'] = sel.xpath('td')[6].xpath('text()').extract()[0]
+                    except IndexError:
+                        item['host_name'] = ''
+
+                    try:
+                        item['time_start'] = sel.xpath('td')[1].xpath('text()').extract()[0]
+                    except IndexError:
+                        item['time_start'] = ''
+
+                    try:
+                        item['time_end'] = sel.xpath('td')[8].xpath('text()').extract()[0]
+                    except IndexError:
+                        item['time_end'] = ''
 
                     item['institution'] = 'Trib.Const.'
                     item['date'] = response.meta['date']
@@ -72,20 +92,40 @@ class TcSpider(scrapy.Spider):
                     yield item
                 elif datetime.date(2008, 5, 29) <= this_date < datetime.date(2014, 8, 1):
                     item = ManoloItem()
-                    item['full_name'] = record[2]
-                    item['id_document'] = record[3]
-                    item['id_number'] = record[4]
-                    item['reason'] = record[5]
-                    item['host_name'] = record[6]
                     try:
-                        item['time_start'] = record[1].replace('.', ':')
-                    except AttributeError:
-                        item['time_start'] = record[1]
+                        item['full_name'] = sel.xpath('td')[2].xpath('text()').extract()[0]
+                    except IndexError:
+                        item['full_name'] = ''
 
                     try:
-                        item['time_end'] = record[7].replace('.', ':')
-                    except AttributeError:
-                        item['time_end'] = record[7]
+                        item['id_document'] = sel.xpath('td')[3].xpath('text()').extract()[0]
+                    except IndexError:
+                        item['id_document'] = ''
+
+                    try:
+                        item['id_number'] = sel.xpath('td')[4].xpath('text()').extract()[0]
+                    except IndexError:
+                        item['id_number'] = ''
+
+                    try:
+                        item['reason'] = sel.xpath('td')[5].xpath('text()').extract()[0]
+                    except IndexError:
+                        item['reason'] = ''
+
+                    try:
+                        item['host_name'] = sel.xpath('td')[6].xpath('text()').extract()[0]
+                    except IndexError:
+                        item['host_name'] = ''
+
+                    try:
+                        item['time_start'] = sel.xpath('td')[1].xpath('text()').extract()[0]
+                    except IndexError:
+                        item['time_start'] = ''
+
+                    try:
+                        item['time_end'] = sel.xpath('td')[7].xpath('text()').extract()[0]
+                    except IndexError:
+                        item['time_end'] = ''
 
                     item['institution'] = 'Trib.Const.'
                     item['date'] = response.meta['date']
@@ -93,30 +133,53 @@ class TcSpider(scrapy.Spider):
                     item = make_hash(item)
                     yield item
                 else:
-                    print(record)
                     item = ManoloItem()
-                    item['full_name'] = record[1]
-                    item['id_document'], item['id_number'] = get_dni(record[2])
-                    item['entity'] = record[3]
-                    item['reason'] = record[4]
-                    item['host_name'] = record[5]
-                    item['office'] = record[6]
                     try:
-                        item['time_start'] = record[7].replace('.', ':')
-                    except AttributeError:
-                        item['time_start'] = record[7]
+                        item['full_name'] = sel.xpath('td')[1].xpath('text()').extract()[0]
+                    except IndexError:
+                        item['full_name'] = ''
 
                     try:
-                        item['time_end'] = record[8].replace('.', ':')
-                    except AttributeError:
-                        item['time_end'] = record[8]
+                        item['id_document'], item['id_number'] = get_dni(sel.xpath('td')[2].xpath('text()').extract()[0])
+                    except IndexError:
+                        item['id_document'] = ''
+                        item['id_number'] = ''
+
+                    try:
+                        item['entity'] = sel.xpath('td')[3].xpath('text()').extract()[0]
+                    except IndexError:
+                        item['entity'] = ''
+
+                    try:
+                        item['reason'] = sel.xpath('td')[4].xpath('text()').extract()[0]
+                    except IndexError:
+                        item['reason'] = ''
+
+                    try:
+                        item['host_name'] = sel.xpath('td')[5].xpath('text()').extract()[0]
+                    except IndexError:
+                        item['host_name'] = ''
+
+                    try:
+                        item['office'] = sel.xpath('td')[6].xpath('text()').extract()[0]
+                    except IndexError:
+                        item['office'] = ''
+
+                    try:
+                        item['time_start'] = sel.xpath('td')[7].xpath('text()').extract()[0]
+                    except IndexError:
+                        item['time_start'] = ''
+
+                    try:
+                        item['time_end'] = sel.xpath('td')[8].xpath('text()').extract()[0]
+                    except IndexError:
+                        item['time_end'] = ''
 
                     item['institution'] = 'Trib.Const.'
                     item['date'] = response.meta['date']
 
                     item = make_hash(item)
                     yield item
-
 
 
 def make_hash(item):
