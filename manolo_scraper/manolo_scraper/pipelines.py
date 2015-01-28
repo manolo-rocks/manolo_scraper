@@ -31,7 +31,6 @@ class CleanItemPipeline(object):
                 item[k] = value.strip()
             else:
                 item[k] = v
+        if item['full_name'] == '':
+            raise DropItem("Missing price in %s" % item)
         return item
-
-
-

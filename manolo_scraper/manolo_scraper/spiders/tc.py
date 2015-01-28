@@ -187,13 +187,14 @@ class TcSpider(scrapy.Spider):
 
 
 def make_hash(item):
+    print(item)
     hash_input = str(
         str(item['institution']) +
         str(unidecode(item['full_name'])) +
         str(unidecode(item['id_document'])) +
-        str(item['id_number']) +
+        str(unidecode(item['id_number'])) +
         str(item['date']) +
-        str(item['time_start'])
+        str(unidecode(item['time_start']))
     )
     hash_output = hashlib.sha1()
     hash_output.update(hash_input.encode("utf-8"))
