@@ -38,7 +38,11 @@ class TcSpider(scrapy.Spider):
             url = "http://tc.gob.pe/transparencia/visitas/"
             url += this_year + "/"
             url += this_month + "/"
-            url += this_date_str + ".html"
+
+            if this_date < datetime.date(2009, 8, 1):
+                url += this_date_str + ".htm"
+            else:
+                url += this_date_str + ".html"
             request = scrapy.Request(url, callback=self.parse)
             request.meta['date'] = this_date
             yield request
@@ -186,7 +190,7 @@ def make_hash(item):
     hash_input = str(
         str(item['institution']) +
         str(unidecode(item['full_name'])) +
-        str(item['id_document']) +
+        str(unidecode(item['id_document'])) +
         str(item['id_number']) +
         str(item['date']) +
         str(item['time_start'])
