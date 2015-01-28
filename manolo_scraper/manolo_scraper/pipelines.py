@@ -4,6 +4,8 @@
 #
 # Don't forget to add your pipeline to the ITEM_PIPELINES setting
 # See: http://doc.scrapy.org/en/latest/topics/item-pipeline.html
+import re
+
 from scrapy.exceptions import DropItem
 
 
@@ -18,4 +20,18 @@ class DuplicatesPipeline(object):
         else:
             self.ids_seen.add(item['sha1'])
             return item
+
+
+class CleanItemPipeline(object):
+    def process_item(self, item, spider):
+        print(item)
+        for k, v in item.items():
+            if isinstance(v, basestring) is True:
+                value = re.sub('\s+', ' ', v)
+                item[k] = value.strip()
+            else:
+                item[k] = v
+        return item
+
+
 
