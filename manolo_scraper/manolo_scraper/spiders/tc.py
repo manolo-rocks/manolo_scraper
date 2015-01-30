@@ -144,7 +144,7 @@ class TcSpider(scrapy.Spider):
                         item['full_name'] = ''
 
                     try:
-                        item['id_document'], item['id_number'] = get_dni(sel.xpath('td')[2].xpath('text()').extract()[0])
+                        item['id_document'], item['id_number'] = utils.get_dni(sel.xpath('td')[2].xpath('text()').extract()[0])
                     except IndexError:
                         item['id_document'] = ''
                         item['id_number'] = ''
