@@ -46,6 +46,8 @@ class TcSpider(scrapy.Spider):
             yield request
 
     def parse(self, response):
+        with open("page_" + response.meta['date'].strftime("%Y-%m-%d") + "_.html", "w") as handle:
+            handle.write(response.body)
         this_date = response.meta['date']
         for sel in response.xpath('//tr'):
             record = sel.xpath('td/text()').extract()
