@@ -40,7 +40,7 @@ NEWSPIDER_MODULE = 'manolo_scraper.spiders'
 
 # Crawl responsibly by identifying yourself (and your website) on the user-agent
 USER_AGENT = 'manolo_scraper (+http://www.yourdomain.com)'
-CRAWLERA_ENABLED = True
+CRAWLERA_ENABLED = False
 CRAWLERA_USER = get_secret("CRAWLERA_USER")
 CRAWLERA_PASS = get_secret("CRAWLERA_PASS")
 DOWNLOADER_MIDDLEWARES = {

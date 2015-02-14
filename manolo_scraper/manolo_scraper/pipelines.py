@@ -24,7 +24,6 @@ class DuplicatesPipeline(object):
 
 class CleanItemPipeline(object):
     def process_item(self, item, spider):
-        print(item)
         for k, v in item.items():
             if isinstance(v, basestring) is True:
                 value = re.sub('\s+', ' ', v)
@@ -32,5 +31,8 @@ class CleanItemPipeline(object):
             else:
                 item[k] = v
         if item['full_name'] == '':
-            raise DropItem("Missing price in %s" % item)
+            raise DropItem("Missing visitor in %s" % item)
+
+        if item['time_start'].starts_with('HORA DE'):
+            raise DropItem("This is a header, drop it: %s" % item)
         return item

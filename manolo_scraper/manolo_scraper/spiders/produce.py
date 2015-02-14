@@ -5,6 +5,7 @@ from datetime import timedelta
 import scrapy
 
 from manolo_scraper.items import ManoloItem
+from manolo_scraper.utils import make_hash
 
 
 class ProduceSpider(scrapy.Spider):
@@ -12,8 +13,9 @@ class ProduceSpider(scrapy.Spider):
     allowed_domains = ["http://www2.produce.gob.pe"]
 
     def start_requests(self):
-        d1 = datetime.date(2014, 1, 1)
-        d2 = datetime.date.today()
+        d1 = datetime.date(2015, 1, 14)
+        d2 = datetime.date(2015, 1, 15)
+        #d2 = datetime.date.today()
         # range to fetch
         delta = d2 - d1
 
@@ -90,5 +92,7 @@ class ProduceSpider(scrapy.Spider):
                     item['time_end'] = this_record[9].xpath('text()').extract()[0]
                 except IndexError:
                     pass
+
+                item = make_hash(item)
 
                 yield item
