@@ -13,9 +13,9 @@ class ProduceSpider(scrapy.Spider):
     allowed_domains = ["http://www2.produce.gob.pe"]
 
     def start_requests(self):
-        d1 = datetime.date(2015, 1, 14)
-        d2 = datetime.date(2015, 1, 15)
-        #d2 = datetime.date.today()
+        d1 = datetime.date(2008, 1, 1)
+        # d2 = datetime.date(2015, 1, 15)
+        d2 = datetime.date.today()
         # range to fetch
         delta = d2 - d1
 
