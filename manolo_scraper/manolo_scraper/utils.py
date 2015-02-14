@@ -4,7 +4,6 @@ import re
 
 
 def make_hash(item):
-    print(item)
     hash_input = str(
         str(item['institution']) +
         str(unidecode(item['full_name'])) +
