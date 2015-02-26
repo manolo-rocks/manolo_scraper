@@ -9,6 +9,7 @@ import scrapy
 
 from manolo_scraper.items import ManoloItem
 from manolo_scraper.models import db_connect
+from manolo_scraper.utils import make_hash
 
 
 class INPESpider(scrapy.Spider):
@@ -28,7 +29,7 @@ class INPESpider(scrapy.Spider):
         :return: set of URLs
         """
 
-        d1 = datetime.datetime.strptime(self.date_start, '%Y-%m-%d')
+        d1 = datetime.datetime.strptime(self.date_start, '%Y-%m-%d').date()
         d2 = date.today()
         # range to fetch
         delta = d2 - d1
@@ -103,11 +104,7 @@ class INPESpider(scrapy.Spider):
                 except ValueError:
                     pass
 
-                mystring = str(item['date']) + str(item['id_number'])
-                mystring += str(item['time_start'])
-                m = hashlib.sha1()
-                m.update(mystring.encode("utf-8"))
-                item['sha512'] = m.hexdigest()
+                item = make_hash(item)
 
             # Our item has the sentinel?
             if 'date' in item:
