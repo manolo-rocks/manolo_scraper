@@ -9,6 +9,7 @@ import scrapy
 
 from manolo_scraper.items import ManoloItem
 from manolo_scraper.models import db_connect
+from manolo_scraper.utils import make_hash
 
 
 class INPESpider(scrapy.Spider):
@@ -16,29 +17,19 @@ class INPESpider(scrapy.Spider):
     allowed_domains = ["www.peru.gob.pe",
                        "visitasadm.inpe.gob.pe"]
 
+    def __init__(self, date_start=None, *args, **kwargs):
+        super(INPESpider, self).__init__(*args, **kwargs)
+        self.date_start = date_start
+
     def start_requests(self):
         """
-        Get starting date to scrape from our database
+        Get starting date to scrape from argument
+        e.g.: 2010-02-21
 
         :return: set of URLs
         """
-        last_date_in_db = ''
 
-        db = db_connect()
-
-        query = "select distinct date from manolo_inpe_manolo order by date desc limit 1"
-        try:
-            res = db.query(query)
-            for i in res:
-                last_date_in_db = i['date']
-        except sqlite3.OperationalError:
-            pass
-
-        if last_date_in_db == '':
-            last_date_in_db = '2011-07-28'
-
-        d1 = datetime.datetime.strptime(last_date_in_db, '%Y-%m-%d').date()
-        # d1 = date(2014, 12, 2)
+        d1 = datetime.datetime.strptime(self.date_start, '%Y-%m-%d').date()
         d2 = date.today()
         # range to fetch
         delta = d2 - d1
@@ -52,7 +43,7 @@ class INPESpider(scrapy.Spider):
                                       formdata={'vis_fec_ing': my_date_str},
                                       callback=self.parse)
             request.meta['date'] = my_date
-            yield  request
+            yield request
 
     def parse(self, response):
         #with open("page_" + response.meta['date'].strftime("%d-%m-%Y") + "_.html", "w") as handle:
@@ -113,11 +104,7 @@ class INPESpider(scrapy.Spider):
                 except ValueError:
                     pass
 
-                mystring = str(item['date']) + str(item['id_number'])
-                mystring += str(item['time_start'])
-                m = hashlib.sha1()
-                m.update(mystring.encode("utf-8"))
-                item['sha512'] = m.hexdigest()
+                item = make_hash(item)
 
             # Our item has the sentinel?
             if 'date' in item:
