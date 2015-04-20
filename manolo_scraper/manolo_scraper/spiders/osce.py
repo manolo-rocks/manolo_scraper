@@ -67,37 +67,33 @@ class OSCESpider(scrapy.Spider):
         item['office'] = ''
         item['host_name'] = ''
         item['reason'] = ''
-        item['institution'] = 'minem'
+        item['institution'] = 'osce'
         item['location'] = ''
         item['id_number'] = ''
         item['id_document'] = ''
-        item['date'] = response.meta['date']
+        item['date'] = this_date_obj
         item['title'] = ''
         item['time_start'] = ''
         item['time_end'] = ''
 
         selectors = response.xpath("//tr")
         for sel in selectors:
-            fields = sel.xpath("td/center")
+            fields = sel.xpath('.//td/text()').extract()
 
             # full name of visitor
-            full_name = fields[1].xpath("text()").extract()
-            try:
-                full_name = full_name[0]
-            except IndexError:
-                pass
-            full_name = re.sub("\s+", " ", full_name)
+            full_name = re.sub('\s+', ' ', fields[1])
             item['full_name'] = full_name.strip()
 
-            item['entity'] = re.sub("\s+", " ", fields[3].xpath("text()").extract()[0].strip())
-            item['host_name'] = re.sub("\s+", " ", fields[5].xpath("text()").extract()[0].strip())
-            item['reason'] = re.sub("\s+", " ", fields[4].xpath("text()").extract()[0].strip())
-            item['title'] = re.sub("\s+", " ", fields[6].xpath("text()").extract()[0].strip())
-            item['office'] = re.sub("\s+", " ", fields[7].xpath("text()").extract()[0].strip())
-            item['time_start'] = re.sub("\s+", " ", fields[8].xpath("text()").extract()[0].strip())
+            item['entity'] = re.sub("\s+", " ", fields[3]).strip()
+            item['reason'] = re.sub("\s+", " ", fields[4]).strip()
+            item['host_name'] = re.sub("\s+", " ", fields[5]).strip()
+
+            item['title'] = re.sub("\s+", " ", fields[6]).strip()
+            item['office'] = re.sub("\s+", " ", fields[7]).strip()
+            item['time_start'] = re.sub("\s+", " ", fields[8]).strip()
 
             try:
-                document_identity = fields[2].xpath("text()").extract()[0].strip()
+                document_identity = fields[2].strip()
             except IndexError:
                 document_identity = ''
 
@@ -105,7 +101,7 @@ class OSCESpider(scrapy.Spider):
                 item['id_document'], item['id_number'] = self.get_dni(document_identity)
 
             try:
-                item['time_end'] = re.sub("\s+", " ", fields[9].xpath("text()").extract()[0].strip())
+                item['time_end'] = re.sub("\s+", " ", fields[9]).strip()
             except IndexError:
                 item['time_end'] = ''
 
