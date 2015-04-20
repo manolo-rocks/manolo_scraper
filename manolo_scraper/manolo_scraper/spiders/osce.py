@@ -42,7 +42,7 @@ class OSCESpider(scrapy.Spider):
     def after_post(self, request):
         print(request.url)
         with open("a.html", "w") as handle:
-            handle.write(request.content)
+            handle.write(request.body)
     '''
     def get_number_items(self, response):
         try:
