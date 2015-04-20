@@ -55,7 +55,10 @@ class OSCESpider(scrapy.Spider):
                                      callback=self.parse)
 
     def parse(self, response):
-        with open("page_" + response.meta['date'].strftime("%d-%m-%Y") + "_.html", "w") as handle:
+        this_date_obj = datetime.datetime.strptime(response.meta['date'],
+                                                   '%d/%m/%Y')
+        this_date_str = datetime.datetime.strftime(this_date_obj, '%Y-%m-%d')
+        with open("page_" + this_date_str + "_.html", "w") as handle:
             handle.write(response.body)
         item = ManoloItem()
         item['full_name'] = ''
