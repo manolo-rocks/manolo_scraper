@@ -80,44 +80,45 @@ class OSCESpider(scrapy.Spider):
         for sel in selectors:
             fields = sel.xpath('.//td/text()').extract()
 
-            # full name of visitor
-            full_name = re.sub('\s+', ' ', fields[1])
-            item['full_name'] = full_name.strip()
+            if len(fields) > 3:
+                # full name of visitor
+                full_name = re.sub('\s+', ' ', fields[1])
+                item['full_name'] = full_name.strip()
 
-            item['entity'] = re.sub("\s+", " ", fields[3]).strip()
-            item['reason'] = re.sub("\s+", " ", fields[4]).strip()
-            item['host_name'] = re.sub("\s+", " ", fields[5]).strip()
+                item['entity'] = re.sub("\s+", " ", fields[3]).strip()
+                item['reason'] = re.sub("\s+", " ", fields[4]).strip()
+                item['host_name'] = re.sub("\s+", " ", fields[5]).strip()
 
-            item['title'] = re.sub("\s+", " ", fields[6]).strip()
-            item['office'] = re.sub("\s+", " ", fields[7]).strip()
-            item['time_start'] = re.sub("\s+", " ", fields[8]).strip()
+                item['title'] = re.sub("\s+", " ", fields[6]).strip()
+                item['office'] = re.sub("\s+", " ", fields[7]).strip()
+                item['time_start'] = re.sub("\s+", " ", fields[8]).strip()
 
-            try:
-                document_identity = fields[2].strip()
-            except IndexError:
-                document_identity = ''
+                try:
+                    document_identity = fields[2].strip()
+                except IndexError:
+                    document_identity = ''
 
-            if document_identity != '':
-                item['id_document'], item['id_number'] = self.get_dni(document_identity)
+                if document_identity != '':
+                    item['id_document'], item['id_number'] = self.get_dni(document_identity)
 
-            try:
-                item['time_end'] = re.sub("\s+", " ", fields[9]).strip()
-            except IndexError:
-                item['time_end'] = ''
+                try:
+                    item['time_end'] = re.sub("\s+", " ", fields[9]).strip()
+                except IndexError:
+                    item['time_end'] = ''
 
-            hash_input = str(
-                str(item['institution']) +
-                str(unidecode(item['full_name'])) +
-                str(item['id_document']) +
-                str(item['id_number']) +
-                str(item['date']) +
-                str(item['time_start'])
-            )
-            hash_output = hashlib.sha1()
-            hash_output.update(hash_input.encode("utf-8"))
-            item['sha1'] = hash_output.hexdigest()
+                hash_input = str(
+                    str(item['institution']) +
+                    str(unidecode(item['full_name'])) +
+                    str(item['id_document']) +
+                    str(item['id_number']) +
+                    str(item['date']) +
+                    str(item['time_start'])
+                )
+                hash_output = hashlib.sha1()
+                hash_output.update(hash_input.encode("utf-8"))
+                item['sha1'] = hash_output.hexdigest()
 
-            yield item
+                yield item
 
     def get_dni(self, document_identity):
         id_document = ''
