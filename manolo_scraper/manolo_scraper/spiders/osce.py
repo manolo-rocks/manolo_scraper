@@ -56,6 +56,7 @@ class OSCESpider(scrapy.Spider):
                                      callback=self.parse)
 
     def parse(self, response):
+        scrapy.log.msg("PARSED URL %s" % response.url, level=scrapy.log.INFO)
         this_date_obj = datetime.datetime.strptime(response.meta['date'],
                                                    '%d/%m/%Y')
         this_date_str = datetime.datetime.strftime(this_date_obj, '%Y-%m-%d')
