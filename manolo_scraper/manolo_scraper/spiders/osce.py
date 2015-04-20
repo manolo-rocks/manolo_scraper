@@ -50,7 +50,7 @@ class OSCESpider(scrapy.Spider):
             'yt0': 'Consultar',
         }
         for link in links_set:
-            yield [scrapy.FormRequest(url=link, formdata=params, callback=self.parse)]
+            yield scrapy.FormRequest(url=link, formdata=params, callback=self.parse)
 
     def parse(self, response):
         with open("page_" + response.meta['date'].strftime("%d-%m-%Y") + "_.html", "w") as handle:
