@@ -50,6 +50,7 @@ class OSCESpider(scrapy.Spider):
             'yt0': 'Consultar',
         }
         for link in links_set:
+            print(link)
             yield scrapy.FormRequest(url=link, formdata=params,
                                      meta={'date': request.meta['date']},
                                      callback=self.parse)
@@ -58,8 +59,6 @@ class OSCESpider(scrapy.Spider):
         this_date_obj = datetime.datetime.strptime(response.meta['date'],
                                                    '%d/%m/%Y')
         this_date_str = datetime.datetime.strftime(this_date_obj, '%Y-%m-%d')
-        with open("page_" + this_date_str + "_.html", "w") as handle:
-            handle.write(response.body)
         item = ManoloItem()
         item['full_name'] = ''
         item['entity'] = ''
