@@ -50,7 +50,6 @@ class OSCESpider(scrapy.Spider):
             'yt0': 'Consultar',
         }
         for link in links_set:
-            print(link)
             yield scrapy.FormRequest(url=link.replace('&amp;', '&'), formdata=params,
                                      meta={'date': request.meta['date']},
                                      dont_filter=True,
@@ -72,7 +71,7 @@ class OSCESpider(scrapy.Spider):
         item['location'] = ''
         item['id_number'] = ''
         item['id_document'] = ''
-        item['date'] = this_date_obj
+        item['date'] = this_date_str
         item['title'] = ''
         item['time_start'] = ''
         item['time_end'] = ''
