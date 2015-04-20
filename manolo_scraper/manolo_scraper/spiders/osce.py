@@ -36,6 +36,7 @@ class OSCESpider(scrapy.Spider):
 
             yield scrapy.FormRequest(url=url, formdata=params,
                                      meta={'date': my_date_str},
+                                     dont_filter=True,
                                      callback=self.after_post)
 
     def after_post(self, request):
@@ -52,6 +53,7 @@ class OSCESpider(scrapy.Spider):
             print(link)
             yield scrapy.FormRequest(url=link.replace('&amp;', '&'), formdata=params,
                                      meta={'date': request.meta['date']},
+                                     dont_filter=True,
                                      callback=self.parse)
 
     def parse(self, response):
