@@ -62,3 +62,5 @@ ITEM_PIPELINES = {
     'manolo_scraper.pipelines.DuplicatesPipeline': 300,
     'manolo_scraper.pipelines.CleanItemPipeline': 400,
 }
+
+DUPEFILTER_DEBUG = True
