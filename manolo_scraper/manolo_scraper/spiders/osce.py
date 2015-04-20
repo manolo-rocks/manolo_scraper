@@ -51,7 +51,7 @@ class OSCESpider(scrapy.Spider):
         }
         for link in links_set:
             print(link)
-            yield scrapy.FormRequest(url=link, formdata=params,
+            yield scrapy.FormRequest(url=link.replace('&amp', '&'), formdata=params,
                                      meta={'date': request.meta['date']},
                                      callback=self.parse)
 
