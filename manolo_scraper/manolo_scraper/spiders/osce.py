@@ -41,6 +41,8 @@ class OSCESpider(scrapy.Spider):
 
     def after_post(self, request):
         print(request.url)
+        with open("a.html", "w") as handle:
+            handle.write(request.content)
     '''
     def get_number_items(self, response):
         try:
