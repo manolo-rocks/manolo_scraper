@@ -32,7 +32,7 @@ class OSCESpider(scrapy.Spider):
                 'VisitaConsultaQueryForm[feConsulta]': my_date_str,
                 'yt0': 'Consultar',
             }
-            url = 'http://visitas.osce.gob.pe/controlVisitas/index.php?r=consultas/visitaConsulta/updateVisitasConsultaResultGrid&ajax=lst-visitas-consulta-result-grid'
+            url = 'http://visitas.osce.gob.pe/controlVisitas/index.php?r=consultas/visitaConsulta/updateVisitasConsultaResultGrid&ajax=lst-visitas-consulta-result-grid&lstVisitasResult_page=1'
 
             yield scrapy.FormRequest(url=url, formdata=params,
                                      meta={'date': my_date_str},
