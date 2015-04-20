@@ -38,6 +38,9 @@ class OSCESpider(scrapy.Spider):
             return [scrapy.FormRequest(url=url, formdata=params,
                                        meta={'page': 1},
                                        callback=self.after_post)]
+
+    def after_post(self, request):
+        print(request.url)
     '''
     def get_number_items(self, response):
         try:
