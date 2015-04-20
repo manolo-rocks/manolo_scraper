@@ -1,5 +1,12 @@
 .idea
 *pyc
+*csv
+visitas.db_orig
+project.egg*
+manolo.egg*
+manolo_scraper/pdf_trabajo
+manolo_scraper/dist
+manolo_scraper/build
 *json
 *db
 *txt
