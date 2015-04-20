@@ -36,13 +36,15 @@ class OSCESpider(scrapy.Spider):
             url += '1'
 
             return [scrapy.FormRequest(url=url, formdata=params,
-                                       meta={'page': 1},
                                        callback=self.after_post)]
 
     def after_post(self, request):
-        print(request.url)
-        with open("a.html", "w") as handle:
-            handle.write(request.body)
+        dirty_links = re.findall('/controlVisitas.+page=[0-9]+', request.body)
+        links = [re.sub('".+$', '', i) for i in dirty_links]
+        links_set = set(links)
+        links_set.add(request.url)
+
+        print(links_set)
     '''
     def get_number_items(self, response):
         try:
