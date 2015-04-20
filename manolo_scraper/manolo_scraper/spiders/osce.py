@@ -18,7 +18,7 @@ class OSCESpider(scrapy.Spider):
     allowed_domains = ["visitas.osce.gob.pe"]
 
     def start_requests(self):
-        d1 = date(2015, 4, 8)
+        d1 = date(2015, 4, 17)
         d2 = date.today()
         # range to fetch
         delta = d2 - d1
