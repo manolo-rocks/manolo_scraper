@@ -15,7 +15,7 @@ from manolo_scraper.models import db_connect
 
 class OSCESpider(scrapy.Spider):
     name = "osce"
-    allowed_domains = ["http://visitas.osce.gob.pe"]
+    allowed_domains = ["visitas.osce.gob.pe"]
 
     def start_requests(self):
         d1 = date(2015, 4, 8)
