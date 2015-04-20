@@ -36,6 +36,7 @@ class OSCESpider(scrapy.Spider):
             url += '1'
 
             return [scrapy.FormRequest(url=url, formdata=params,
+                                       meta={'date': my_date_str},
                                        callback=self.after_post)]
 
     def after_post(self, request):
@@ -44,18 +45,12 @@ class OSCESpider(scrapy.Spider):
         links_set = set(links)
         links_set.add(request.url)
 
-        print(links_set)
-    '''
-    def get_number_items(self, response):
-        try:
-            number_items = response.xpath("//input/@value").extract()[0]
-        except IndexError:
-            pass
-        url = re.sub('Pagina=20', 'Pagina=' + number_items, response.url)
-        request = scrapy.Request(url, callback=self.parse)
-        request.meta['date'] = response.meta['date']
-        yield request
-    '''
+        params = {
+            'VisitaConsultaQueryForm[feConsulta]': request.meta['date'],
+            'yt0': 'Consultar',
+        }
+        for link in links_set:
+            yield [scrapy.FormRequest(url=link, formdata=params, callback=self.parse)]
 
     def parse(self, response):
         with open("page_" + response.meta['date'].strftime("%d-%m-%Y") + "_.html", "w") as handle:
