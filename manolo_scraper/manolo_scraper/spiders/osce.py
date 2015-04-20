@@ -40,7 +40,7 @@ class OSCESpider(scrapy.Spider):
 
     def after_post(self, request):
         dirty_links = re.findall('/controlVisitas.+page=[0-9]+', request.body)
-        links = [re.sub('".+$', '', i) for i in dirty_links]
+        links = ['http://visitas.osce.gob.pe' + re.sub('".+$', '', i) for i in dirty_links]
         links_set = set(links)
         links_set.add(request.url)
 
