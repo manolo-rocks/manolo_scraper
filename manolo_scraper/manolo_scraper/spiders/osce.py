@@ -35,9 +35,9 @@ class OSCESpider(scrapy.Spider):
             url = 'http://visitas.osce.gob.pe/controlVisitas/index.php?r=consultas/visitaConsulta/updateVisitasConsultaResultGrid&ajax=lst-visitas-consulta-result-grid&lstVisitasResult_page='
             url += '1'
 
-            return [scrapy.FormRequest(url=url, formdata=params,
-                                       meta={'date': my_date_str},
-                                       callback=self.after_post)]
+            yield scrapy.FormRequest(url=url, formdata=params,
+                                     meta={'date': my_date_str},
+                                     callback=self.after_post)
 
     def after_post(self, request):
         dirty_links = re.findall('/controlVisitas.+page=[0-9]+', request.body)
