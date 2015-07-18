@@ -1,8 +1,8 @@
 Mako==1.0.0
 MarkupSafe==0.23
 PyYAML==3.11
-SQLAlchemy==0.9.8
-Scrapy==0.24.4
+SQLAlchemy==1.0.6
+Scrapy==1.0.1
 Twisted==14.0.2
 Unidecode==0.04.16
 Unipath==1.0
@@ -12,7 +12,7 @@ cffi==0.8.6
 characteristic==14.2.0
 cryptography==0.6.1
 cssselect==0.9.1
-dataset==0.5.5
+dataset==0.6.0
 lxml==3.4.1
 pyOpenSSL==0.14
 pyasn1==0.1.7
