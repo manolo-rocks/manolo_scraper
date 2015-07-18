@@ -2,13 +2,10 @@
 import datetime
 from datetime import date
 from datetime import timedelta
-import hashlib
 
-import sqlite3
 import scrapy
 
 from manolo_scraper.items import ManoloItem
-from manolo_scraper.models import db_connect
 from manolo_scraper.utils import make_hash
 
 
