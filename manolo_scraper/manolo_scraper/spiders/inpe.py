@@ -2,13 +2,11 @@
 import datetime
 from datetime import date
 from datetime import timedelta
-import hashlib
 
-import sqlite3
 import scrapy
+from scrapy import exceptions
 
 from manolo_scraper.items import ManoloItem
-from manolo_scraper.models import db_connect
 from manolo_scraper.utils import make_hash
 
 
@@ -20,6 +18,8 @@ class INPESpider(scrapy.Spider):
     def __init__(self, date_start=None, *args, **kwargs):
         super(INPESpider, self).__init__(*args, **kwargs)
         self.date_start = date_start
+        if self.date_start is None:
+            raise exceptions.UsageError('Enter start date as spider argument: -a date_start=')
 
     def start_requests(self):
         """
@@ -28,7 +28,6 @@ class INPESpider(scrapy.Spider):
 
         :return: set of URLs
         """
-
         d1 = datetime.datetime.strptime(self.date_start, '%Y-%m-%d').date()
         d2 = date.today()
         # range to fetch
@@ -40,8 +39,8 @@ class INPESpider(scrapy.Spider):
             print("SCRAPING: %s" % my_date)
 
             request = scrapy.FormRequest("http://visitasadm.inpe.gob.pe/VisitasadmInpe/Controller",
-                                      formdata={'vis_fec_ing': my_date_str},
-                                      callback=self.parse)
+                                         formdata={'vis_fec_ing': my_date_str},
+                                         callback=self.parse)
             request.meta['date'] = my_date
             yield request
 

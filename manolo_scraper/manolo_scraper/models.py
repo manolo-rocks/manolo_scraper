@@ -14,9 +14,11 @@ def db_connect():
 
     database = [
         settings.DATABASE['drivername'],
-        ':///' + database_name,
-        ]
-    url = ''.join(database)
+        '//' + settings.DATABASE['username'],
+        settings.DATABASE['password'] + '@' + settings.DATABASE['host'],
+        settings.DATABASE['port'] + '/' + database_name,
+    ]
+    url = ':'.join(database)
 
     db = dataset.connect(url)
     return db

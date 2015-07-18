@@ -31,7 +31,6 @@ def get_secret(setting, secrets=secrets):
 
 CONCURRENT_REQUESTS = 50
 CONCURRENT_REQUESTS_PER_DOMAIN = 50
-DOWNLOAD_DELAY = 10
 
 BOT_NAME = 'manolo_scraper'
 
@@ -45,9 +44,9 @@ CRAWLERA_USER = get_secret("CRAWLERA_USER")
 CRAWLERA_PASS = get_secret("CRAWLERA_PASS")
 DOWNLOADER_MIDDLEWARES = {
     'scrapylib.crawlera.CrawleraMiddleware': 600,
-    'scrapy.contrib.downloadermiddleware.useragent.UserAgentMiddleware': "Mozilla/5.0 (Windows NT 6.2; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/32.0.1667.0 Safari/537.36",
-    'scrapy.contrib.downloadermiddleware.httpproxy.HttpProxyMiddleware': "http://" + CRAWLERA_USER + ":" + CRAWLERA_PASS + "@proxy.crawlera.com:8010/",
-    'scrapy.contrib.downloadermiddleware.cookies.CookiesMiddleware': 700,
+    'scrapy.downloadermiddlewares.useragent.UserAgentMiddleware': "Mozilla/5.0 (Windows NT 6.2; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/32.0.1667.0 Safari/537.36",
+    'scrapy.downloadermiddlewares.httpproxy.HttpProxyMiddleware': "http://" + CRAWLERA_USER + ":" + CRAWLERA_PASS + "@proxy.crawlera.com:8010/",
+    'scrapy.downloadermiddlewares.cookies.CookiesMiddleware': 700,
 }
 
 LOG_LEVEL = 'DEBUG'
@@ -57,6 +56,10 @@ LOG_ENABLED = True
 DATABASE = {
     'drivername': get_secret('drivername'),
     'database': get_secret('database'),
+    'username': get_secret('username'),
+    'host': get_secret('host'),
+    'password': get_secret('password'),
+    'port': get_secret('port'),
 }
 
 ITEM_PIPELINES = {
@@ -65,4 +68,5 @@ ITEM_PIPELINES = {
 }
 
 DUPEFILTER_DEBUG = True
+COOKIES_DEBUG = True
 COOKIES_ENABLED = True
