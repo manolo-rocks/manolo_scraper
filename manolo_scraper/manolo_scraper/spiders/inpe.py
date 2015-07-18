@@ -28,7 +28,6 @@ class INPESpider(scrapy.Spider):
 
         :return: set of URLs
         """
-
         d1 = datetime.datetime.strptime(self.date_start, '%Y-%m-%d').date()
         d2 = date.today()
         # range to fetch
@@ -40,8 +39,8 @@ class INPESpider(scrapy.Spider):
             print("SCRAPING: %s" % my_date)
 
             request = scrapy.FormRequest("http://visitasadm.inpe.gob.pe/VisitasadmInpe/Controller",
-                                      formdata={'vis_fec_ing': my_date_str},
-                                      callback=self.parse)
+                                         formdata={'vis_fec_ing': my_date_str},
+                                         callback=self.parse)
             request.meta['date'] = my_date
             yield request
 
