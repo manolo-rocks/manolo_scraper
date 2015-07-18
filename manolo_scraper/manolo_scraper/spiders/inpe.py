@@ -4,6 +4,7 @@ from datetime import date
 from datetime import timedelta
 
 import scrapy
+from scrapy import exceptions
 
 from manolo_scraper.items import ManoloItem
 from manolo_scraper.utils import make_hash
@@ -17,6 +18,8 @@ class INPESpider(scrapy.Spider):
     def __init__(self, date_start=None, *args, **kwargs):
         super(INPESpider, self).__init__(*args, **kwargs)
         self.date_start = date_start
+        if self.date_start is None:
+            raise exceptions.UsageError('Enter start date as spider argument: -a date_start=')
 
     def start_requests(self):
         """
