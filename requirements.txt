@@ -19,6 +19,7 @@ pyasn1==0.1.7
 pyasn1-modules==0.0.5
 pycparser==2.10
 python-slugify==0.1.0
+psycopg2==2.6.1
 queuelib==1.2.2
 scrapylib==1.5.0
 service-identity==14.0.0
