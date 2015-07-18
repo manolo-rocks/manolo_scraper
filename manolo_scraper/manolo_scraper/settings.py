@@ -56,6 +56,10 @@ LOG_ENABLED = True
 DATABASE = {
     'drivername': get_secret('drivername'),
     'database': get_secret('database'),
+    'username': get_secret('username'),
+    'host': get_secret('host'),
+    'password': get_secret('password'),
+    'port': get_secret('port'),
 }
 
 ITEM_PIPELINES = {
