@@ -57,7 +57,7 @@ class CleanItemPipeline(object):
 
         if table.find_one(sha1=item['sha1']) is None:
             table.insert(item)
-            logging.info("Saving: {}, date: {}".format(item['sha1']), item['date'])
+            logging.info("Saving: {}, date: {}".format(item['sha1'], item['date']))
         else:
             logging.info("{}, date: {} is found in db, not saving".format(item['sha1'], item['date']))
 
