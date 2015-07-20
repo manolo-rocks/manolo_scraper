@@ -3,6 +3,7 @@ import datetime
 from datetime import timedelta
 
 import scrapy
+from scrapy import exceptions
 
 from manolo_scraper.items import ManoloItem
 from manolo_scraper.utils import make_hash
@@ -12,8 +13,14 @@ class ProduceSpider(scrapy.Spider):
     name = "produce"
     allowed_domains = ["http://www2.produce.gob.pe"]
 
+    def __init__(self, date_start=None, *args, **kwargs):
+        super(ProduceSpider, self).__init__(*args, **kwargs)
+        self.date_start = date_start
+        if self.date_start is None:
+            raise exceptions.UsageError('Enter start date as spider argument: -a date_start=')
+
     def start_requests(self):
-        d1 = datetime.date(2008, 1, 1)
+        d1 = datetime.datetime.strptime(self.date_start, '%Y-%m-%d').date()
         # d2 = datetime.date(2015, 1, 15)
         d2 = datetime.date.today()
         # range to fetch
@@ -33,9 +40,6 @@ class ProduceSpider(scrapy.Spider):
             yield request
 
     def parse(self, response):
-        with open("produce_page_" + response.meta['date'].strftime("%d-%m-%Y") + "_.html", "w") as handle:
-            handle.write(response.body)
-
         for sel in response.xpath('//tr'):
             this_record = sel.xpath('td')
             if len(this_record) > 9:
