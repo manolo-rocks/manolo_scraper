@@ -34,7 +34,11 @@ class CleanItemPipeline(object):
                 item[k] = value.strip()
             else:
                 item[k] = v
-        item['date'] = datetime.date.strftime(item['date'], '%Y-%m-%d')
+        try:
+            item['date'] = datetime.date.strftime(item['date'], '%Y-%m-%d')
+        except TypeError:
+            # our date is good, continue
+            pass
 
         if 'meeting_place' not in item:
             item['meeting_place'] = ''

@@ -2,20 +2,24 @@
 import datetime
 from datetime import date
 from datetime import timedelta
-import hashlib
 import re
-from unidecode import unidecode
 
 import scrapy
-import sqlite3
+from scrapy import exceptions
 
 from manolo_scraper.items import ManoloItem
-from manolo_scraper.models import db_connect
+from manolo_scraper.utils import make_hash
 
 
 class MinemSpider(scrapy.Spider):
     name = "minem"
     allowed_domains = ["http://intranet.minem.gob.pe"]
+
+    def __init__(self, date_start=None, *args, **kwargs):
+        super(MinemSpider, self).__init__(*args, **kwargs)
+        self.date_start = date_start
+        if self.date_start is None:
+            raise exceptions.UsageError('Enter start date as spider argument: -a date_start=')
 
     def start_requests(self):
         """
@@ -23,23 +27,7 @@ class MinemSpider(scrapy.Spider):
 
         :return: set of URLs
         """
-        last_date_in_db = ''
-
-        db = db_connect()
-
-        query = "select distinct date from manolo_minem_manolo order by date desc limit 1"
-        try:
-            res = db.query(query)
-            for i in res:
-                last_date_in_db = i['date']
-        except sqlite3.OperationalError:
-            pass
-
-        if last_date_in_db == '':
-            last_date_in_db = '2011-07-28'
-
-        d1 = datetime.datetime.strptime(last_date_in_db, '%Y-%m-%d').date()
-        d1 = date(2014, 1, 1)
+        d1 = datetime.datetime.strptime(self.date_start, '%Y-%m-%d').date()
         d2 = date.today()
         # range to fetch
         delta = d2 - d1
@@ -63,21 +51,7 @@ class MinemSpider(scrapy.Spider):
             request.meta['date'] = my_date
             yield request
 
-    '''
-    def get_number_items(self, response):
-        try:
-            number_items = response.xpath("//input/@value").extract()[0]
-        except IndexError:
-            pass
-        url = re.sub('Pagina=20', 'Pagina=' + number_items, response.url)
-        request = scrapy.Request(url, callback=self.parse)
-        request.meta['date'] = response.meta['date']
-        yield request
-    '''
-
     def parse(self, response):
-        with open("page_" + response.meta['date'].strftime("%d-%m-%Y") + "_.html", "w") as handle:
-            handle.write(response.body)
         item = ManoloItem()
         item['full_name'] = ''
         item['entity'] = ''
@@ -127,18 +101,7 @@ class MinemSpider(scrapy.Spider):
             except IndexError:
                 item['time_end'] = ''
 
-            hash_input = str(
-                str(item['institution']) +
-                str(unidecode(item['full_name'])) +
-                str(item['id_document']) +
-                str(item['id_number']) +
-                str(item['date']) +
-                str(item['time_start'])
-            )
-            hash_output = hashlib.sha1()
-            hash_output.update(hash_input.encode("utf-8"))
-            item['sha1'] = hash_output.hexdigest()
-
+            item = make_hash(item)
             yield item
 
     def get_dni(self, document_identity):
