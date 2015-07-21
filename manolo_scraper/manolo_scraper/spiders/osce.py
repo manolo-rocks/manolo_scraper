@@ -2,23 +2,28 @@
 import datetime
 from datetime import date
 from datetime import timedelta
-import hashlib
+import logging
 import re
-from unidecode import unidecode
 
 import scrapy
-import sqlite3
+from scrapy import exceptions
 
 from manolo_scraper.items import ManoloItem
-from manolo_scraper.models import db_connect
+from manolo_scraper.utils import make_hash
 
 
 class OSCESpider(scrapy.Spider):
     name = "osce"
     allowed_domains = ["visitas.osce.gob.pe"]
 
+    def __init__(self, date_start=None, *args, **kwargs):
+        super(OSCESpider, self).__init__(*args, **kwargs)
+        self.date_start = date_start
+        if self.date_start is None:
+            raise exceptions.UsageError('Enter start date as spider argument: -a date_start=')
+
     def start_requests(self):
-        d1 = date(2015, 4, 17)
+        d1 = datetime.datetime.strptime(self.date_start, '%Y-%m-%d').date()
         d2 = date.today()
         # range to fetch
         delta = d2 - d1
@@ -56,7 +61,7 @@ class OSCESpider(scrapy.Spider):
                                      callback=self.parse)
 
     def parse(self, response):
-        scrapy.log.msg("PARSED URL %s" % response.url, level=scrapy.log.INFO)
+        logging.info("PARSED URL {}".format(response.url))
         this_date_obj = datetime.datetime.strptime(response.meta['date'],
                                                    '%d/%m/%Y')
         this_date_str = datetime.datetime.strftime(this_date_obj, '%Y-%m-%d')
@@ -106,17 +111,7 @@ class OSCESpider(scrapy.Spider):
                 except IndexError:
                     item['time_end'] = ''
 
-                hash_input = str(
-                    str(item['institution']) +
-                    str(unidecode(item['full_name'])) +
-                    str(item['id_document']) +
-                    str(item['id_number']) +
-                    str(item['date']) +
-                    str(item['time_start'])
-                )
-                hash_output = hashlib.sha1()
-                hash_output.update(hash_input.encode("utf-8"))
-                item['sha1'] = hash_output.hexdigest()
+                item = make_hash(item)
 
                 yield item
 
