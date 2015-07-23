@@ -27,28 +27,30 @@ class MujerSpider(scrapy.Spider):
             raise exceptions.UsageError('Enter start date as spider argument: -a date_start=')
 
     def start_requests(self):
-        d1 = datetime.datetime.strptime(self.date_start, '%Y-%m-%d').date()
-        d2 = datetime.date.today()
-        delta = d2 - d1
+        """
+        This webpage returns all items from requested date to present. So there
+        is no need to loop and do requests for all dates from date_start to present.
+        It is enough to do one request for the date_start.
+        """
+        my_date = datetime.datetime.strptime(self.date_start, '%Y-%m-%d').date()
+        my_date_str = my_date.strftime("%d/%m/%Y")
+        logging.info("SCRAPING: {}".format(my_date_str))
 
-        for i in range(delta.days + 1):
-            my_date = d1 + datetime.timedelta(days=i)
-            my_date_str = my_date.strftime("%d/%m/%Y")
-            logging.info("SCRAPING: {}".format(my_date_str))
-
-            params = {'page': '1', 'rows': '20'}
-            url = "{}?fecha={}".format(self.base_url, datetime.date.strftime(my_date, '%Y%m%d'))
-            logging.info("URL to scrape {}".format(url))
-            yield scrapy.FormRequest(url=url, formdata=params,
-                                     meta={'date': my_date_str},
-                                     dont_filter=True,
-                                     callback=self.after_post)
+        params = {'page': '1', 'rows': '20'}
+        url = "{}?fecha={}".format(self.base_url, datetime.date.strftime(my_date, '%Y%m%d'))
+        logging.info("URL to scrape {}".format(url))
+        yield scrapy.FormRequest(url=url, formdata=params,
+                                 meta={'date': my_date_str},
+                                 dont_filter=True,
+                                 callback=self.after_post)
 
     def after_post(self, response):
         # send requests based on pagination
         res = json.loads(response.body)
         total_records = res['total']
+        logging.info("Found {} records to scrape".format(total_records))
         pages = total_records/20 + 1
+        logging.info("Found {} pages to scrape".format(pages))
 
         for page in range(pages):
             params = {
