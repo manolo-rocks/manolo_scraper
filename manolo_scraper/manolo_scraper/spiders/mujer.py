@@ -62,7 +62,6 @@ class MujerSpider(scrapy.Spider):
 
     def parse(self, response):
         logging.info("PARSED URL {}".format(response.url))
-        this_date_obj = datetime.datetime.strptime(response.meta['date'], '%d/%m/%Y')
         item = ManoloItem()
         item['full_name'] = ''
         item['entity'] = ''
@@ -74,13 +73,13 @@ class MujerSpider(scrapy.Spider):
         item['location'] = ''
         item['id_number'] = ''
         item['id_document'] = 'DNI'
-        item['date'] = this_date_obj
         item['title'] = ''
         item['time_start'] = ''
         item['time_end'] = ''
         data = json.loads(response.body)
         rows = data['rows']
         for row in rows:
+            item['date'] = datetime.datetime.strptime(row['txt_fecha'], '%d/%m/%Y')
             item['full_name'] = row['txt_visitante']
             item['id_number'] = row['txt_dni']
             item['entity'] = row['entidad']
