@@ -23,7 +23,7 @@ production database.
 
 ## List of Entities
 
-* [x] Ministerio de Transportes y Comunicaciones
+* [ ] Ministerio de Transportes y Comunicaciones
     * **url**: http://scrv-reporte.mtc.gob.pe/
 
 * [x] Ministerio de la Mujer
