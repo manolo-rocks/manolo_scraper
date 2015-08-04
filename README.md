@@ -47,7 +47,7 @@ production database.
 * [x] Ministerio de Produccion
     * **url**: http://www2.produce.gob.pe/produce/transparencia/visitas/
 
-* [x] Tribunal Constitucional
+* [ ] Tribunal Constitucional
     * **url**: http://tc.gob.pe/transparencia/visitas/
 
 * [ ] Ministerio de Cultura
