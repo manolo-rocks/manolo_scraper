@@ -8,8 +8,8 @@ import re
 import scrapy
 from scrapy import exceptions
 
-from ..items import ManoloItem
-from ..utils import make_hash
+from manolo_scraper.items import ManoloItem
+from manolo_scraper.utils import make_hash
 
 
 # SIstema de REgistro de VIsitas
@@ -37,12 +37,12 @@ class SireviSpider(scrapy.Spider):
             my_date = d1 + timedelta(days=i)
             my_date_str = my_date.strftime("%d/%m/%Y")
 
-            print("SCRAPING: %s" % my_date_str)
+            print("SCRAPING: {}".format(my_date_str))
 
             params = {
                 'VisitaConsultaQueryForm[feConsulta]': my_date_str,
                 'yt0': 'Consultar',
-                }
+            }
 
             ajax_url = self.base_url + self.ajax_page_pattern % 1
 
@@ -52,22 +52,20 @@ class SireviSpider(scrapy.Spider):
                                      callback=self.after_post)
 
     def after_post(self, response):
-
         page_links = response.css("li.last").xpath("./a/@href").extract()
-
         number_of_pages = re.findall(r'lstVisitasResult_page=(\d+)', str(page_links))
-
 
         try:
             number_of_pages = int(number_of_pages[0])
-        except:
+        except IndexError:
+            number_of_pages = 1
+        except TypeError:
             number_of_pages = 1
 
         params = {
             'VisitaConsultaQueryForm[feConsulta]': response.meta['date'],
             'yt0': 'Consultar',
-            }
-
+        }
 
         for page_number in range(1, number_of_pages + 1):
             page_url = self.base_url + self.ajax_page_pattern % page_number
@@ -77,12 +75,10 @@ class SireviSpider(scrapy.Spider):
                                      dont_filter=True,
                                      callback=self.parse)
 
-
     def parse(self, response):
         logging.info("PARSED URL {}".format(response.url))
 
-        this_date_obj = datetime.datetime.strptime(response.meta['date'],
-                                                   '%d/%m/%Y')
+        this_date_obj = datetime.datetime.strptime(response.meta['date'], '%d/%m/%Y')
         this_date_str = datetime.datetime.strftime(this_date_obj, '%Y-%m-%d')
 
         item = ManoloItem()
