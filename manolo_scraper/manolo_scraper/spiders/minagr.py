@@ -1,8 +1,9 @@
 # -*- coding: utf-8 -*-
 from spiders import SireviSpider
 
+
 class MinagrSpider(SireviSpider):
-    name = 'minarg'
+    name = 'minagr'
 
     allowed_domains = ['sistemas.minag.gob.pe']
 
