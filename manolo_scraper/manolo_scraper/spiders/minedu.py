@@ -1,6 +1,7 @@
 # -*- coding: utf-8 -*-
 from spiders import SireviSpider
 
+
 class MinedurSpider(SireviSpider):
     name = 'minedu'
 
