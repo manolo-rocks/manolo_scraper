@@ -50,7 +50,7 @@ production database.
 * [ ] Tribunal Constitucional
     * **url**: http://tc.gob.pe/transparencia/visitas/
 
-* [ ] Ministerio de Cultura
+* [x] Ministerio de Cultura
     * **url**: http://visitas.mcultura.gob.pe/?r=consultas/visitaConsulta/index
 
 * [ ] Ministerio de Justicia
@@ -62,7 +62,7 @@ production database.
 * [ ] Ministerio del Trabajo
     * **url**: http://www.trabajo.gob.pe/visitas.php
 
-* [ ] Ministerio de Educacion
+* [x] Ministerio de Educacion
     * **url**: http://visitasmed.perueduca.edu.pe/controlVisitas/index.php?r=consultas/visitaConsulta
 
 * [ ] Ministerio de Salud
@@ -71,7 +71,7 @@ production database.
 * [ ] Ministerio del Ambiente
    * **url**: http://visitas.minam.gob.pe/frmConsulta.aspx
 
-* [ ] Ministerio de Agricultura y Riesgo
+* [x] Ministerio de Agricultura y Riesgo
    * **url**: http://sistemas.minag.gob.pe/visitas/controlVisitas/index.php?r=consultas/visitaConsulta
 
 * [ ] Ministerio de Desarrollo e Inclusion social
@@ -86,5 +86,5 @@ production database.
 * [ ] Presidencia
     * **url**: http://www.presidencia.gob.pe/visitas/consulta_visitas.php
 
-* [ ] Ministerio de Vivienda
+* [x] Ministerio de Vivienda
     * **url**: http://geo.vivienda.gob.pe/Visitas/controlVisitas/index.php?r=consultas/visitaConsulta/index
