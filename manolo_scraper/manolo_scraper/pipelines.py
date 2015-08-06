@@ -60,6 +60,8 @@ class CleanItemPipeline(object):
         table = db['visitors_visitor']
 
         if table.find_one(sha1=item['sha1']) is None:
+            item['created'] = datetime.datetime.now()
+            item['modified'] = datetime.datetime.now()
             table.insert(item)
             logging.info("Saving: {}, date: {}".format(item['sha1'], item['date']))
         else:
