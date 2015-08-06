@@ -24,3 +24,5 @@ class ManoloItem(scrapy.Item):
     title = scrapy.Field()  # Official title of host person, "cargo"
     time_start = scrapy.Field()
     time_end = scrapy.Field()
+    created = scrapy.Field()
+    modified = scrapy.Field()
