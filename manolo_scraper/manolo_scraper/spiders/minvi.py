@@ -9,4 +9,4 @@ class MinviSpider(SireviSpider):
 
     base_url = 'http://geo.vivienda.gob.pe/Visitas/controlVisitas'
 
-    institution_name = 'minvi'
+    institution_name = 'vivienda'
