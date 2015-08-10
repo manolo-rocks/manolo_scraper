@@ -8,8 +8,8 @@ import re
 import scrapy
 from scrapy import exceptions
 
-from manolo_scraper.items import ManoloItem
-from manolo_scraper.utils import make_hash
+from ..items import ManoloItem
+from ..utils import make_hash, get_dni
 
 
 # SIstema de REgistro de VIsitas
@@ -121,7 +121,7 @@ class SireviSpider(scrapy.Spider):
                     document_identity = ''
 
                 if document_identity != '':
-                    item['id_document'], item['id_number'] = self.get_dni(document_identity)
+                    item['id_document'], item['id_number'] = get_dni(document_identity)
 
                 try:
                     item['time_end'] = re.sub("\s+", " ", fields[9]).strip()
@@ -131,22 +131,3 @@ class SireviSpider(scrapy.Spider):
                 item = make_hash(item)
 
                 yield item
-
-    def get_dni(self, document_identity):
-        id_document = ''
-        id_number = ''
-
-        document_identity = document_identity.replace(':', ' ')
-        document_identity = re.sub('\s+', ' ', document_identity)
-        document_identity = document_identity.strip()
-        document_identity = re.sub('^', ' ', document_identity)
-
-        res = re.search("(.*)\s(([A-Za-z0-9]+\W*)+)$", document_identity)
-        if res:
-            id_document = res.groups()[0].strip()
-            id_number = res.groups()[1].strip()
-
-        if id_document == '':
-            id_document = 'DNI'
-
-        return id_document, id_number

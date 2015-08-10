@@ -6,8 +6,8 @@ import re
 import scrapy
 from scrapy import exceptions
 
-from manolo_scraper.items import ManoloItem
-from manolo_scraper.utils import make_hash
+from ..items import ManoloItem
+from ..utils import make_hash, get_dni
 
 class DefensaSpider(scrapy.Spider):
     name = "defensa"
@@ -77,27 +77,8 @@ class DefensaSpider(scrapy.Spider):
                 item['entity'] = fields[3].xpath('text()').extract_first().strip()
                 item['host_name'] = fields[5].xpath('text()').extract_first().strip()
                 item['reason'] = fields[4].xpath('text()').extract_first().strip()
-                item['id_document'], item['id_number'] = self.get_dni(fields[2].xpath('text()').extract_first().strip())
+                item['id_document'], item['id_number'] = get_dni(fields[2].xpath('text()').extract_first().strip())
                 item['time_start'] = fields[6].xpath('text()').extract_first().strip()
                 item['time_end'] = fields[7].xpath('text()').extract_first().strip()
                 item = make_hash(item)
                 yield item
-
-    def get_dni(self, document_identity):
-        id_document = ''
-        id_number = ''
-
-        document_identity = document_identity.replace(':', ' ')
-        document_identity = re.sub('\s+', ' ', document_identity)
-        document_identity = document_identity.strip()
-        document_identity = re.sub('^', ' ', document_identity)
-
-        res = re.search("(.*)\s(([A-Za-z0-9]+\W*)+)$", document_identity)
-        if res:
-            id_document = res.groups()[0].strip()
-            id_number = res.groups()[1].strip()
-
-        if id_document == '':
-            id_document = 'DNI'
-
-        return id_document, id_number
