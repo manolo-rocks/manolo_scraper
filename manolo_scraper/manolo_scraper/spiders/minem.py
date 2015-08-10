@@ -3,17 +3,20 @@ import datetime
 from datetime import date
 from datetime import timedelta
 import re
+import math
 
 import scrapy
 from scrapy import exceptions
 
-from manolo_scraper.items import ManoloItem
-from manolo_scraper.utils import make_hash
+from ..items import ManoloItem
+from ..utils import make_hash, get_dni
 
 
 class MinemSpider(scrapy.Spider):
     name = "minem"
     allowed_domains = ["http://intranet.minem.gob.pe"]
+
+    NUMBER_OF_PAGES_PER_PAGE = 20
 
     def __init__(self, date_start=None, *args, **kwargs):
         super(MinemSpider, self).__init__(*args, **kwargs)
@@ -37,18 +40,26 @@ class MinemSpider(scrapy.Spider):
             my_date_str = my_date.strftime("%d/%m/%Y")
             print("SCRAPING: %s" % my_date_str)
 
-            params = [
-                'http://intranet.minem.gob.pe/GESTION/visitas_pcm/Busqueda/DMET_html_SelectMaestraBuscador?_=1421960188624',
-                'Ln_IdRol=',
-                'Ls_Pagina=1',
-                'Li_ResultadoPorPagina=2000',
-                'FlgBuscador=1',
-            ]
-            url = "&".join(params) + '&TXT_FechaVisita_Inicio=%s' % my_date_str
-            url += '&Ls_ParametrosBuscador=Ln_IdRol=|TXT_FechaVisita_Inicio=%s|Ls_Pagina=1' % my_date_str
+            request = self.make_form_request(my_date_str, self.parse_pages, 1)
 
-            request = scrapy.Request(url, callback=self.parse)
-            request.meta['date'] = my_date
+            yield request
+
+    def parse_pages(self, response):
+        total_of_records = response.css('#HID_CantidadRegistros').xpath('./@value').extract()
+
+        try:
+            total_of_records = int(total_of_records[0])
+        except IndexError:
+            total_of_records = 1
+        except TypeError:
+            total_of_records = 1
+
+        number_of_pages = self.get_number_of_pages(total_of_records)
+
+        for page in range(1, number_of_pages + 1):
+
+            request = self.make_form_request(response.meta['date'], self.parse, page)
+
             yield request
 
     def parse(self, response):
@@ -69,6 +80,7 @@ class MinemSpider(scrapy.Spider):
         item['time_end'] = ''
 
         selectors = response.xpath("//tr")
+
         for sel in selectors:
             fields = sel.xpath("td/center")
 
@@ -94,7 +106,7 @@ class MinemSpider(scrapy.Spider):
                 document_identity = ''
 
             if document_identity != '':
-                item['id_document'], item['id_number'] = self.get_dni(document_identity)
+                item['id_document'], item['id_number'] = get_dni(document_identity)
 
             try:
                 item['time_end'] = re.sub("\s+", " ", fields[9].xpath("text()").extract()[0].strip())
@@ -102,23 +114,29 @@ class MinemSpider(scrapy.Spider):
                 item['time_end'] = ''
 
             item = make_hash(item)
+
             yield item
 
-    def get_dni(self, document_identity):
-        id_document = ''
-        id_number = ''
+    def get_number_of_pages(self, total_of_records):
+        return int(math.ceil(total_of_records / float(self.NUMBER_OF_PAGES_PER_PAGE)))
 
-        document_identity = document_identity.replace(':', ' ')
-        document_identity = re.sub('\s+', ' ', document_identity)
-        document_identity = document_identity.strip()
-        document_identity = re.sub('^', ' ', document_identity)
+    def make_form_request(self, date_str, callback, page_number):
 
-        res = re.search("(.*)\s(([A-Za-z0-9]+\W*)+)$", document_identity)
-        if res:
-            id_document = res.groups()[0].strip()
-            id_number = res.groups()[1].strip()
+        page_url = 'http://intranet.minem.gob.pe/GESTION/visitas_pcm/Busqueda/DMET_html_SelectMaestraBuscador'
 
-        if id_document == '':
-            id_document = 'DNI'
+        start_from_record = self.NUMBER_OF_PAGES_PER_PAGE * (page_number - 1) + 1
 
-        return id_document, id_number
+        params = {
+            'TXT_FechaVisita_Inicio': date_str,
+            'Ls_Pagina': str(start_from_record),
+            'Li_ResultadoPorPagina': '20',
+            'FlgBuscador': '1',
+            'Ls_ParametrosBuscador': 'TXT_FechaVisita_Inicio=10/08/2015|Ls_Pagina={}'.format(str(start_from_record)),
+            }
+
+        request = scrapy.FormRequest(url=page_url, formdata=params,
+                                     meta={'date': date_str},
+                                     dont_filter=True,
+                                     callback=callback)
+        return request
+
