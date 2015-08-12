@@ -1,13 +1,13 @@
 # -*- coding: utf-8 -*-
 import datetime
 import logging
-import re
 
 import scrapy
 from scrapy import exceptions
 
 from ..items import ManoloItem
 from ..utils import make_hash, get_dni
+
 
 class DefensaSpider(scrapy.Spider):
     name = "defensa"
