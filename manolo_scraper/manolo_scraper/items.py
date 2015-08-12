@@ -20,7 +20,7 @@ class ManoloItem(scrapy.Item):
     location = scrapy.Field()  # Location of institution
     id_number = scrapy.Field()
     id_document = scrapy.Field()  # DNI, Brevete?
-    date = scrapy.Field()
+    date = scrapy.Field()  # Should be object or string in format YYYY-mm-dd
     title = scrapy.Field()  # Official title of host person, "cargo"
     time_start = scrapy.Field()
     time_end = scrapy.Field()
