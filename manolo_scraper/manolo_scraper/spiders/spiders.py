@@ -12,6 +12,15 @@ from ..items import ManoloItem
 from ..utils import make_hash, get_dni
 
 
+class ManoloBaseSpider(scrapy.Spider):
+    def __init__(self, date_start=None, *args, **kwargs):
+        super(ManoloBaseSpider, self).__init__(*args, **kwargs)
+        self.date_start = date_start
+
+        if self.date_start is None:
+            raise exceptions.UsageError('Enter start date as spider argument: -a date_start=')
+
+
 # SIstema de REgistro de VIsitas
 class SireviSpider(scrapy.Spider):
 
