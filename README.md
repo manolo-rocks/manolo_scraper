@@ -80,7 +80,7 @@ production database.
 * [ ] Ministerio de Comercio Exterior y Turismo
     * **url**: http://www.mincetur.gob.pe/visitaspublico/Visitas/FrmVisitantes.aspx
 
-* [ ] Congreso de la Republica
+* [x] Congreso de la Republica
    * **url**: http://regvisitas.congreso.gob.pe/regvisitastransparencia/
 
 * [ ] Presidencia
