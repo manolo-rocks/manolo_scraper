@@ -7,6 +7,8 @@ from scrapy import FormRequest, Request
 
 from spiders import ManoloBaseSpider
 from ..items import ManoloItem
+from ..item_loaders import ManoloItemLoader
+
 from ..utils import make_hash
 
 
@@ -21,126 +23,72 @@ class CongresoSpider(ManoloBaseSpider):
         delta = d2 - d1
 
         for i in range(delta.days + 1):
-            my_date = d1 + timedelta(days=i)
-            my_date_str = my_date.strftime("%d/%m/%Y")
+            date = d1 + timedelta(days=i)
+            date_str = date.strftime("%d/%m/%Y")
 
-            print("SCRAPING: %s" % my_date_str)
+            print("SCRAPING: %s" % date_str)
 
             # This initial request always hit the current page of the date.
             request = Request(url="http://regvisitas.congreso.gob.pe/regvisitastransparencia/",
                               meta={
-                                  'current_page': 1,
-                                  'date': my_date_str,
-                                  'is_initial_request': 1
+                                  'date': date_str,
                               },
                               dont_filter=True,
-                              callback=self.parse_pages)
+                              callback=self.parse_initial_request)
 
-            request.meta['date'] = my_date_str
+            request.meta['date'] = date_str
+
             yield request
 
+    def parse_initial_request(self, response):
+        date = response.meta['date']
+
+        request = self._request_initial_date_page(response, date, self.parse_pages)
+
+        yield request
+
     def parse_pages(self, response):
-        my_date_str = response.meta['date']
-        is_initial_request = int(response.meta['is_initial_request'])
+        date = response.meta['date']
 
-        if is_initial_request == 1:
-            request = self._request_initial_date_page(response, my_date_str, self.parse_pages)
-        else:
-            # Parse Items
-            items = self.parse(response)
-            for item in items:
-                yield item
+        # Parse Items
+        items = self.parse(response)
+        for item in items:
+            yield item
 
-            request = self._request_next_page(response, my_date_str, self.parse_pages)
+        request = self._request_next_page(response, date, self.parse_pages)
+
         yield request
 
     def parse(self, response):
+        date_obj = datetime.datetime.strptime(response.meta['date'], '%d/%m/%Y')
+
         for row in response.xpath('//table[@class="grid"]/tr'):
             data = row.xpath('td')
-            full_name = ''
 
-            try:
-                full_name = data[2].xpath('./span/text()').extract()[0]
-            except IndexError:
-                pass
+            if len(data) > 9:
+                full_name = data[2].xpath('./span/text()').extract_first(default='')
 
-            if len(data) > 9 and full_name.strip():
-                date_obj = datetime.datetime.strptime(response.meta['date'], '%d/%m/%Y')
+                if full_name.strip():
+                    l = ManoloItemLoader(item=ManoloItem(), selector=row)
+                    l.add_value('institution', 'congreso')
+                    l.add_value('date', date_obj)
+                    l.add_value('full_name', full_name)
 
-                item = ManoloItem()
-                item['full_name'] = ''
-                item['id_document'] = ''
-                item['id_number'] = ''
-                item['institution'] = 'congreso'
-                item['entity'] = ''
-                item['reason'] = ''
-                item['host_name'] = ''
-                item['title'] = ''
-                item['office'] = ''
-                item['time_start'] = ''
-                item['time_end'] = ''
-                item['date'] = date_obj
+                    l.add_xpath('time_start', './td[2]/span/text()')
+                    l.add_xpath('id_document', './td[4]/span/text()')
+                    l.add_xpath('id_number', './td[5]/span/text()')
+                    l.add_xpath('entity', './td[6]/span/text()')
+                    l.add_xpath('reason', './td[7]/span/text()')
+                    l.add_xpath('host_name', './td[8]/span/text()')
+                    l.add_xpath('title', './td[9]/span/text()')
+                    l.add_xpath('office', './td[10]/span/text()')
+                    l.add_xpath('time_end', './td[11]/span/text()')
 
-                item['full_name'] = full_name
+                    item = l.load_item()
 
-                try:
-                    item['time_start'] = data[1].xpath('./span/text()').extract()[0].strip()
-                except IndexError:
-                    pass
-                except:
-                    pass
+                    item = make_hash(item)
 
-                try:
-                    item['full_name'] = data[2].xpath('./span/text()').extract()[0]
-                except IndexError:
-                    pass
-
-                try:
-                    item['id_document'] = data[3].xpath('./span/text()').extract()[0]
-                except IndexError:
-                    pass
-
-                try:
-                    item['id_number'] = data[4].xpath('./span/text()').extract()[0]
-                except IndexError:
-                    pass
-
-                try:
-                    item['entity'] = data[5].xpath('./span/text()').extract()[0]
-                except IndexError:
-                    pass
-
-                try:
-                    item['reason'] = data[6].xpath('./span/text()').extract()[0]
-                except IndexError:
-                    pass
-
-                try:
-                    item['host_name'] = data[7].xpath('./span/text()').extract()[0].strip()
-                except IndexError:
-                    pass
-                except:
-                    pass
-
-                try:
-                    item['title'] = data[8].xpath('./span/text()').extract()[0]
-                except IndexError:
-                    pass
-
-                try:
-                    item['office'] = data[9].xpath('./span/text()').extract()[0]
-                except IndexError:
-                    pass
-
-                try:
-                    item['time_end'] = data[10].xpath('./span/text()').extract()[0].strip()
-                except IndexError:
-                    pass
-                except:
-                    pass
-
-                item = make_hash(item)
-                yield item
+                    yield item
 
     def _get_number_of_pages(self, total_of_records):
         return int(math.ceil(total_of_records / float(self.NUMBER_OF_PAGES_PER_PAGE)))
@@ -148,10 +96,7 @@ class CongresoSpider(ManoloBaseSpider):
     def _request_next_page(self, response, date_str, callback):
         current_page = int(response.meta['current_page'])
 
-        try:
-            total_string = response.css('#LblTotal').xpath('./text()').extract()[0]
-        except:
-            total_string = ''
+        total_string = response.css('#LblTotal').xpath('./text()').extract_first(default='')
 
         total = re.search(r'(\d+)', total_string)
 
@@ -172,7 +117,6 @@ class CongresoSpider(ManoloBaseSpider):
 
                 request = FormRequest.from_response(response,
                                                     formdata=formdata,
-                                                    meta={'current_page': current_page},
                                                     dont_click=True,
                                                     dont_filter=True,
                                                     callback=callback
@@ -180,7 +124,6 @@ class CongresoSpider(ManoloBaseSpider):
 
                 request.meta['date'] = date_str
                 request.meta['current_page'] = current_page
-                request.meta['is_initial_request'] = 0
 
                 return request
 
@@ -192,14 +135,11 @@ class CongresoSpider(ManoloBaseSpider):
 
         request = FormRequest.from_response(response,
                                             formdata=formdata,
-                                            meta={'current_page': 1},
                                             dont_click=True,
                                             dont_filter=True,
                                             callback=callback
         )
 
-
         request.meta['date'] = date_str
-        request.meta['is_initial_request'] = 0
         request.meta['current_page'] = 1
         return request
