@@ -21,37 +21,40 @@ class CongresoSpider(ManoloBaseSpider):
         delta = d2 - d1
 
         for i in range(delta.days + 1):
-            my_date = d1 + timedelta(days=i)
-            my_date_str = my_date.strftime("%d/%m/%Y")
+            date = d1 + timedelta(days=i)
+            date_str = date.strftime("%d/%m/%Y")
 
-            print("SCRAPING: %s" % my_date_str)
+            print("SCRAPING: %s" % date_str)
 
             # This initial request always hit the current page of the date.
             request = Request(url="http://regvisitas.congreso.gob.pe/regvisitastransparencia/",
                               meta={
-                                  'current_page': 1,
-                                  'date': my_date_str,
-                                  'is_initial_request': 1
+                                  'date': date_str,
                               },
                               dont_filter=True,
-                              callback=self.parse_pages)
+                              callback=self.parse_initial_request)
 
-            request.meta['date'] = my_date_str
+            request.meta['date'] = date_str
+
             yield request
 
+    def parse_initial_request(self, response):
+        date = response.meta['date']
+
+        request = self._request_initial_date_page(response, date, self.parse_pages)
+
+        yield request
+
     def parse_pages(self, response):
-        my_date_str = response.meta['date']
-        is_initial_request = int(response.meta['is_initial_request'])
+        date = response.meta['date']
 
-        if is_initial_request == 1:
-            request = self._request_initial_date_page(response, my_date_str, self.parse_pages)
-        else:
-            # Parse Items
-            items = self.parse(response)
-            for item in items:
-                yield item
+        # Parse Items
+        items = self.parse(response)
+        for item in items:
+            yield item
 
-            request = self._request_next_page(response, my_date_str, self.parse_pages)
+        request = self._request_next_page(response, date, self.parse_pages)
+
         yield request
 
     def parse(self, response):
@@ -172,7 +175,6 @@ class CongresoSpider(ManoloBaseSpider):
 
                 request = FormRequest.from_response(response,
                                                     formdata=formdata,
-                                                    meta={'current_page': current_page},
                                                     dont_click=True,
                                                     dont_filter=True,
                                                     callback=callback
@@ -180,7 +182,6 @@ class CongresoSpider(ManoloBaseSpider):
 
                 request.meta['date'] = date_str
                 request.meta['current_page'] = current_page
-                request.meta['is_initial_request'] = 0
 
                 return request
 
@@ -192,14 +193,11 @@ class CongresoSpider(ManoloBaseSpider):
 
         request = FormRequest.from_response(response,
                                             formdata=formdata,
-                                            meta={'current_page': 1},
                                             dont_click=True,
                                             dont_filter=True,
                                             callback=callback
         )
 
-
         request.meta['date'] = date_str
-        request.meta['is_initial_request'] = 0
         request.meta['current_page'] = 1
         return request
