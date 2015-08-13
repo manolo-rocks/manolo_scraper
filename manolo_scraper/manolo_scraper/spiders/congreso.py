@@ -7,15 +7,12 @@ from scrapy import FormRequest, Request
 
 from spiders import ManoloBaseSpider
 from ..items import ManoloItem
-
 from ..utils import make_hash
 
 
 class CongresoSpider(ManoloBaseSpider):
     name = 'congreso'
-
     allowed_domains = ["regvisitas.congreso.gob.pe"]
-
     NUMBER_OF_PAGES_PER_PAGE = 10
 
     def start_requests(self):
@@ -40,7 +37,6 @@ class CongresoSpider(ManoloBaseSpider):
                               callback=self.parse_pages)
 
             request.meta['date'] = my_date_str
-
             yield request
 
     def parse_pages(self, response):
@@ -56,13 +52,10 @@ class CongresoSpider(ManoloBaseSpider):
                 yield item
 
             request = self._request_next_page(response, my_date_str, self.parse_pages)
-
         yield request
 
     def parse(self, response):
-
         for row in response.xpath('//table[@class="grid"]/tr'):
-
             data = row.xpath('td')
             full_name = ''
 
@@ -147,7 +140,6 @@ class CongresoSpider(ManoloBaseSpider):
                     pass
 
                 item = make_hash(item)
-
                 yield item
 
     def _get_number_of_pages(self, total_of_records):
@@ -164,7 +156,6 @@ class CongresoSpider(ManoloBaseSpider):
         total = re.search(r'(\d+)', total_string)
 
         if total:
-
             # Deal with the next page.
             total = total.group(1)
             number_of_pages = self._get_number_of_pages(int(total))
@@ -211,5 +202,4 @@ class CongresoSpider(ManoloBaseSpider):
         request.meta['date'] = date_str
         request.meta['is_initial_request'] = 0
         request.meta['current_page'] = 1
-
         return request
