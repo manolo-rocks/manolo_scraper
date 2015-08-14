@@ -7,6 +7,7 @@ from scrapy import FormRequest, Request
 
 from spiders import ManoloBaseSpider
 from ..items import ManoloItem
+from ..item_loaders import ManoloItemLoader
 
 from ..utils import make_hash
 
@@ -105,70 +106,23 @@ class MinsaSpider(ManoloBaseSpider):
         for row in rows:
             data = row.xpath('td')
             if len(data) > 9:
-                item = ManoloItem()
+                l = ManoloItemLoader(item=ManoloItem(), selector=row)
 
-                item['full_name'] = ''
-                item['id_document'] = ''
-                item['id_number'] = ''
-                item['institution'] = 'minsa'
-                item['entity'] = ''
-                item['reason'] = ''
-                item['host_name'] = ''
-                item['title'] = ''
-                item['office'] = ''
-                item['time_start'] = ''
-                item['time_end'] = ''
-                item['date'] = date_obj
+                l.add_value('institution', 'minsa')
+                l.add_value('date', date_obj)
 
-                try:
-                    item['full_name'] = data[2].xpath('./font/text()').extract()[0]
-                except IndexError:
-                    pass
+                l.add_xpath('full_name', './td[3]/font/text()')
+                l.add_xpath('id_document', './td[4]/font/text()')
+                l.add_xpath('id_number', './td[5]/font/text()')
+                l.add_xpath('entity', './td[6]/font/text()')
+                l.add_xpath('reason', './td[7]/font/text()')
+                l.add_xpath('host_name', './td[8]/font/text()')
+                l.add_xpath('office', './td[9]/font/text()')
+                l.add_xpath('title', './td[10]/font/text()')
+                l.add_xpath('time_start', './td[11]/font/text()')
+                l.add_xpath('time_end', './td[12]/font/text()')
 
-                try:
-                    item['id_document'] = data[3].xpath('./font/text()').extract()[0]
-                except IndexError:
-                    pass
-
-                try:
-                    item['id_number'] = data[4].xpath('./font/text()').extract()[0]
-                except IndexError:
-                    pass
-
-                try:
-                    item['entity'] = data[5].xpath('./font/text()').extract()[0]
-                except IndexError:
-                    pass
-
-                try:
-                    item['reason'] = data[6].xpath('./font/text()').extract()[0]
-                except IndexError:
-                    pass
-
-                try:
-                    item['host_name'] = data[7].xpath('./font/text()').extract()[0]
-                except IndexError:
-                    pass
-
-                try:
-                    item['office'] = data[8].xpath('./font/text()').extract()[0]
-                except IndexError:
-                    pass
-
-                try:
-                    item['title'] = data[9].xpath('./font/text()').extract()[0]
-                except IndexError:
-                    pass
-
-                try:
-                    item['time_start'] = data[10].xpath('./font/text()').extract()[0].strip()
-                except IndexError:
-                    pass
-
-                try:
-                    item['time_end'] = data[11].xpath('./font/text()').extract()[0].strip()
-                except IndexError:
-                    pass
+                item = l.load_item()
 
                 item = make_hash(item)
 
