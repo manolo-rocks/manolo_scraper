@@ -58,6 +58,8 @@ class CongresoSpider(ManoloBaseSpider):
         yield request
 
     def parse(self, response):
+        date_obj = datetime.datetime.strptime(response.meta['date'], '%d/%m/%Y')
+
         for row in response.xpath('//table[@class="grid"]/tr'):
             data = row.xpath('td')
             full_name = ''
@@ -68,7 +70,6 @@ class CongresoSpider(ManoloBaseSpider):
                 pass
 
             if len(data) > 9 and full_name.strip():
-                date_obj = datetime.datetime.strptime(response.meta['date'], '%d/%m/%Y')
 
                 item = ManoloItem()
                 item['full_name'] = ''
