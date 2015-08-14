@@ -65,7 +65,7 @@ production database.
 * [x] Ministerio de Educacion
     * **url**: http://visitasmed.perueduca.edu.pe/controlVisitas/index.php?r=consultas/visitaConsulta
 
-* [ ] Ministerio de Salud
+* [x] Ministerio de Salud
     * **url**: http://intranet5.minsa.gob.pe/RegVisitasCons/listado.aspx
 
 * [ ] Ministerio del Ambiente
