@@ -61,6 +61,7 @@ class CongresoSpider(ManoloBaseSpider):
 
     def parse(self, response):
         date_obj = datetime.datetime.strptime(response.meta['date'], '%d/%m/%Y')
+        date = datetime.datetime.strftime(date_obj, '%Y-%m-%d')
 
         for row in response.xpath('//table[@class="grid"]/tr'):
             data = row.xpath('td')
@@ -71,7 +72,7 @@ class CongresoSpider(ManoloBaseSpider):
                 if full_name.strip():
                     l = ManoloItemLoader(item=ManoloItem(), selector=row)
                     l.add_value('institution', 'congreso')
-                    l.add_value('date', date_obj)
+                    l.add_value('date', date)
                     l.add_value('full_name', full_name)
 
                     l.add_xpath('time_start', './td[2]/span/text()')

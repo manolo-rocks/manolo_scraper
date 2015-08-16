@@ -21,7 +21,7 @@ class MinsaSpider(ManoloBaseSpider):
 
     def start_requests(self):
         d1 = datetime.datetime.strptime(self.date_start, '%Y-%m-%d').date()
-        d2 = datetime.date.today()
+        d2 = datetime.datetime.strptime(self.date_end, '%Y-%m-%d').date()
         delta = d2 - d1
 
         for i in range(delta.days + 1):
@@ -102,6 +102,7 @@ class MinsaSpider(ManoloBaseSpider):
         rows = response.xpath('//table[@id="DTGVisitas"]/tr')
 
         date_obj = datetime.datetime.strptime(response.meta['date'], '%d/%m/%Y')
+        date = datetime.datetime.strftime(date_obj, '%Y-%m-%d')
 
         for row in rows:
             data = row.xpath('td')
@@ -109,7 +110,7 @@ class MinsaSpider(ManoloBaseSpider):
                 l = ManoloItemLoader(item=ManoloItem(), selector=row)
 
                 l.add_value('institution', 'minsa')
-                l.add_value('date', date_obj)
+                l.add_value('date', date)
 
                 l.add_xpath('full_name', './td[3]/font/text()')
                 l.add_xpath('id_document', './td[4]/font/text()')
