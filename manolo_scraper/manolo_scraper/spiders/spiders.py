@@ -9,6 +9,7 @@ import scrapy
 from scrapy import exceptions
 
 from ..items import ManoloItem
+from ..item_loaders import ManoloItemLoader
 from ..utils import make_hash, get_dni
 
 
@@ -36,107 +37,88 @@ class SireviSpider(scrapy.Spider):
         if self.institution_name is None:
             raise exceptions.UsageError('Enter a institution_name.')
 
+    def _get_page_url(self, page_number):
+        return self.base_url + self.ajax_page_pattern % page_number
+
     def start_requests(self):
         d1 = datetime.datetime.strptime(self.date_start, '%Y-%m-%d').date()
         d2 = date.today()
         # range to fetch
         delta = d2 - d1
 
-        for i in range(delta.days + 1):
-            my_date = d1 + timedelta(days=i)
-            my_date_str = my_date.strftime("%d/%m/%Y")
+        for day in range(delta.days + 1):
+            my_date = d1 + timedelta(days=day)
+            date_str = my_date.strftime("%d/%m/%Y")
 
-            print("SCRAPING: {}".format(my_date_str))
+            print("SCRAPING: {}".format(date_str))
 
-            params = {
-                'VisitaConsultaQueryForm[feConsulta]': my_date_str,
-                'yt0': 'Consultar',
-            }
-
-            ajax_url = self.base_url + self.ajax_page_pattern % 1
-
-            yield scrapy.FormRequest(url=ajax_url, formdata=params,
-                                     meta={'date': my_date_str},
-                                     dont_filter=True,
-                                     callback=self.after_post)
+            yield self._request_page(date_str, 1, self.after_post)
 
     def after_post(self, response):
-        page_links = response.css("li.last").xpath("./a/@href").extract()
-        number_of_pages = re.findall(r'lstVisitasResult_page=(\d+)', str(page_links))
+        # TODO: Check this
+        page_links = response.css('li.last').xpath('./a/@href').extract_first(default='')
+        is_number_of_pages = re.search(r'lstVisitasResult_page=(\d+)', page_links)
+        number_of_pages = 1
 
-        try:
-            number_of_pages = int(number_of_pages[0])
-        except IndexError:
-            number_of_pages = 1
-        except TypeError:
-            number_of_pages = 1
-
-        params = {
-            'VisitaConsultaQueryForm[feConsulta]': response.meta['date'],
-            'yt0': 'Consultar',
-        }
+        if is_number_of_pages:
+            number_of_pages = int(is_number_of_pages.group(1))
 
         for page_number in range(1, number_of_pages + 1):
-            page_url = self.base_url + self.ajax_page_pattern % page_number
-
-            yield scrapy.FormRequest(url=page_url, formdata=params,
-                                     meta={'date': response.meta['date']},
-                                     dont_filter=True,
-                                     callback=self.parse)
+            yield self._request_page(response.meta['date'], page_number, self.parse)
 
     def parse(self, response):
         logging.info("PARSED URL {}".format(response.url))
 
-        this_date_obj = datetime.datetime.strptime(response.meta['date'], '%d/%m/%Y')
-        this_date_str = datetime.datetime.strftime(this_date_obj, '%Y-%m-%d')
+        date_obj = datetime.datetime.strptime(response.meta['date'], '%d/%m/%Y')
+        date_str = datetime.datetime.strftime(date_obj, '%Y-%m-%d')
 
-        item = ManoloItem()
-        item['full_name'] = ''
-        item['entity'] = ''
-        item['meeting_place'] = ''
-        item['office'] = ''
-        item['host_name'] = ''
-        item['reason'] = ''
-        item['institution'] = self.institution_name
-        item['location'] = ''
-        item['id_number'] = ''
-        item['id_document'] = ''
-        item['date'] = this_date_str
-        item['title'] = ''
-        item['time_start'] = ''
-        item['time_end'] = ''
+        rows = response.xpath("//tr")
 
-        selectors = response.xpath("//tr")
+        for row in rows:
+            data = row.xpath('.//td').extract()
 
-        for sel in selectors:
-            fields = sel.xpath('.//td/text()').extract()
+            if len(data) > 3:
+                l = ManoloItemLoader(item=ManoloItem(), selector=row)
 
-            if len(fields) > 3:
-                # full name of visitor
-                full_name = re.sub('\s+', ' ', fields[1])
-                item['full_name'] = full_name.strip()
+                l.add_value('institution', self.institution_name)
+                l.add_value('date', date_str)
 
-                item['entity'] = re.sub("\s+", " ", fields[3]).strip()
-                item['reason'] = re.sub("\s+", " ", fields[4]).strip()
-                item['host_name'] = re.sub("\s+", " ", fields[5]).strip()
-
-                item['title'] = re.sub("\s+", " ", fields[6]).strip()
-                item['office'] = re.sub("\s+", " ", fields[7]).strip()
-                item['time_start'] = re.sub("\s+", " ", fields[8]).strip()
+                l.add_xpath('full_name', './td[2]/text()')
+                l.add_xpath('entity', './td[4]/text()')
+                l.add_xpath('reason', './td[5]/text()')
+                l.add_xpath('host_name', './td[6]/text()')
+                l.add_xpath('title', './td[7]/text()')
+                l.add_xpath('office', './td[8]/text()')
+                l.add_xpath('time_start', './td[9]/text()')
+                l.add_xpath('time_end', './td[10]/text()')
 
                 try:
-                    document_identity = fields[2].strip()
+                    document_identity = data[2].strip()
                 except IndexError:
                     document_identity = ''
 
                 if document_identity != '':
-                    item['id_document'], item['id_number'] = get_dni(document_identity)
+                    id_document, id_number = get_dni(document_identity)
 
-                try:
-                    item['time_end'] = re.sub("\s+", " ", fields[9]).strip()
-                except IndexError:
-                    item['time_end'] = ''
+                    l.add_value('id_document', id_document)
+                    l.add_value('id_number', id_number)
+
+                item = l.load_item()
 
                 item = make_hash(item)
 
                 yield item
+
+    def _request_page(self, date_str, page_number, callback):
+        params = {
+            'VisitaConsultaQueryForm[feConsulta]': date_str,
+            'yt0': 'Consultar',
+        }
+
+        page_url = self._get_page_url(page_number)
+
+        return scrapy.FormRequest(url=page_url,
+                                  formdata=params,
+                                  meta={'date': date_str},
+                                  dont_filter=True,
+                                  callback=callback)
