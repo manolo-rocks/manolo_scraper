@@ -34,6 +34,8 @@ def get_dni(document_identity):
 
     if id_document == '':
         id_document = 'DNI'
+    elif id_document == 'DMI':
+        id_document = 'DNI'
 
     return id_document, id_number
 
