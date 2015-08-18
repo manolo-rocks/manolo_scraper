@@ -26,8 +26,8 @@ class TestUtils(unittest.TestCase):
         result = get_dni(given)
         self.assertEqual(expected, result)
 
-    def test_get_dni_and_number_with_typo(self):
+    def test_get_dmi_documento_militar_de_indentidad(self):
         given = 'DMI : 803802300'
-        expected = 'DNI', '803802300'
+        expected = 'DMI', '803802300'
         result = get_dni(given)
         self.assertEqual(expected, result)
