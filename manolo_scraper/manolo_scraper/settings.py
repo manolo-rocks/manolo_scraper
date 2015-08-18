@@ -17,8 +17,22 @@ from unipath import Path
 BASE_DIR = Path(__file__).absolute().ancestor(3)
 SECRETS_FILE = os.path.join(BASE_DIR, 'config.json')
 
-with open(SECRETS_FILE) as f:
-    secrets = json.loads(f.read())
+if os.path.isfile(SECRETS_FILE):
+    with open(SECRETS_FILE) as f:
+        secrets = json.loads(f.read())
+else:
+    secrets = {
+        "SECRET_KEY": "",
+        "POSTGRESQL_PASSWORD": "",
+        "CRAWLERA_USER": "",
+        "CRAWLERA_PASS": "",
+        "drivername": "",
+        "database": "",
+        "username": "",
+        "host": "",
+        "password": "",
+        "port": ""
+    }
 
 
 def get_secret(setting, secrets=secrets):
@@ -38,7 +52,7 @@ SPIDER_MODULES = ['manolo_scraper.spiders']
 NEWSPIDER_MODULE = 'manolo_scraper.spiders'
 
 # Crawl responsibly by identifying yourself (and your website) on the user-agent
-USER_AGENT = 'manolo_scraper (+http://www.yourdomain.com)'
+USER_AGENT = 'manolo_scraper (+http://manolo.rocks)'
 CRAWLERA_ENABLED = False
 CRAWLERA_USER = get_secret("CRAWLERA_USER")
 CRAWLERA_PASS = get_secret("CRAWLERA_PASS")
