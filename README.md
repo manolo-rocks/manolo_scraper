@@ -1,6 +1,5 @@
 [![Build Status](https://travis-ci.org/aniversarioperu/manolo_scraper.svg)](https://travis-ci.org/aniversarioperu/manolo_scraper)
-
-[![Coverage Status](https://coveralls.io/repos/aniversarioperu/manolo_scraper/badge.svg?branch=master&service=github)](https://coveralls.io/github/aniversarioperu/manolo_scraper?branch=master)
+[![Coverage Status](https://coveralls.io/repos/aniversarioperu/manolo_scraper/badge.svg?branch=travis&service=github)](https://coveralls.io/github/aniversarioperu/manolo_scraper?branch=travis)
 
 # All spiders go here
 Spiders are based on [Scrapy](https://github.com/scrapy/scrapy).
