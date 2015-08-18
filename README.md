@@ -1,3 +1,5 @@
+[![Build Status](https://travis-ci.org/aniversarioperu/manolo_scraper.svg)](https://travis-ci.org/aniversarioperu/manolo_scraper)
+
 # All spiders go here
 Spiders are based on [Scrapy](https://github.com/scrapy/scrapy).
 
