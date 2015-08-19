@@ -11,6 +11,8 @@ from scrapy import exceptions
 from ..items import ManoloItem
 from ..utils import make_hash, get_dni
 
+# url: http://intranet.minem.gob.pe/GESTION/visitas_pcm
+
 
 class MinemSpider(scrapy.Spider):
     name = "minem"
