@@ -1,5 +1,4 @@
 # -*- coding: utf-8 -*-
-import datetime
 import unittest
 
 from manolo_scraper.utils import get_dni
