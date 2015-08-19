@@ -6,7 +6,8 @@ import re
 import math
 
 import scrapy
-from scrapy import exceptions
+
+from spiders import ManoloBaseSpider
 
 from ..items import ManoloItem
 from ..utils import make_hash, get_dni
@@ -14,17 +15,11 @@ from ..utils import make_hash, get_dni
 # url: http://intranet.minem.gob.pe/GESTION/visitas_pcm
 
 
-class MinemSpider(scrapy.Spider):
-    name = "minem"
-    allowed_domains = ["http://intranet.minem.gob.pe"]
+class MinemSpider(ManoloBaseSpider):
+    name = 'minem'
+    allowed_domains = ['http://intranet.minem.gob.pe']
 
     NUMBER_OF_PAGES_PER_PAGE = 20
-
-    def __init__(self, date_start=None, *args, **kwargs):
-        super(MinemSpider, self).__init__(*args, **kwargs)
-        self.date_start = date_start
-        if self.date_start is None:
-            raise exceptions.UsageError('Enter start date as spider argument: -a date_start=')
 
     def start_requests(self):
         """
@@ -33,7 +28,7 @@ class MinemSpider(scrapy.Spider):
         :return: set of URLs
         """
         d1 = datetime.datetime.strptime(self.date_start, '%Y-%m-%d').date()
-        d2 = date.today()
+        d2 = datetime.datetime.strptime(self.date_end, '%Y-%m-%d').date()
         # range to fetch
         delta = d2 - d1
 
