@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-
 from unidecode import unidecode
 import hashlib
 import re
