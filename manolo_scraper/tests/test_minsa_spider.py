@@ -5,7 +5,7 @@ from manolo_scraper.spiders.minsa import MinsaSpider
 from utils import fake_response_from_file
 
 
-class TestCongresoSpider(unittest.TestCase):
+class TestMinsaSpider(unittest.TestCase):
 
     def setUp(self):
         self.spider = MinsaSpider()
