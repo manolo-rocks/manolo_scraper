@@ -94,8 +94,8 @@ class MinemSpider(ManoloBaseSpider):
             item['entity'] = re.sub("\s+", " ", fields[3].xpath("text()").extract()[0].strip())
             item['host_name'] = re.sub("\s+", " ", fields[5].xpath("text()").extract()[0].strip())
             item['reason'] = re.sub("\s+", " ", fields[4].xpath("text()").extract()[0].strip())
-            item['title'] = re.sub("\s+", " ", fields[6].xpath("text()").extract()[0].strip())
-            item['office'] = re.sub("\s+", " ", fields[7].xpath("text()").extract()[0].strip())
+            item['office'] = re.sub("\s+", " ", fields[6].xpath("text()").extract()[0].strip())
+            item['meeting_place'] = re.sub("\s+", " ", fields[7].xpath("text()").extract()[0].strip())
             item['time_start'] = re.sub("\s+", " ", fields[8].xpath("text()").extract()[0].strip())
 
             try:
