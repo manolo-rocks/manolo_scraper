@@ -10,8 +10,7 @@ manolo_scraper/build
 *json
 *db
 *txt
-*html
 *zip
-
 .coverage
 manolo_scraper/cover
+.DS_STORE

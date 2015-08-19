@@ -1,0 +1,143 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="es" lang="es">
+<head>
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+	<meta name="language" content="es" />
+	<!-- blueprint CSS framework -->
+	<link rel="stylesheet" type="text/css" href="/controlVisitas/css/screen.css" media="screen, projection" />
+	<link rel="stylesheet" type="text/css" href="/controlVisitas/css/print.css" media="print" />
+	<!--[if lt IE 8]>
+	<link rel="stylesheet" type="text/css" href="/controlVisitas/css/ie.css" media="screen, projection" />
+	<![endif]-->
+
+	<link rel="stylesheet" type="text/css" href="/controlVisitas/css/main.css" />
+	<link rel="stylesheet" type="text/css" href="/controlVisitas/css/form.css" />
+	
+		<style type="text/css">
+		<!--
+		.grid-view table.items th {
+		    background: url("css/bg_mod.gif") repeat-x scroll left top white;
+		}
+		
+		#header {
+		    border-top: 3px solid #4C99C5;
+		}
+		
+		.grid-view table.items {
+		    border: 1px solid #4C99C5;
+		    border-collapse: separate;
+		}
+		-->
+		</style>	
+		<link rel="stylesheet" type="text/css" href="/controlVisitas/assets/d4097474/jui/css/base/jquery-ui.css" />
+<link rel="stylesheet" type="text/css" href="/controlVisitas/assets/9a24064d/gridview/styles.css" />
+<link rel="stylesheet" type="text/css" href="/controlVisitas/assets/fa7301f9/pager.css" />
+<script type="text/javascript" src="/controlVisitas/assets/d4097474/jquery.min.js"></script>
+<script type="text/javascript" src="/controlVisitas/assets/d4097474/jquery.ba-bbq.js"></script>
+<title>Sistema de Registro de Visitas del OSCE - Consulta de Visitas</title>
+</head>
+<body>
+<div class="container" id="pageVerysimplewithouttitle">
+	<div id="header">
+		<div id="logo_img"><img src="/controlVisitas/images/cab_visitas_1.jpg" alt="" /></div>
+	</div><!-- header -->
+	<form id="visita-consulta-query-form" action="/controlVisitas/index.php?r=consultas/visitaConsulta/index" method="post"><script type="text/javascript">
+<!--
+
+/**
+  Por cada actualización por ajax del grid tabla se pierde los eventos asociados a la barra de paginación, por lo que nos obliga a re-asociarlo por cada actualización por ajax del grid
+ */
+function modificarAnchorBarNav() {
+	$('ul.yiiPager > li > a').click(function() {
+		//alert('hola');
+		var strHref = location.href;
+		var strSubHrefPattern = $(this).attr('href');
+		var intDiffLength = strHref.length -  strSubHrefPattern.length;
+		if (!(intDiffLength >= 0 && strHref.lastIndexOf(strSubHrefPattern) === intDiffLength)) {
+			//$('#visita-consulta-query-form').attr('action', $(this).attr('href'));
+			//$("#btConsultarVisitas").click();
+			//evitar el jquery.ajax.get en internet explorer dado que lo almacena en cache y no muestra actualizada la pagina!!
+			var urlAjax = $.param.querystring($(this).attr('href'), 'r=consultas/visitaConsulta/updateVisitasConsultaResultGrid');
+			//parece recursiva pero no lo es del todo! por cada click que se haga a la barra de paginacion, la carga por ajax del nuevo grid debe de reasociarlo el evento onclick de esta función 
+			$.fn.yiiGridView.update('lst-visitas-consulta-result-grid', {type: 'POST', url:urlAjax, data:$('#visita-consulta-query-form').serialize(), complete: function(){modificarAnchorBarNav();}});  
+		}
+		return false;
+	});
+}
+
+$(document).ready(function() {
+	modificarAnchorBarNav();//asociar evento
+
+	$('table.items > thead > tr > th > a').click(function() {
+		//$('#visita-consulta-query-form').attr('action', $(this).attr('href'));
+		//$("#btConsultarVisitas").click();
+		//evitar el jquery.ajax.get en internet explorer dado que lo almacena en cache y no muestra actualizada la pagina!!
+		var urlAjax = $.param.querystring($(this).attr('href'), 'r=consultas/visitaConsulta/updateVisitasConsultaResultGrid');
+		$.fn.yiiGridView.update('lst-visitas-consulta-result-grid', {type: 'POST', url:urlAjax, data:$('#visita-consulta-query-form').serialize(), complete: function(){modificarAnchorBarNav();}});//reasociar evento
+		return false;
+	});
+
+    $(document).bind("contextmenu", function(e) {
+        return false;  
+    });
+});
+//-->
+</script>
+<br/>
+<!-- center><h3>VISITAS A LA PRESIDENCIA DEL CONSEJO DE MINISTROS</h3></center-->
+<table width="100%" id="visitaConsultarTabla">
+  <tr>
+  	<td>
+  	Fecha:
+    <input class="span2" readonly="readonly" size="11" maxlength="10" id="VisitaConsultaQueryForm_feConsulta" name="VisitaConsultaQueryForm[feConsulta]" type="text" value="18/08/2015" />    <input id="btConsultarVisitas" type="submit" name="yt0" value="Consultar" />  	</td>
+  </tr>
+</table>
+</form><div id="lst-visitas-consulta-result-grid" class="grid-view">
+<div class="summary">Desplegando 1-15 de 106 resultado(s).</div>
+<table class="items">
+<thead>
+<tr>
+<th id="lst-visitas-consulta-result-grid_c0"><a href="/controlVisitas/index.php?r=consultas/visitaConsulta/index&amp;lstVisitasResult_sort=fe_ingreso">FECHA</a></th><th id="lst-visitas-consulta-result-grid_c1"><a href="/controlVisitas/index.php?r=consultas/visitaConsulta/index&amp;lstVisitasResult_sort=no_full_invitado">VISITANTE</a></th><th id="lst-visitas-consulta-result-grid_c2"><a href="/controlVisitas/index.php?r=consultas/visitaConsulta/index&amp;lstVisitasResult_sort=no_full_documento">DOCUMENTO</a></th><th id="lst-visitas-consulta-result-grid_c3"><a href="/controlVisitas/index.php?r=consultas/visitaConsulta/index&amp;lstVisitasResult_sort=no_entidad_representada">ENTIDAD</a></th><th id="lst-visitas-consulta-result-grid_c4"><a href="/controlVisitas/index.php?r=consultas/visitaConsulta/index&amp;lstVisitasResult_sort=no_motivo_visita">MOTIVO</a></th><th id="lst-visitas-consulta-result-grid_c5"><a href="/controlVisitas/index.php?r=consultas/visitaConsulta/index&amp;lstVisitasResult_sort=no_full_colaborador">EMPLEADO PÚBLICO</a></th><th id="lst-visitas-consulta-result-grid_c6">OFICINA / CARGO</th><th id="lst-visitas-consulta-result-grid_c7">LUGAR DE REUNIÓN</th><th id="lst-visitas-consulta-result-grid_c8">HORA ING.</th><th id="lst-visitas-consulta-result-grid_c9">HORA SAL.</th></tr>
+</thead>
+<tbody>
+<tr class="odd"><td>18/08/2015</td><td>Silvia Sousa Cristofol</td><td>CARNET DE EXTRANJERIA 000904735</td><td>everis</td><td>REUNIÓN DE TRABAJO</td><td>Isabel Rosario Vega Palomino</td><td> [Ninguno]</td><td>Sala de Espera</td><td>16:38</td><td>&nbsp;</td></tr>
+<tr class="even"><td>18/08/2015</td><td>Alain Rojas Macedo</td><td>DNI 42414860</td><td>everis</td><td>REUNIÓN DE TRABAJO</td><td>Isabel Rosario Vega Palomino</td><td> [Ninguno]</td><td>Sala de Espera</td><td>16:38</td><td>&nbsp;</td></tr>
+<tr class="odd"><td>18/08/2015</td><td>ROLANDO BARBOZA DIAZ</td><td>DNI 41938610</td><td>BETA KONKRET SAC</td><td>AUDIENCIA</td><td>SALA 2 TCE .</td><td> [Abogado]</td><td>SALA DE AUDIENCIAS</td><td>16:30</td><td>17:20</td></tr>
+<tr class="even"><td>18/08/2015</td><td>HENRY LABAN GALVEZ</td><td>DNI 40845843</td><td>BETA KONKRET SAC</td><td>AUDIENCIA</td><td>SALA 2 TCE .</td><td> [Abogado]</td><td>SALA DE AUDIENCIAS</td><td>16:30</td><td>17:20</td></tr>
+<tr class="odd"><td>18/08/2015</td><td>FERNANDO HILARES ZEA</td><td>DNI 41252034</td><td>BETA KONKRET SAC</td><td>AUDIENCIA</td><td>SALA 2 TCE .</td><td> [Abogado]</td><td>SALA DE AUDIENCIAS</td><td>16:30</td><td>17:20</td></tr>
+<tr class="even"><td>18/08/2015</td><td>KRISTEL RAMIREZ LOPEZ</td><td>DNI 45981578</td><td>BETA KONKRET SAC</td><td>AUDIENCIA</td><td>SALA 2 TCE .</td><td> [Abogado]</td><td>SALA DE AUDIENCIAS</td><td>16:30</td><td>17:20</td></tr>
+<tr class="odd"><td>18/08/2015</td><td>PABLO RAMIREZ PEÑA</td><td>DNI 08660169</td><td>CCL</td><td>REUNIÓN DE TRABAJO</td><td>Helmer Efrain Suca Ancachi</td><td> [Director del SEACE]</td><td>Sala Visitas Piso 3</td><td>16:25</td><td>17:30</td></tr>
+<tr class="even"><td>18/08/2015</td><td>CHRISTIAN CAMPOS AGUADO</td><td>DNI 40608223</td><td>TELEFONICA</td><td>VISITA PERSONAL</td><td> ABELARDO TOMAS MOGOLLON  YNAGCIO</td><td> [Profesional]</td><td>Sala RNP 4to piso</td><td>16:25</td><td>18:05</td></tr>
+<tr class="odd"><td>18/08/2015</td><td>FERNANDO ESTRADA MANSILLA</td><td>DNI 40405289</td><td>CCL</td><td>REUNIÓN DE TRABAJO</td><td>Helmer Efrain Suca Ancachi</td><td> [Director del SEACE]</td><td>Sala Visitas Piso 3</td><td>16:25</td><td>17:30</td></tr>
+<tr class="even"><td>18/08/2015</td><td>CHRISTIAN JONATHAN QUISPE BONIFACIO</td><td>DNI 41901630</td><td>CAMARA DE COMERCIO DE LIMA</td><td>REUNIÓN DE TRABAJO</td><td>Helmer Efrain Suca Ancachi</td><td> [Director del SEACE]</td><td>Sala Visitas Piso 3</td><td>16:25</td><td>17:30</td></tr>
+<tr class="odd"><td>18/08/2015</td><td>Ruth Leonor Machado Flores</td><td>DNI 06739816</td><td>LASSER</td><td>DOCUMENTOS</td><td>ELMER RAMOS GARCIA</td><td> [TECNICO EN MANTENIMIENTO]</td><td>Sala Visitas Piso 3</td><td>16:15</td><td>16:57</td></tr>
+<tr class="even"><td>18/08/2015</td><td>CESAR TAPIA JULCA</td><td>DNI 08683822</td><td>mendoza tapia sac</td><td>LECTURA DE EXPEDIENTE</td><td>SALA 3 TCE .</td><td> [Abogado]</td><td>SALA DE LECTURA DE EXPEDIENTES</td><td>16:00</td><td>16:20</td></tr>
+<tr class="odd"><td>18/08/2015</td><td>JUAN CARLOS GERONIMO DEL PRADO PONCE</td><td>DNI 09675289</td><td>ARBITRO</td><td>DOCUMENTOS</td><td>Jose Rodrigo Rosales Rodrigo</td><td> [Secretario Abitral]</td><td>Sala de Espera</td><td>15:56</td><td>16:20</td></tr>
+<tr class="even"><td>18/08/2015</td><td>CARLOS LOZA BECERRA</td><td>DNI 08094909</td><td>MACK IMPORT SRLTDA</td><td>LECTURA DE EXPEDIENTE</td><td>SALA 1 TCE  .</td><td> [Abogado]</td><td>SALA DE LECTURA DE EXPEDIENTES</td><td>15:55</td><td>16:40</td></tr>
+<tr class="odd"><td>18/08/2015</td><td>Jorge Moises Bravo Toro</td><td>DNI 08096871</td><td>CONSULTORIA JORGE BRAVO</td><td>REUNIÓN DE TRABAJO</td><td>Milagros Teodora Colachahua Baldoceda</td><td> [Especialista en Organizacion y Metodos]</td><td>Sala Visitas 2do Piso</td><td>15:50</td><td>16:00</td></tr>
+</tbody>
+</table>
+<div class="pager">Ir a página: <ul id="yw0" class="yiiPager"><li class="first hidden"><a href="/controlVisitas/index.php?r=consultas/visitaConsulta/index">&lt;&lt; Primero</a></li>
+<li class="previous hidden"><a href="/controlVisitas/index.php?r=consultas/visitaConsulta/index">&lt; Anterior</a></li>
+<li class="page selected"><a href="/controlVisitas/index.php?r=consultas/visitaConsulta/index">1</a></li>
+<li class="page"><a href="/controlVisitas/index.php?r=consultas/visitaConsulta/index&amp;lstVisitasResult_page=2">2</a></li>
+<li class="page"><a href="/controlVisitas/index.php?r=consultas/visitaConsulta/index&amp;lstVisitasResult_page=3">3</a></li>
+<li class="page"><a href="/controlVisitas/index.php?r=consultas/visitaConsulta/index&amp;lstVisitasResult_page=4">4</a></li>
+<li class="page"><a href="/controlVisitas/index.php?r=consultas/visitaConsulta/index&amp;lstVisitasResult_page=5">5</a></li>
+<li class="next"><a href="/controlVisitas/index.php?r=consultas/visitaConsulta/index&amp;lstVisitasResult_page=2">Siguiente &gt;</a></li>
+<li class="last"><a href="/controlVisitas/index.php?r=consultas/visitaConsulta/index&amp;lstVisitasResult_page=8">Último &gt;&gt;</a></li></ul></div><div class="keys" style="display:none" title="/controlVisitas/index.php?r=consultas/visitaConsulta/index"><span>47537</span><span>47538</span><span>47629</span><span>47628</span><span>47627</span><span>47626</span><span>47625</span><span>47622</span><span>47624</span><span>47623</span><span>47621</span><span>47620</span><span>47536</span><span>47619</span><span>47618</span></div>
+</div>	<div class="clear"></div>
+</div><!-- page -->
+<script type="text/javascript" src="/controlVisitas/assets/d4097474/jui/js/jquery-ui.min.js"></script>
+<script type="text/javascript" src="/controlVisitas/assets/d4097474/jui/js/jquery-ui-i18n.min.js"></script>
+<script type="text/javascript" src="/controlVisitas/assets/9a24064d/gridview/jquery.yiigridview.js"></script>
+<script type="text/javascript">
+/*<![CDATA[*/
+jQuery(function($) {
+jQuery('#VisitaConsultaQueryForm_feConsulta').datepicker(jQuery.extend({showMonthAfterYear:false}, jQuery.datepicker.regional['es'], {'changeMonth':'true','changeYear':'true','yearRange':'-10:+1','showAnim':'fold','showOn':'button','dateFormat':'dd/mm/yy','buttonText':'Seleccionar Fecha','buttonImage':'/controlVisitas/images/calendar_icon-16.png','buttonImageOnly':true,'showButtonPanel':true}));
+jQuery('#lst-visitas-consulta-result-grid').yiiGridView({'ajaxUpdate':['lst-visitas-consulta-result-grid'],'ajaxVar':'ajax','pagerClass':'pager','loadingClass':'grid-view-loading','filterClass':'filters','tableClass':'items','selectableRows':1,'url':'/controlVisitas/index.php?r=consultas/visitaConsulta/index','pageVar':'lstVisitasResult_page'});
+});
+/*]]>*/
+</script>
+</body>
+</html>
