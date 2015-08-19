@@ -52,7 +52,10 @@ class DefensaSpider(scrapy.Spider):
 
     def parse(self, response):
         logging.info("PARSED URL {}".format(response.url))
-        this_date_obj = datetime.datetime.strptime(response.meta['date'], '%d/%m/%Y')
+
+        date_obj = datetime.datetime.strptime(response.meta['date'], '%d/%m/%Y')
+        date = datetime.datetime.strftime(date_obj, '%Y-%m-%d')
+
         item = ManoloItem()
         item['full_name'] = ''
         item['entity'] = ''
@@ -64,7 +67,7 @@ class DefensaSpider(scrapy.Spider):
         item['location'] = ''
         item['id_number'] = ''
         item['id_document'] = ''
-        item['date'] = this_date_obj
+        item['date'] = date
         item['title'] = ''
         item['time_start'] = ''
         item['time_end'] = ''
