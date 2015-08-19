@@ -40,6 +40,9 @@ class CleanItemPipeline(object):
             # our date is good, continue
             pass
 
+        if 'time_end' not in item:
+            item['time_end'] = ''
+
         if 'meeting_place' not in item:
             item['meeting_place'] = ''
 
@@ -66,4 +69,3 @@ class CleanItemPipeline(object):
             logging.info("Saving: {}, date: {}".format(item['sha1'], item['date']))
         else:
             logging.info("{}, date: {} is found in db, not saving".format(item['sha1'], item['date']))
-
