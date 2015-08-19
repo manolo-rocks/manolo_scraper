@@ -22,9 +22,10 @@ class PcmSpider(SireviSpider):
         l.add_xpath('full_name', './td[2]/text()')
         l.add_xpath('entity', './td[4]/text()')
         l.add_xpath('reason', './td[5]/text()')
+        l.add_xpath('location', './td[6]/text()')
         l.add_xpath('host_name', './td[7]/text()')
-        l.add_xpath('title', './td[8]/text()')
-        l.add_xpath('office', './td[9]/text()')
+        l.add_xpath('office', './td[8]/text()')
+        l.add_xpath('meeting_place', './td[9]/text()')
         l.add_xpath('time_start', './td[10]/text()')
         l.add_xpath('time_end', './td[11]/text()')
 
