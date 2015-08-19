@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 import datetime
-from datetime import date
 from datetime import timedelta
+
 import re
 import math
 
@@ -10,6 +10,7 @@ import scrapy
 from spiders import ManoloBaseSpider
 
 from ..items import ManoloItem
+from ..item_loaders import ManoloItemLoader
 from ..utils import make_hash, get_dni
 
 # url: http://intranet.minem.gob.pe/GESTION/visitas_pcm
@@ -61,55 +62,31 @@ class MinemSpider(ManoloBaseSpider):
         date_obj = datetime.datetime.strptime(response.meta['date'], '%d/%m/%Y')
         date = datetime.datetime.strftime(date_obj, '%Y-%m-%d')
 
-        item = ManoloItem()
-        item['full_name'] = ''
-        item['entity'] = ''
-        item['meeting_place'] = ''
-        item['office'] = ''
-        item['host_name'] = ''
-        item['reason'] = ''
-        item['institution'] = 'minem'
-        item['location'] = ''
-        item['id_number'] = ''
-        item['id_document'] = ''
-        item['date'] = date
-        item['title'] = ''
-        item['time_start'] = ''
-        item['time_end'] = ''
+        rows = response.xpath("//tr")
 
-        selectors = response.xpath("//tr")
+        for row in rows:
+            l = ManoloItemLoader(item=ManoloItem(), selector=row)
 
-        for sel in selectors:
-            fields = sel.xpath("td/center")
+            l.add_value('institution', 'minem')
+            l.add_value('date', date)
 
-            # full name of visitor
-            full_name = fields[1].xpath("text()").extract()
-            try:
-                full_name = full_name[0]
-            except IndexError:
-                pass
-            full_name = re.sub("\s+", " ", full_name)
-            item['full_name'] = full_name.strip()
+            l.add_xpath('full_name', './td[3]/center/text()')
+            l.add_xpath('entity', './td[5]/center/text()')
+            l.add_xpath('reason', './td[6]/center/text()')
+            l.add_xpath('host_name', './td[7]/center/text()')
+            l.add_xpath('office', './td[8]/center/text()')
+            l.add_xpath('meeting_place', './td[9]/center/text()')
+            l.add_xpath('time_start', './td[10]/center/text()')
+            l.add_xpath('time_end', './td[11]/center/text()')
 
-            item['entity'] = re.sub("\s+", " ", fields[3].xpath("text()").extract()[0].strip())
-            item['host_name'] = re.sub("\s+", " ", fields[5].xpath("text()").extract()[0].strip())
-            item['reason'] = re.sub("\s+", " ", fields[4].xpath("text()").extract()[0].strip())
-            item['office'] = re.sub("\s+", " ", fields[6].xpath("text()").extract()[0].strip())
-            item['meeting_place'] = re.sub("\s+", " ", fields[7].xpath("text()").extract()[0].strip())
-            item['time_start'] = re.sub("\s+", " ", fields[8].xpath("text()").extract()[0].strip())
+            document_identity = row.xpath('td[4]/center/text()').extract_first(default='')
 
-            try:
-                document_identity = fields[2].xpath("text()").extract()[0].strip()
-            except IndexError:
-                document_identity = ''
+            id_document, id_number = get_dni(document_identity)
 
-            if document_identity != '':
-                item['id_document'], item['id_number'] = get_dni(document_identity)
+            l.add_value('id_document', id_document)
+            l.add_value('id_number', id_number)
 
-            try:
-                item['time_end'] = re.sub("\s+", " ", fields[9].xpath("text()").extract()[0].strip())
-            except IndexError:
-                item['time_end'] = ''
+            item = l.load_item()
 
             item = make_hash(item)
 
