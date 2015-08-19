@@ -14,35 +14,35 @@ from ..utils import make_hash, get_dni
 
 
 class ManoloBaseSpider(scrapy.Spider):
-    def __init__(self, date_start=None, *args, **kwargs):
+    def __init__(self, date_start=None, date_end=None, *args, **kwargs):
         super(ManoloBaseSpider, self).__init__(*args, **kwargs)
+
         self.date_start = date_start
+        self.date_end = date_end
+
+        today = date.today()
 
         if self.date_start is None:
-            raise exceptions.UsageError('Enter start date as spider argument: -a date_start=')
+            self.date_start = today.strftime('%Y-%m-%d')
+
+        if self.date_end is None:
+            self.date_end = today.strftime('%Y-%m-%d')
 
 
 # SIstema de REgistro de VIsitas
-class SireviSpider(scrapy.Spider):
+class SireviSpider(ManoloBaseSpider):
 
     ajax_page_pattern = '/index.php?r=consultas/visitaConsulta/updateVisitasConsultaResultGrid&ajax=lst-visitas-consulta-result-grid&lstVisitasResult_page=%s'
 
-    def __init__(self, date_start=None, *args, **kwargs):
+    def __init__(self, *args, **kwargs):
         super(SireviSpider, self).__init__(*args, **kwargs)
-        self.date_start = date_start
-
-        if self.date_start is None:
-            raise exceptions.UsageError('Enter start date as spider argument: -a date_start=')
 
         if self.institution_name is None:
             raise exceptions.UsageError('Enter a institution_name.')
 
-    def _get_page_url(self, page_number):
-        return self.base_url + self.ajax_page_pattern % page_number
-
     def start_requests(self):
         d1 = datetime.datetime.strptime(self.date_start, '%Y-%m-%d').date()
-        d2 = date.today()
+        d2 = datetime.datetime.strptime(self.date_end, '%Y-%m-%d').date()
         # range to fetch
         delta = d2 - d1
 
@@ -122,3 +122,6 @@ class SireviSpider(scrapy.Spider):
                                   meta={'date': date_str},
                                   dont_filter=True,
                                   callback=callback)
+
+    def _get_page_url(self, page_number):
+        return self.base_url + self.ajax_page_pattern % page_number
