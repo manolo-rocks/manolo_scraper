@@ -62,6 +62,7 @@ class MinemSpider(scrapy.Spider):
 
     def parse(self, response):
         date_obj = datetime.datetime.strptime(response.meta['date'], '%d/%m/%Y')
+        date = datetime.datetime.strftime(date_obj, '%Y-%m-%d')
 
         item = ManoloItem()
         item['full_name'] = ''
@@ -74,7 +75,7 @@ class MinemSpider(scrapy.Spider):
         item['location'] = ''
         item['id_number'] = ''
         item['id_document'] = ''
-        item['date'] = date_obj
+        item['date'] = date
         item['title'] = ''
         item['time_start'] = ''
         item['time_end'] = ''
