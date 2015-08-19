@@ -43,14 +43,9 @@ class MinemSpider(ManoloBaseSpider):
             yield request
 
     def parse_pages(self, response):
-        total_of_records = response.css('#HID_CantidadRegistros').xpath('./@value').extract()
+        total_of_records = response.css('#HID_CantidadRegistros').xpath('./@value').extract_first(default=1)
 
-        try:
-            total_of_records = int(total_of_records[0])
-        except IndexError:
-            total_of_records = 1
-        except TypeError:
-            total_of_records = 1
+        total_of_records = int(total_of_records)
 
         number_of_pages = self.get_number_of_pages(total_of_records)
 
