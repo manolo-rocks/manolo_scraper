@@ -28,9 +28,5 @@ class TestMinagrSpider(unittest.TestCase):
         self.assertEqual(item.get('time_end'), u'17:23')
         self.assertEqual(item.get('date'), u'2015-08-18')
 
-        number_of_items = 1
-
-        for item in items:
-            number_of_items = number_of_items + 1
-
+        number_of_items = 1 + sum(1 for x in items)
         self.assertEqual(number_of_items, 15)
