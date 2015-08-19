@@ -21,10 +21,10 @@ class TestMineduSpider(unittest.TestCase):
         self.assertEqual(item.get('institution'), u'defensa')
         self.assertEqual(item.get('id_document'), u'DNI')
         self.assertEqual(item.get('id_number'), u'43447287')
-        self.assertEqual(item.get('entity'), u'')
+        self.assertEqual(item.get('entity'), None)
         self.assertEqual(item.get('reason'), u'REUNIÓN DE TRABAJO')
         self.assertEqual(item.get('host_name'), u'HUGO DAVID MEJIA HUAMAN')
-        self.assertEqual(item.get('time_end'), u'')
+        self.assertEqual(item.get('time_end'), None)
         self.assertEqual(item.get('date'), u'2015-08-19')
 
         number_of_items = 1 + sum(1 for _ in items)

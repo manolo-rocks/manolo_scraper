@@ -13,6 +13,7 @@ from ..utils import make_hash, get_dni
 class DefensaSpider(ManoloBaseSpider):
     name = 'defensa'
     allowed_domains = ['mindef.gob.pe']
+    base_url = 'http://www.mindef.gob.pe/visitas/qryvisitas.php'
 
     def start_requests(self):
         d1 = datetime.datetime.strptime(self.date_start, '%Y-%m-%d').date()
@@ -25,7 +26,7 @@ class DefensaSpider(ManoloBaseSpider):
             logging.info("SCRAPING: {}".format(date_str))
 
             params = {'fechaqry': date_str}
-            yield scrapy.FormRequest(url="http://www.mindef.gob.pe/visitas/qryvisitas.php", formdata=params,
+            yield scrapy.FormRequest(url=self.base_url, formdata=params,
                                      meta={'date': date_str},
                                      dont_filter=True,
                                      callback=self.after_post)
@@ -49,32 +50,29 @@ class DefensaSpider(ManoloBaseSpider):
         date_obj = datetime.datetime.strptime(response.meta['date'], '%d/%m/%Y')
         date = datetime.datetime.strftime(date_obj, '%Y-%m-%d')
 
-        item = ManoloItem()
-        item['full_name'] = ''
-        item['entity'] = ''
-        item['meeting_place'] = ''
-        item['office'] = ''
-        item['host_name'] = ''
-        item['reason'] = ''
-        item['institution'] = 'defensa'
-        item['location'] = ''
-        item['id_number'] = ''
-        item['id_document'] = ''
-        item['date'] = date
-        item['title'] = ''
-        item['time_start'] = ''
-        item['time_end'] = ''
+        rows = response.xpath('//tr')
+        for row in rows:
+            data = row.xpath('.//td[@class="clsdetalle"]')
 
-        sels = response.xpath('//tr')
-        for sel in sels:
-            fields = sel.xpath('.//td[@class="clsdetalle"]')
-            if len(fields) == 8:
-                item['full_name'] = fields[1].xpath('text()').extract_first().strip()
-                item['entity'] = fields[3].xpath('text()').extract_first().strip()
-                item['host_name'] = fields[5].xpath('text()').extract_first().strip()
-                item['reason'] = fields[4].xpath('text()').extract_first().strip()
-                item['id_document'], item['id_number'] = get_dni(fields[2].xpath('text()').extract_first().strip())
-                item['time_start'] = fields[6].xpath('text()').extract_first().strip()
-                item['time_end'] = fields[7].xpath('text()').extract_first().strip()
+            if len(data) == 8:
+                l = ManoloItemLoader(item=ManoloItem(), selector=row)
+
+                l.add_value('institution', 'defensa')
+                l.add_value('date', date)
+
+                l.add_xpath('full_name', './/td[@class="clsdetalle"][2]/text()')
+                l.add_xpath('reason', './/td[@class="clsdetalle"][5]/text()')
+                l.add_xpath('host_name', './/td[@class="clsdetalle"][6]/text()')
+                l.add_xpath('time_start', './/td[@class="clsdetalle"][7]/text()')
+                l.add_xpath('time_end', './/td[@class="clsdetalle"][8]/text()')
+
+                id_document, id_number = get_dni(data[2].xpath('text()').extract_first(default=''))
+
+                l.add_value('id_document', id_document)
+                l.add_value('id_number', id_number)
+
+                item = l.load_item()
+
                 item = make_hash(item)
+
                 yield item
