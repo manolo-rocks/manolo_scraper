@@ -1,0 +1,143 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="es" lang="es">
+<head>
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+	<meta name="language" content="es" />
+	<!-- blueprint CSS framework -->
+	<link rel="stylesheet" type="text/css" href="/css/screen.css" media="screen, projection" />
+	<link rel="stylesheet" type="text/css" href="/css/print.css" media="print" />
+	<!--[if lt IE 8]>
+	<link rel="stylesheet" type="text/css" href="/css/ie.css" media="screen, projection" />
+	<![endif]-->
+
+	<link rel="stylesheet" type="text/css" href="/css/main.css" />
+	<link rel="stylesheet" type="text/css" href="/css/form.css" />
+	
+		<style type="text/css">
+		<!--
+		.grid-view table.items th {
+		    background: url("css/bg_mod.gif") repeat-x scroll left top white;
+		}
+		
+		#header {
+		    border-top: 3px solid #4C99C5;
+		}
+		
+		.grid-view table.items {
+		    border: 1px solid #4C99C5;
+		    border-collapse: separate;
+		}
+		-->
+		</style>	
+		<link rel="stylesheet" type="text/css" href="/assets/d1d7e955/jui/css/base/jquery-ui.css" />
+<link rel="stylesheet" type="text/css" href="/assets/c9287d/gridview/styles.css" />
+<link rel="stylesheet" type="text/css" href="/assets/4ff86ca/pager.css" />
+<script type="text/javascript" src="/assets/d1d7e955/jquery.min.js"></script>
+<script type="text/javascript" src="/assets/d1d7e955/jquery.ba-bbq.js"></script>
+<title>Sistema de Registro de Visitas - Consulta de Visitas</title>
+</head>
+<body>
+<div class="container" id="pageVerysimplewithouttitle">
+	<div id="header">
+		<div id="logo_img"><img src="/images/cab_visitas_1.jpg" alt="" /></div>
+	</div><!-- header -->
+	<form id="visita-consulta-query-form" action="/index.php?r=consultas/visitaConsulta/index" method="post"><script type="text/javascript">
+<!--
+
+/**
+  Por cada actualización por ajax del grid tabla se pierde los eventos asociados a la barra de paginación, por lo que nos obliga a re-asociarlo por cada actualización por ajax del grid
+ */
+function modificarAnchorBarNav() {
+	$('ul.yiiPager > li > a').click(function() {
+		//alert('hola');
+		var strHref = location.href;
+		var strSubHrefPattern = $(this).attr('href');
+		var intDiffLength = strHref.length -  strSubHrefPattern.length;
+		if (!(intDiffLength >= 0 && strHref.lastIndexOf(strSubHrefPattern) === intDiffLength)) {
+			//$('#visita-consulta-query-form').attr('action', $(this).attr('href'));
+			//$("#btConsultarVisitas").click();
+			//evitar el jquery.ajax.get en internet explorer dado que lo almacena en cache y no muestra actualizada la pagina!!
+			var urlAjax = $.param.querystring($(this).attr('href'), 'r=consultas/visitaConsulta/updateVisitasConsultaResultGrid');
+			//parece recursiva pero no lo es del todo! por cada click que se haga a la barra de paginacion, la carga por ajax del nuevo grid debe de reasociarlo el evento onclick de esta función 
+			$.fn.yiiGridView.update('lst-visitas-consulta-result-grid', {type: 'POST', url:urlAjax, data:$('#visita-consulta-query-form').serialize(), complete: function(){modificarAnchorBarNav();}});  
+		}
+		return false;
+	});
+}
+
+$(document).ready(function() {
+	modificarAnchorBarNav();//asociar evento
+
+	$('table.items > thead > tr > th > a').click(function() {
+		//$('#visita-consulta-query-form').attr('action', $(this).attr('href'));
+		//$("#btConsultarVisitas").click();
+		//evitar el jquery.ajax.get en internet explorer dado que lo almacena en cache y no muestra actualizada la pagina!!
+		var urlAjax = $.param.querystring($(this).attr('href'), 'r=consultas/visitaConsulta/updateVisitasConsultaResultGrid');
+		$.fn.yiiGridView.update('lst-visitas-consulta-result-grid', {type: 'POST', url:urlAjax, data:$('#visita-consulta-query-form').serialize(), complete: function(){modificarAnchorBarNav();}});//reasociar evento
+		return false;
+	});
+
+    $(document).bind("contextmenu", function(e) {
+        return false;  
+    });
+});
+//-->
+</script>
+<br/>
+<!-- center><h3>VISITAS A LA PRESIDENCIA DEL CONSEJO DE MINISTROS</h3></center-->
+<table width="100%" id="visitaConsultarTabla">
+  <tr>
+  	<td>
+  	Fecha:
+    <input class="span2" readonly="readonly" size="11" maxlength="10" id="VisitaConsultaQueryForm_feConsulta" name="VisitaConsultaQueryForm[feConsulta]" type="text" value="18/08/2015" />    <input id="btConsultarVisitas" type="submit" name="yt0" value="Consultar" />  	</td>
+  </tr>
+</table>
+</form><div id="lst-visitas-consulta-result-grid" class="grid-view">
+<div class="summary">Desplegando 1-15 de 100 resultado(s).</div>
+<table class="items">
+<thead>
+<tr>
+<th id="lst-visitas-consulta-result-grid_c0"><a href="/index.php?r=consultas/visitaConsulta/index&amp;lstVisitasResult_sort=fe_ingreso">FECHA</a></th><th id="lst-visitas-consulta-result-grid_c1"><a href="/index.php?r=consultas/visitaConsulta/index&amp;lstVisitasResult_sort=no_full_invitado">VISITANTE</a></th><th id="lst-visitas-consulta-result-grid_c2"><a href="/index.php?r=consultas/visitaConsulta/index&amp;lstVisitasResult_sort=no_full_documento">DOCUMENTO</a></th><th id="lst-visitas-consulta-result-grid_c3"><a href="/index.php?r=consultas/visitaConsulta/index&amp;lstVisitasResult_sort=no_entidad_representada">ENTIDAD</a></th><th id="lst-visitas-consulta-result-grid_c4"><a href="/index.php?r=consultas/visitaConsulta/index&amp;lstVisitasResult_sort=no_motivo_visita">MOTIVO</a></th><th id="lst-visitas-consulta-result-grid_c5"><a href="/index.php?r=consultas/visitaConsulta/index&amp;lstVisitasResult_sort=no_full_colaborador">EMPLEADO PÚBLICO</a></th><th id="lst-visitas-consulta-result-grid_c6">OFICINA / CARGO</th><th id="lst-visitas-consulta-result-grid_c7">LUGAR DE REUNIÓN</th><th id="lst-visitas-consulta-result-grid_c8">HORA ING.</th><th id="lst-visitas-consulta-result-grid_c9">HORA SAL.</th></tr>
+</thead>
+<tbody>
+<tr class="odd"><td>18/08/2015</td><td>INGRID BARRIONUEVO ECHEGARAY</td><td>DNI 10085172</td><td>PARTICULAR</td><td>REUNIÓN DE TRABAJO</td><td>JOIZ ELIZABETH DOBLADILLO ORTIZ</td><td> [SERVICIOS DE UN ASISTENTE EN COMUNICACIONES]</td><td>QHAPAQ ÑAN</td><td>16:40</td><td>16:53</td></tr>
+<tr class="even"><td>18/08/2015</td><td>JAVIER GUILLERMO RAMIREZ JIMENEZ</td><td>DNI 18196354</td><td>PARTICULAR</td><td>REUNIÓN DE TRABAJO</td><td>NATALIA GUZMAN REQUENA</td><td> [SERVICIO DE DIRECTOR DE LA DIRECCIÓN DE GESTIÓN DE MONUMENTOS]</td><td> </td><td>16:29</td><td>&nbsp;</td></tr>
+<tr class="odd"><td>18/08/2015</td><td>MARIA DEL PILAR ACOSTA ACOSTA</td><td>DNI 08849705</td><td>PARTICULAR</td><td>REUNIÓN DE TRABAJO</td><td>NATALIA GUZMAN REQUENA</td><td> [SERVICIO DE DIRECTOR DE LA DIRECCIÓN DE GESTIÓN DE MONUMENTOS]</td><td> </td><td>16:29</td><td>&nbsp;</td></tr>
+<tr class="even"><td>18/08/2015</td><td>LUIS ALBERTO ABADIE CASTILLO</td><td>DNI 08220706</td><td>PARTICULAR</td><td>GESTION ADMINISTRATIVA</td><td>ROSARIO ISABEL CORA VALLES</td><td> [SERVICIO DE ASISTENTE ADMINISTRATIVO PARA LA OFICINA DE TALLERES DE ARTE DE LA DIRECCIÃ¿N DE ARTES Y ACCESO A LA CULTURA]</td><td> </td><td>16:26</td><td>16:45</td></tr>
+<tr class="odd"><td>18/08/2015</td><td>JENNY EDUVIJES LUNA MAURTUA</td><td>DNI 06736157</td><td>PARTICULAR</td><td>REUNIÓN DE TRABAJO</td><td>FIDEL ALBERTO ALBURQUERQUE HUAPAYA</td><td> [SERVICIOS DE UN ASESOR EN PLANEAMIENTO Y COOPERACION TECNICA]</td><td> </td><td>16:24</td><td>&nbsp;</td></tr>
+<tr class="even"><td>18/08/2015</td><td>JOSE LUIS SOLANO RAMOS</td><td>DNI 44363701</td><td>PARTICULAR</td><td>REUNIÓN DE TRABAJO</td><td>ANGELA MARIA ACEVEDO HUERTAS</td><td> [SERVICIOS DE UN ASESOR/A TÃ¿CNICA DEL DESPACHO VICEMINISTERIAL]</td><td>PISO 8 </td><td>16:22</td><td>16:32</td></tr>
+<tr class="odd"><td>18/08/2015</td><td>DICK JOHNNY RENGIFO TIRADO</td><td>DNI 09392839</td><td>PARTICULAR</td><td>REUNIÓN DE TRABAJO</td><td>WILFREDO MARCELINO LEON RUIZ</td><td> [SERVICIOS DE UN ANALISTA DE BASE DE DATOS PARA LA OFICINA GENERAL DE RECURSOS HUMANOS]</td><td> </td><td>16:20</td><td>&nbsp;</td></tr>
+<tr class="even"><td>18/08/2015</td><td>JOSE LARIOS  </td><td>DNI 1972014..</td><td>PARTICULAR</td><td>REUNIÓN DE TRABAJO</td><td>DIANA ALVAREZ CALDERON GALLO</td><td> [MINISTRA]</td><td> </td><td>16:14</td><td>&nbsp;</td></tr>
+<tr class="odd"><td>18/08/2015</td><td>ALESSANDRA RICHTER ELIAS</td><td>DNI 45975910</td><td>PARTICULAR</td><td>REUNIÓN DE TRABAJO</td><td>DIANA ALVAREZ CALDERON GALLO</td><td> [MINISTRA]</td><td> </td><td>16:13</td><td>&nbsp;</td></tr>
+<tr class="even"><td>18/08/2015</td><td>EDWARD JOHANNIS MONTES CCARHUAZ</td><td>DNI 41577327</td><td>PARTICULAR</td><td>REUNIÓN DE TRABAJO</td><td>ANGELA MARIA ACEVEDO HUERTAS</td><td> [SERVICIOS DE UN ASESOR/A TÃ¿CNICA DEL DESPACHO VICEMINISTERIAL]</td><td>SALA D - MEZ</td><td>16:03</td><td>&nbsp;</td></tr>
+<tr class="odd"><td>18/08/2015</td><td>FANNY LUZ MARGOOT CASTILLO VILCHEZ</td><td>DNI 44997832</td><td>PARTICULAR</td><td>REUNIÓN DE TRABAJO</td><td>ANGELA MARIA ACEVEDO HUERTAS</td><td> [SERVICIOS DE UN ASESOR/A TÃ¿CNICA DEL DESPACHO VICEMINISTERIAL]</td><td>SALA D - MEZ</td><td>16:03</td><td>&nbsp;</td></tr>
+<tr class="even"><td>18/08/2015</td><td>JOSE CLAVER PILARES GAMARRA</td><td>DNI 04960791</td><td>PARTICULAR</td><td>REUNIÓN DE TRABAJO</td><td>ANGELA MARIA ACEVEDO HUERTAS</td><td> [SERVICIOS DE UN ASESOR/A TÃ¿CNICA DEL DESPACHO VICEMINISTERIAL]</td><td>SALA D - MEZ</td><td>16:03</td><td>&nbsp;</td></tr>
+<tr class="odd"><td>18/08/2015</td><td>YSABEL GLORIA LIMACHE RAMIREZ</td><td>DNI 09594625</td><td>PARTICULAR</td><td>REUNIÓN DE TRABAJO</td><td>ANA LUCIA BEATRIZ RODRIGUEZ GELDRES</td><td> [SERVICIO DE ASISTENTE ADMINISTRATIVO PARA LA DIRECCION DE DIVERSIDAD CULTURAL Y ELIMINACION DE LA DISCRIMINACION RACIAL ]</td><td>MEZZANINE</td><td>16:02</td><td>16:15</td></tr>
+<tr class="even"><td>18/08/2015</td><td>MIGUEL ANGEL TELLO CRUZ</td><td>DNI 06017576</td><td>PARTICULAR</td><td>REUNIÓN DE TRABAJO</td><td>ANGELA MARIA ACEVEDO HUERTAS</td><td> [SERVICIOS DE UN ASESOR/A TÃ¿CNICA DEL DESPACHO VICEMINISTERIAL]</td><td>SALA D MEZ</td><td>15:59</td><td>&nbsp;</td></tr>
+<tr class="odd"><td>18/08/2015</td><td>VICTOR ENRIQUE ALBERCA BARANDIARAN</td><td>DNI 07887000</td><td>PARTICULAR</td><td>REUNIÓN DE TRABAJO</td><td>ANGELA MARIA ACEVEDO HUERTAS</td><td> [SERVICIOS DE UN ASESOR/A TÃ¿CNICA DEL DESPACHO VICEMINISTERIAL]</td><td>SALA D MEZ</td><td>15:59</td><td>&nbsp;</td></tr>
+</tbody>
+</table>
+<div class="pager">Ir a página: <ul id="yw0" class="yiiPager"><li class="first hidden"><a href="/index.php?r=consultas/visitaConsulta/index">&lt;&lt; Primero</a></li>
+<li class="previous hidden"><a href="/index.php?r=consultas/visitaConsulta/index">&lt; Anterior</a></li>
+<li class="page selected"><a href="/index.php?r=consultas/visitaConsulta/index">1</a></li>
+<li class="page"><a href="/index.php?r=consultas/visitaConsulta/index&amp;lstVisitasResult_page=2">2</a></li>
+<li class="page"><a href="/index.php?r=consultas/visitaConsulta/index&amp;lstVisitasResult_page=3">3</a></li>
+<li class="page"><a href="/index.php?r=consultas/visitaConsulta/index&amp;lstVisitasResult_page=4">4</a></li>
+<li class="page"><a href="/index.php?r=consultas/visitaConsulta/index&amp;lstVisitasResult_page=5">5</a></li>
+<li class="next"><a href="/index.php?r=consultas/visitaConsulta/index&amp;lstVisitasResult_page=2">Siguiente &gt;</a></li>
+<li class="last"><a href="/index.php?r=consultas/visitaConsulta/index&amp;lstVisitasResult_page=7">Último &gt;&gt;</a></li></ul></div><div class="keys" style="display:none" title="/index.php?r=consultas/visitaConsulta/index"><span>40819</span><span>40818</span><span>40817</span><span>40816</span><span>40815</span><span>40814</span><span>40813</span><span>40812</span><span>40811</span><span>40810</span><span>40809</span><span>40808</span><span>40807</span><span>40806</span><span>40805</span></div>
+</div>	<div class="clear"></div>
+</div><!-- page -->
+<script type="text/javascript" src="/assets/d1d7e955/jui/js/jquery-ui.min.js"></script>
+<script type="text/javascript" src="/assets/d1d7e955/jui/js/jquery-ui-i18n.min.js"></script>
+<script type="text/javascript" src="/assets/c9287d/gridview/jquery.yiigridview.js"></script>
+<script type="text/javascript">
+/*<![CDATA[*/
+jQuery(function($) {
+jQuery('#VisitaConsultaQueryForm_feConsulta').datepicker(jQuery.extend({showMonthAfterYear:false}, jQuery.datepicker.regional['es'], {'changeMonth':'true','changeYear':'true','yearRange':'-10:+1','showAnim':'fold','showOn':'button','dateFormat':'dd/mm/yy','buttonText':'Seleccionar Fecha','buttonImage':'/images/calendar_icon-16.png','buttonImageOnly':true,'showButtonPanel':true}));
+jQuery('#lst-visitas-consulta-result-grid').yiiGridView({'ajaxUpdate':['lst-visitas-consulta-result-grid'],'ajaxVar':'ajax','pagerClass':'pager','loadingClass':'grid-view-loading','filterClass':'filters','tableClass':'items','selectableRows':1,'url':'/index.php?r=consultas/visitaConsulta/index','pageVar':'lstVisitasResult_page'});
+});
+/*]]>*/
+</script>
+</body>
+</html>

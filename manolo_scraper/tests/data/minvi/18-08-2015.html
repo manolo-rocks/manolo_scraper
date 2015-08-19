@@ -1,0 +1,143 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="es" lang="es">
+<head>
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+	<meta name="language" content="es" />
+	<!-- blueprint CSS framework -->
+	<link rel="stylesheet" type="text/css" href="/Visitas/controlVisitas/css/screen.css" media="screen, projection" />
+	<link rel="stylesheet" type="text/css" href="/Visitas/controlVisitas/css/print.css" media="print" />
+	<!--[if lt IE 8]>
+	<link rel="stylesheet" type="text/css" href="/Visitas/controlVisitas/css/ie.css" media="screen, projection" />
+	<![endif]-->
+
+	<link rel="stylesheet" type="text/css" href="/Visitas/controlVisitas/css/main.css" />
+	<link rel="stylesheet" type="text/css" href="/Visitas/controlVisitas/css/form.css" />
+	
+		<style type="text/css">
+		<!--
+		.grid-view table.items th {
+		    background: url("css/bg_mod.gif") repeat-x scroll left top white;
+		}
+		
+		#header {
+		    border-top: 3px solid #4C99C5;
+		}
+		
+		.grid-view table.items {
+		    border: 1px solid #4C99C5;
+		    border-collapse: separate;
+		}
+		-->
+		</style>	
+		<link rel="stylesheet" type="text/css" href="/Visitas/controlVisitas/assets/7bb4bbc8/jui/css/base/jquery-ui.css" />
+<link rel="stylesheet" type="text/css" href="/Visitas/controlVisitas/assets/5d9df1b3/gridview/styles.css" />
+<link rel="stylesheet" type="text/css" href="/Visitas/controlVisitas/assets/d98e305/pager.css" />
+<script type="text/javascript" src="/Visitas/controlVisitas/assets/7bb4bbc8/jquery.min.js"></script>
+<script type="text/javascript" src="/Visitas/controlVisitas/assets/7bb4bbc8/jquery.ba-bbq.js"></script>
+<title>Sistema de Registro de Visitas - Consulta de Visitas</title>
+</head>
+<body>
+<div class="container" id="pageVerysimplewithouttitle">
+	<div id="header">
+		<div id="logo_img"><img src="/Visitas/controlVisitas/images/cab_visitas_1.jpg" alt="" /></div>
+	</div><!-- header -->
+	<form id="visita-consulta-query-form" action="/Visitas/controlVisitas/index.php?r=consultas/visitaConsulta/index" method="post"><script type="text/javascript">
+<!--
+
+/**
+  Por cada actualización por ajax del grid tabla se pierde los eventos asociados a la barra de paginación, por lo que nos obliga a re-asociarlo por cada actualización por ajax del grid
+ */
+function modificarAnchorBarNav() {
+	$('ul.yiiPager > li > a').click(function() {
+		//alert('hola');
+		var strHref = location.href;
+		var strSubHrefPattern = $(this).attr('href');
+		var intDiffLength = strHref.length -  strSubHrefPattern.length;
+		if (!(intDiffLength >= 0 && strHref.lastIndexOf(strSubHrefPattern) === intDiffLength)) {
+			//$('#visita-consulta-query-form').attr('action', $(this).attr('href'));
+			//$("#btConsultarVisitas").click();
+			//evitar el jquery.ajax.get en internet explorer dado que lo almacena en cache y no muestra actualizada la pagina!!
+			var urlAjax = $.param.querystring($(this).attr('href'), 'r=consultas/visitaConsulta/updateVisitasConsultaResultGrid');
+			//parece recursiva pero no lo es del todo! por cada click que se haga a la barra de paginacion, la carga por ajax del nuevo grid debe de reasociarlo el evento onclick de esta función 
+			$.fn.yiiGridView.update('lst-visitas-consulta-result-grid', {type: 'POST', url:urlAjax, data:$('#visita-consulta-query-form').serialize(), complete: function(){modificarAnchorBarNav();}});  
+		}
+		return false;
+	});
+}
+
+$(document).ready(function() {
+	modificarAnchorBarNav();//asociar evento
+
+	$('table.items > thead > tr > th > a').click(function() {
+		//$('#visita-consulta-query-form').attr('action', $(this).attr('href'));
+		//$("#btConsultarVisitas").click();
+		//evitar el jquery.ajax.get en internet explorer dado que lo almacena en cache y no muestra actualizada la pagina!!
+		var urlAjax = $.param.querystring($(this).attr('href'), 'r=consultas/visitaConsulta/updateVisitasConsultaResultGrid');
+		$.fn.yiiGridView.update('lst-visitas-consulta-result-grid', {type: 'POST', url:urlAjax, data:$('#visita-consulta-query-form').serialize(), complete: function(){modificarAnchorBarNav();}});//reasociar evento
+		return false;
+	});
+
+    $(document).bind("contextmenu", function(e) {
+        return false;  
+    });
+});
+//-->
+</script>
+<br/>
+<!-- center><h3>VISITAS A LA PRESIDENCIA DEL CONSEJO DE MINISTROS</h3></center-->
+<table width="100%" id="visitaConsultarTabla">
+  <tr>
+  	<td>
+  	Fecha:
+    <input class="span2" readonly="readonly" size="11" maxlength="10" id="VisitaConsultaQueryForm_feConsulta" name="VisitaConsultaQueryForm[feConsulta]" type="text" value="18/08/2015" />    <input id="btConsultarVisitas" type="submit" name="yt0" value="Consultar" />  	</td>
+  </tr>
+</table>
+</form><div id="lst-visitas-consulta-result-grid" class="grid-view">
+<div class="summary">Desplegando 1-15 de 531 resultado(s).</div>
+<table class="items">
+<thead>
+<tr>
+<th id="lst-visitas-consulta-result-grid_c0"><a href="/Visitas/controlVisitas/index.php?r=consultas/visitaConsulta/index&amp;lstVisitasResult_sort=fe_ingreso">FECHA</a></th><th id="lst-visitas-consulta-result-grid_c1"><a href="/Visitas/controlVisitas/index.php?r=consultas/visitaConsulta/index&amp;lstVisitasResult_sort=no_full_invitado">VISITANTE</a></th><th id="lst-visitas-consulta-result-grid_c2"><a href="/Visitas/controlVisitas/index.php?r=consultas/visitaConsulta/index&amp;lstVisitasResult_sort=no_full_documento">DOCUMENTO</a></th><th id="lst-visitas-consulta-result-grid_c3"><a href="/Visitas/controlVisitas/index.php?r=consultas/visitaConsulta/index&amp;lstVisitasResult_sort=no_entidad_representada">ENTIDAD</a></th><th id="lst-visitas-consulta-result-grid_c4"><a href="/Visitas/controlVisitas/index.php?r=consultas/visitaConsulta/index&amp;lstVisitasResult_sort=no_motivo_visita">MOTIVO</a></th><th id="lst-visitas-consulta-result-grid_c5"><a href="/Visitas/controlVisitas/index.php?r=consultas/visitaConsulta/index&amp;lstVisitasResult_sort=no_full_colaborador">EMPLEADO PÚBLICO</a></th><th id="lst-visitas-consulta-result-grid_c6">OFICINA / CARGO</th><th id="lst-visitas-consulta-result-grid_c7">LUGAR DE REUNIÓN</th><th id="lst-visitas-consulta-result-grid_c8">HORA ING.</th><th id="lst-visitas-consulta-result-grid_c9">HORA SAL.</th></tr>
+</thead>
+<tbody>
+<tr class="odd"><td>18/08/2015</td><td>CESAR MAMANI ROMERO</td><td>DNI 10157944</td><td>TRABAJADOR - PARH </td><td>REUNIÓN DE TRABAJO</td><td>DAYANA FARRO .</td><td>P.A.H.R. [OTROS]</td><td>PNT</td><td>18:07</td><td>&nbsp;</td></tr>
+<tr class="even"><td>18/08/2015</td><td>ROCIO ROJAS ESPINOZA</td><td>DNI 09397343</td><td>PARTICULAR</td><td>REUNIÓN DE TRABAJO</td><td>JULIA ELIZABETH CABELLO CACERES</td><td>O.G.P.P. [DIR. SIST. ADM. II]</td><td>OGPP</td><td>17:54</td><td>&nbsp;</td></tr>
+<tr class="odd"><td>18/08/2015</td><td>MARAVI RODRIGUEZ MARAVI</td><td>DNI 46584181</td><td>PARTICULAR</td><td>REUNIÓN DE TRABAJO</td><td>JOEL  OSCANOA  SANCHEZ </td><td>SHOCK I. [OTROS]</td><td>PNSU</td><td>17:32</td><td>&nbsp;</td></tr>
+<tr class="even"><td>18/08/2015</td><td>BETTY HUAMAN MARTINEZ</td><td>DNI 43280382</td><td>Munc. Dist. ANDAMARCA-CONCEPCION-JUNIN</td><td>REUNIÓN DE TRABAJO</td><td>MILTON VON HESSE</td><td>DESPACHO MINISTERIAL [ECONOMISTA]</td><td>Despacho Ministerial</td><td>17:28</td><td>&nbsp;</td></tr>
+<tr class="odd"><td>18/08/2015</td><td>RONALD PADILLA MEZA</td><td>DNI 44307991</td><td>E. HERMES </td><td>GESTIÓN ADMINISTRATIVA</td><td>KATIA RODRIGUEZ  CIPRIANO</td><td>U.T. [ANALISTA CONTABLE]</td><td>Tesoreria</td><td>17:26</td><td>17:34</td></tr>
+<tr class="even"><td>18/08/2015</td><td>RICHARD THOMAS BUITRON EUSEBIO</td><td>DNI 43166157</td><td>Otro CONSULTOR</td><td>REUNIÓN DE TRABAJO</td><td>JAVIER AUGUSTO VEGA DIAZ</td><td>O.G.P.P. [ASESOR]</td><td>OGPP</td><td>17:21</td><td>&nbsp;</td></tr>
+<tr class="odd"><td>18/08/2015</td><td>RINA BACA TORRES</td><td>DNI 06805526</td><td>E. SOOM PERSONAS Y ORGANIZACIONES</td><td>REUNIÓN DE TRABAJO</td><td>JAVIER AUGUSTO VEGA DIAZ</td><td>O.G.P.P. [ASESOR]</td><td>OGPP</td><td>17:20</td><td>&nbsp;</td></tr>
+<tr class="even"><td>18/08/2015</td><td>ELISA RODRIGUEZ PALACIOS</td><td>DNI 20439166</td><td>Alc. Dist. ANDAMARCA-CONCEPCION-JUNIN</td><td>REUNIÓN DE TRABAJO</td><td>MILTON VON HESSE</td><td>DESPACHO MINISTERIAL [ECONOMISTA]</td><td>Despacho Ministerial</td><td>17:19</td><td>&nbsp;</td></tr>
+<tr class="odd"><td>18/08/2015</td><td>MELVA RODRIGUEZ PALACIOS</td><td>DNI 40647819</td><td>Munc. Dist. ANDAMARCA-CONCEPCION-JUNIN</td><td>REUNIÓN DE TRABAJO</td><td>MILTON VON HESSE</td><td>DESPACHO MINISTERIAL [ECONOMISTA]</td><td>Despacho Ministerial</td><td>17:18</td><td>&nbsp;</td></tr>
+<tr class="even"><td>18/08/2015</td><td>GISSELLA MARI QUINTANILLA MENDOZA</td><td>DNI 41319510</td><td>MIDIS</td><td>REUNIÓN DE TRABAJO</td><td>NESTOR ALFONSO SUPANTA VELASQUEZ</td><td>VARIOS [JEFE DE LA UNIDAD PLANEAMIENTO, PRESUPUESTO E INFO]</td><td>PNSU</td><td>17:12</td><td>&nbsp;</td></tr>
+<tr class="odd"><td>18/08/2015</td><td>FREDDY JULIAN  TOLEDO QUIÑONES </td><td>DNI 06165117</td><td>MIDIS</td><td>REUNIÓN DE TRABAJO</td><td>NESTOR ALFONSO SUPANTA VELASQUEZ</td><td>VARIOS [JEFE DE LA UNIDAD PLANEAMIENTO, PRESUPUESTO E INFO]</td><td>PNSU</td><td>17:11</td><td>&nbsp;</td></tr>
+<tr class="even"><td>18/08/2015</td><td>DOMINGO ARZUBIALDE  ELORRIETA </td><td>DNI 23924595</td><td>MIDIS</td><td>REUNIÓN DE TRABAJO</td><td>NESTOR ALFONSO SUPANTA VELASQUEZ</td><td>VARIOS [JEFE DE LA UNIDAD PLANEAMIENTO, PRESUPUESTO E INFO]</td><td>PNSU</td><td>17:09</td><td>&nbsp;</td></tr>
+<tr class="odd"><td>18/08/2015</td><td>JUAN CARLOS  CUBA  BRONCANO </td><td>DNI 07396376</td><td>Otro SERPOST</td><td>DOCUMENTOS</td><td>ORLANDO ALFREDO LABERIAN CARRAZCO</td><td>U.T.D. [GESTOR ADMINISTRATIVO]</td><td>Tramite Documentario</td><td>17:03</td><td>17:35</td></tr>
+<tr class="even"><td>18/08/2015</td><td>SERAPIO HERMES QUISPE CORDERO</td><td>DNI 22242557</td><td>E. COORPORACION PERU AMBIENTAL</td><td>PROVEEDOR DE BIENES Y/O SERVICIOS</td><td>GUILLERMO GALINDO VEGA</td><td>PNSR - UA [OPERADOR LOGISTICO]</td><td>PNSR</td><td>17:00</td><td>&nbsp;</td></tr>
+<tr class="odd"><td>18/08/2015</td><td>ANAHI ASTETE LUCERO</td><td>DNI 47630766</td><td>Munc. Dist. MARGOS-HUANUCO-HUANUCO</td><td>REUNIÓN DE TRABAJO</td><td>ANDERSON  SILVA .</td><td>D.N.V. [OTROS]</td><td>Sala de Atencion al Usuario</td><td>16:54</td><td>17:35</td></tr>
+</tbody>
+</table>
+<div class="pager">Ir a página: <ul id="yw0" class="yiiPager"><li class="first hidden"><a href="/Visitas/controlVisitas/index.php?r=consultas/visitaConsulta/index">&lt;&lt; Primero</a></li>
+<li class="previous hidden"><a href="/Visitas/controlVisitas/index.php?r=consultas/visitaConsulta/index">&lt; Anterior</a></li>
+<li class="page selected"><a href="/Visitas/controlVisitas/index.php?r=consultas/visitaConsulta/index">1</a></li>
+<li class="page"><a href="/Visitas/controlVisitas/index.php?r=consultas/visitaConsulta/index&amp;lstVisitasResult_page=2">2</a></li>
+<li class="page"><a href="/Visitas/controlVisitas/index.php?r=consultas/visitaConsulta/index&amp;lstVisitasResult_page=3">3</a></li>
+<li class="page"><a href="/Visitas/controlVisitas/index.php?r=consultas/visitaConsulta/index&amp;lstVisitasResult_page=4">4</a></li>
+<li class="page"><a href="/Visitas/controlVisitas/index.php?r=consultas/visitaConsulta/index&amp;lstVisitasResult_page=5">5</a></li>
+<li class="next"><a href="/Visitas/controlVisitas/index.php?r=consultas/visitaConsulta/index&amp;lstVisitasResult_page=2">Siguiente &gt;</a></li>
+<li class="last"><a href="/Visitas/controlVisitas/index.php?r=consultas/visitaConsulta/index&amp;lstVisitasResult_page=36">Último &gt;&gt;</a></li></ul></div><div class="keys" style="display:none" title="/Visitas/controlVisitas/index.php?r=consultas/visitaConsulta/index"><span>335911</span><span>335910</span><span>335909</span><span>335908</span><span>335906</span><span>335897</span><span>335895</span><span>335893</span><span>335892</span><span>335890</span><span>335889</span><span>335886</span><span>335880</span><span>335876</span><span>335875</span></div>
+</div>	<div class="clear"></div>
+</div><!-- page -->
+<script type="text/javascript" src="/Visitas/controlVisitas/assets/7bb4bbc8/jui/js/jquery-ui.min.js"></script>
+<script type="text/javascript" src="/Visitas/controlVisitas/assets/7bb4bbc8/jui/js/jquery-ui-i18n.min.js"></script>
+<script type="text/javascript" src="/Visitas/controlVisitas/assets/5d9df1b3/gridview/jquery.yiigridview.js"></script>
+<script type="text/javascript">
+/*<![CDATA[*/
+jQuery(function($) {
+jQuery('#VisitaConsultaQueryForm_feConsulta').datepicker(jQuery.extend({showMonthAfterYear:false}, jQuery.datepicker.regional['es'], {'changeMonth':'true','changeYear':'true','yearRange':'-10:+1','showAnim':'fold','showOn':'button','dateFormat':'dd/mm/yy','buttonText':'Seleccionar Fecha','buttonImage':'/Visitas/controlVisitas/images/calendar_icon-16.png','buttonImageOnly':true,'showButtonPanel':true}));
+jQuery('#lst-visitas-consulta-result-grid').yiiGridView({'ajaxUpdate':['lst-visitas-consulta-result-grid'],'ajaxVar':'ajax','pagerClass':'pager','loadingClass':'grid-view-loading','filterClass':'filters','tableClass':'items','selectableRows':1,'url':'/Visitas/controlVisitas/index.php?r=consultas/visitaConsulta/index','pageVar':'lstVisitasResult_page'});
+});
+/*]]>*/
+</script>
+</body>
+</html>

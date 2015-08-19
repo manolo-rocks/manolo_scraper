@@ -1,0 +1,397 @@
+
+
+<!DOCTYPE html>
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head><meta http-equiv="Content-Type" content="text/html; charset=utf-8" /><title>
+	Visitas al Congreso de la República
+</title>
+    <script type="text/javascript" src="Scripts/jquery-2.1.3.js"></script>
+    <script type="text/javascript" src="Scripts/jquery-ui-1.11.4.js"></script>
+    <script type="text/javascript" src="Scripts/ui-datepicker-es.js"></script>
+    <script type="text/javascript" src="Scripts/validacion.js"></script>
+    <link href="Content/themes/base/all.css" type="text/css" rel="stylesheet" /><link href="stylesheets/estilos.css" rel="stylesheet" type="text/css" /><link href="estilos.css" type="text/css" rel="stylesheet" />
+    <script>
+        $(function () {
+            $("#TxtFecha").datepicker({
+                defaultDate: "+1w",
+                changeMonth: true,
+                changeYear: true,
+                numberOfMonths: 1,
+                showOn: "button",
+                //showButtonPanel: true,
+                buttonImage: "Imagenes/calendario.png",
+                buttonImageOnly: true,
+                buttonText: "Calendario"
+            });
+            $("#BtnBuscar").button({
+                icons: {
+                    primary: "ui-icon-search"
+                }
+            })
+        })
+    </script>
+    <!-- CODIGO GOOGLE ANALITYCS 14/03/2013 
+    -----------------------------------------------------------------------------------
+    <!----------------------------------------------------------------------------------
+    FIN CODIGO GOOGLE ANALITYCS 14/03/2013 --->
+    <style>
+        .ui-datepicker
+        {
+           font-size: 0.9em;
+        }
+        .ui-button
+        {
+            font-size: 0.8em;
+            top: 3px;
+        }
+        .ui-datepicker-trigger
+        {
+            position: relative;
+            top: 5px;
+        }
+    </style>
+</head>
+<body>
+    <form method="post" action="./" id="form1">
+<input type="hidden" name="__VIEWSTATE" id="__VIEWSTATE" value="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" />
+
+        <div id="contenedor">
+            <div id='cabecera'>
+                <div id='enlaces_top'>
+                    <div id='link_left'></div>
+                    <div id='link_right'>
+                        <ul>
+                            <li><a href='mailto:webmaster@congreso.gob.pe'>Cont&aacute;ctenos</a></li>
+                            <li><a href='http://www.congreso.gob.pe/'>Inicio</a></li>
+                        </ul>
+                    </div>
+                </div>
+                <div id='logo'>
+                    <div id="logoficial">
+                        <img src="imagenes/logo.jpg" width="88" height="92" />
+                    </div>
+                    <h1>CONGRESO de la REPÚBLICA del PERÚ</h1>
+                </div>
+                <div id='menuh'>
+                    <ul>
+                        <li>
+                            <a href='http://www.congreso.gob.pe'>Portal del Congreso</a>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+            <!--  FIN CABECERA -->
+            <!-- INICIO CUERPO -->
+            <div id="centro">
+                <!-- Inicio box_int-->
+                <div id="box_int">
+                    <div id="titulo02">Registro de Visitas </div>
+                    <div id='line'></div>
+                    
+                    
+                    <div id="contenido">
+                        <div id="consulta">
+                            <table>
+                                <tr>
+                                    <td style="width: 45px; padding-top: 5px">Fecha:</td>
+                                    <td style="width: 140px">
+                                        <input name="TxtFecha" type="text" value="18/08/2015" maxlength="10" id="TxtFecha" /></td>
+                                    <td style="width: 85px">
+                                        <input type="submit" name="BtnBuscar" value="Buscar" onclick="return Validar();" id="BtnBuscar" /></td>
+                                </tr>
+                            </table>
+                        </div>
+                        <div id="resultado">
+                            
+                                    <table class="grid">
+                                        <tr>
+                                            <th rowspan="2">Nº</th>
+                                            <th rowspan="2">Hora ingreso</th>
+                                            <th colspan="4">Datos del visitante</th>
+                                            <th rowspan="2">Motivo</th>
+                                            <th colspan="3">Empleado público</th>
+                                            <th rowspan="2">Hora salida</th>
+                                        </tr>
+                                        <tr>
+                                            <th>Nombres</th>
+                                            <th>T. Doc.</th>
+                                            <th>Nº Doc.</th>
+                                            <th>Institución</th>
+                                            <th>Nombres</th>
+                                            <th>Cargo</th>
+                                            <th>Oficina</th>
+                                        </tr>
+                                        
+                                    <tr>
+                                        <td style="width:60px; text-align:center"> 1</td>
+                                        <td style="width: 60px; text-align: center">
+                                            <span id="LwVisitasCR_LblHoraIngreso_0">08:15 </span></td>
+                                        <td style="width: 140px; text-align: justify">
+                                            <span id="LwVisitasCR_LblNomVisitante_0">ZEVALLOS FLOREZ, CESAR</span></td>
+                                        <td style="width: 50px; text-align: center">
+                                            <span id="LwVisitasCR_LblTipoDocVisitante_0">DNI/LE</span></td>
+                                        <td style="width: 60px; text-align: center">
+                                            <span id="LwVisitasCR_LblNroDocVisitante_0">07632139</span></td>
+                                        <td style="width: 130px; text-align: center">
+                                            <span id="LwVisitasCR_LblEntidadVisitante_0">EL ROCOTO</span></td>
+                                        <td style="width: 190px; text-align: justify">
+                                            <span id="LwVisitasCR_LblMotivoVisita_0">PERSONAL DEL  CONCESIONARIO</span></td>
+                                        <td style="width: 140px; text-align: justify">
+                                            <span id="LwVisitasCR_LblNomEmpleado_0">PEREYRA SALAZAR, WALTER                                          </span></td>
+                                        <td style="width: 90px; text-align: center">
+                                            <span id="LwVisitasCR_LblCargoEmpleado_0">TECNICO ADMINISTRATIVO</span></td>
+                                        <td style="width: 120px">
+                                            <span id="LwVisitasCR_LblOficinaEmpleado_0">G.F. DE SERVICIO SOCIAL</span></td>
+                                        <td style="width: 50px; text-align: center">
+                                            <span id="LwVisitasCR_LblHoraSalida_0"></span></td>
+                                    </tr>
+                                
+                                    <tr>
+                                        <td style="width:60px; text-align:center"> 2</td>
+                                        <td style="width: 60px; text-align: center">
+                                            <span id="LwVisitasCR_LblHoraIngreso_1">08:15 </span></td>
+                                        <td style="width: 140px; text-align: justify">
+                                            <span id="LwVisitasCR_LblNomVisitante_1">IBARRA MIRANDA, JUSTO GIOVANNI</span></td>
+                                        <td style="width: 50px; text-align: center">
+                                            <span id="LwVisitasCR_LblTipoDocVisitante_1">DNI/LE</span></td>
+                                        <td style="width: 60px; text-align: center">
+                                            <span id="LwVisitasCR_LblNroDocVisitante_1">09444333</span></td>
+                                        <td style="width: 130px; text-align: center">
+                                            <span id="LwVisitasCR_LblEntidadVisitante_1">EL ROCOTO</span></td>
+                                        <td style="width: 190px; text-align: justify">
+                                            <span id="LwVisitasCR_LblMotivoVisita_1">PERSONAL DEL  CONCESIONARIO</span></td>
+                                        <td style="width: 140px; text-align: justify">
+                                            <span id="LwVisitasCR_LblNomEmpleado_1">PEREYRA SALAZAR, WALTER                                          </span></td>
+                                        <td style="width: 90px; text-align: center">
+                                            <span id="LwVisitasCR_LblCargoEmpleado_1">TECNICO ADMINISTRATIVO</span></td>
+                                        <td style="width: 120px">
+                                            <span id="LwVisitasCR_LblOficinaEmpleado_1">G.F. DE SERVICIO SOCIAL</span></td>
+                                        <td style="width: 50px; text-align: center">
+                                            <span id="LwVisitasCR_LblHoraSalida_1"></span></td>
+                                    </tr>
+                                
+                                    <tr>
+                                        <td style="width:60px; text-align:center"> 3</td>
+                                        <td style="width: 60px; text-align: center">
+                                            <span id="LwVisitasCR_LblHoraIngreso_2">08:15 </span></td>
+                                        <td style="width: 140px; text-align: justify">
+                                            <span id="LwVisitasCR_LblNomVisitante_2">COLLANTES FLORES, PATRICIA KARINA</span></td>
+                                        <td style="width: 50px; text-align: center">
+                                            <span id="LwVisitasCR_LblTipoDocVisitante_2">DNI/LE</span></td>
+                                        <td style="width: 60px; text-align: center">
+                                            <span id="LwVisitasCR_LblNroDocVisitante_2">40189930</span></td>
+                                        <td style="width: 130px; text-align: center">
+                                            <span id="LwVisitasCR_LblEntidadVisitante_2">EL ROCOTO</span></td>
+                                        <td style="width: 190px; text-align: justify">
+                                            <span id="LwVisitasCR_LblMotivoVisita_2">PERSONAL DEL  CONCESIONARIO</span></td>
+                                        <td style="width: 140px; text-align: justify">
+                                            <span id="LwVisitasCR_LblNomEmpleado_2">PEREYRA SALAZAR, WALTER                                          </span></td>
+                                        <td style="width: 90px; text-align: center">
+                                            <span id="LwVisitasCR_LblCargoEmpleado_2">TECNICO ADMINISTRATIVO</span></td>
+                                        <td style="width: 120px">
+                                            <span id="LwVisitasCR_LblOficinaEmpleado_2">G.F. DE SERVICIO SOCIAL</span></td>
+                                        <td style="width: 50px; text-align: center">
+                                            <span id="LwVisitasCR_LblHoraSalida_2"></span></td>
+                                    </tr>
+                                
+                                    <tr>
+                                        <td style="width:60px; text-align:center"> 4</td>
+                                        <td style="width: 60px; text-align: center">
+                                            <span id="LwVisitasCR_LblHoraIngreso_3">08:16 </span></td>
+                                        <td style="width: 140px; text-align: justify">
+                                            <span id="LwVisitasCR_LblNomVisitante_3">MORI ESPINOZA, YOVER MIGUEL</span></td>
+                                        <td style="width: 50px; text-align: center">
+                                            <span id="LwVisitasCR_LblTipoDocVisitante_3">DNI/LE</span></td>
+                                        <td style="width: 60px; text-align: center">
+                                            <span id="LwVisitasCR_LblNroDocVisitante_3">42325797</span></td>
+                                        <td style="width: 130px; text-align: center">
+                                            <span id="LwVisitasCR_LblEntidadVisitante_3">EL ROCOTO</span></td>
+                                        <td style="width: 190px; text-align: justify">
+                                            <span id="LwVisitasCR_LblMotivoVisita_3">PERSONAL DEL  CONCESIONARIO</span></td>
+                                        <td style="width: 140px; text-align: justify">
+                                            <span id="LwVisitasCR_LblNomEmpleado_3">PEREYRA SALAZAR, WALTER                                          </span></td>
+                                        <td style="width: 90px; text-align: center">
+                                            <span id="LwVisitasCR_LblCargoEmpleado_3">TECNICO ADMINISTRATIVO</span></td>
+                                        <td style="width: 120px">
+                                            <span id="LwVisitasCR_LblOficinaEmpleado_3">G.F. DE SERVICIO SOCIAL</span></td>
+                                        <td style="width: 50px; text-align: center">
+                                            <span id="LwVisitasCR_LblHoraSalida_3"></span></td>
+                                    </tr>
+                                
+                                    <tr>
+                                        <td style="width:60px; text-align:center"> 5</td>
+                                        <td style="width: 60px; text-align: center">
+                                            <span id="LwVisitasCR_LblHoraIngreso_4">08:16 </span></td>
+                                        <td style="width: 140px; text-align: justify">
+                                            <span id="LwVisitasCR_LblNomVisitante_4">SANCHEZ VILLOSLADA, NIGER ORLANDO</span></td>
+                                        <td style="width: 50px; text-align: center">
+                                            <span id="LwVisitasCR_LblTipoDocVisitante_4">DNI/LE</span></td>
+                                        <td style="width: 60px; text-align: center">
+                                            <span id="LwVisitasCR_LblNroDocVisitante_4">42410416</span></td>
+                                        <td style="width: 130px; text-align: center">
+                                            <span id="LwVisitasCR_LblEntidadVisitante_4">EL ROCOTO</span></td>
+                                        <td style="width: 190px; text-align: justify">
+                                            <span id="LwVisitasCR_LblMotivoVisita_4">PERSONAL DEL  CONCESIONARIO</span></td>
+                                        <td style="width: 140px; text-align: justify">
+                                            <span id="LwVisitasCR_LblNomEmpleado_4">PEREYRA SALAZAR, WALTER                                          </span></td>
+                                        <td style="width: 90px; text-align: center">
+                                            <span id="LwVisitasCR_LblCargoEmpleado_4">TECNICO ADMINISTRATIVO</span></td>
+                                        <td style="width: 120px">
+                                            <span id="LwVisitasCR_LblOficinaEmpleado_4">G.F. DE SERVICIO SOCIAL</span></td>
+                                        <td style="width: 50px; text-align: center">
+                                            <span id="LwVisitasCR_LblHoraSalida_4"></span></td>
+                                    </tr>
+                                
+                                    <tr>
+                                        <td style="width:60px; text-align:center"> 6</td>
+                                        <td style="width: 60px; text-align: center">
+                                            <span id="LwVisitasCR_LblHoraIngreso_5">08:16 </span></td>
+                                        <td style="width: 140px; text-align: justify">
+                                            <span id="LwVisitasCR_LblNomVisitante_5">TAPIA GARCÍA, RODRIGO AURELIO</span></td>
+                                        <td style="width: 50px; text-align: center">
+                                            <span id="LwVisitasCR_LblTipoDocVisitante_5">DNI/LE</span></td>
+                                        <td style="width: 60px; text-align: center">
+                                            <span id="LwVisitasCR_LblNroDocVisitante_5">07635363</span></td>
+                                        <td style="width: 130px; text-align: center">
+                                            <span id="LwVisitasCR_LblEntidadVisitante_5">EL ROCOTO</span></td>
+                                        <td style="width: 190px; text-align: justify">
+                                            <span id="LwVisitasCR_LblMotivoVisita_5">PERSONAL DEL  CONCESIONARIO</span></td>
+                                        <td style="width: 140px; text-align: justify">
+                                            <span id="LwVisitasCR_LblNomEmpleado_5">PEREYRA SALAZAR, WALTER                                          </span></td>
+                                        <td style="width: 90px; text-align: center">
+                                            <span id="LwVisitasCR_LblCargoEmpleado_5">TECNICO ADMINISTRATIVO</span></td>
+                                        <td style="width: 120px">
+                                            <span id="LwVisitasCR_LblOficinaEmpleado_5">G.F. DE SERVICIO SOCIAL</span></td>
+                                        <td style="width: 50px; text-align: center">
+                                            <span id="LwVisitasCR_LblHoraSalida_5"></span></td>
+                                    </tr>
+                                
+                                    <tr>
+                                        <td style="width:60px; text-align:center"> 7</td>
+                                        <td style="width: 60px; text-align: center">
+                                            <span id="LwVisitasCR_LblHoraIngreso_6">08:17 </span></td>
+                                        <td style="width: 140px; text-align: justify">
+                                            <span id="LwVisitasCR_LblNomVisitante_6">CONDORI CADENA, JUAN NATIVIDAD</span></td>
+                                        <td style="width: 50px; text-align: center">
+                                            <span id="LwVisitasCR_LblTipoDocVisitante_6">DNI/LE</span></td>
+                                        <td style="width: 60px; text-align: center">
+                                            <span id="LwVisitasCR_LblNroDocVisitante_6">29602082</span></td>
+                                        <td style="width: 130px; text-align: center">
+                                            <span id="LwVisitasCR_LblEntidadVisitante_6">EL ROCOTO</span></td>
+                                        <td style="width: 190px; text-align: justify">
+                                            <span id="LwVisitasCR_LblMotivoVisita_6">PERSONAL DEL  CONCESIONARIO</span></td>
+                                        <td style="width: 140px; text-align: justify">
+                                            <span id="LwVisitasCR_LblNomEmpleado_6">PEREYRA SALAZAR, WALTER                                          </span></td>
+                                        <td style="width: 90px; text-align: center">
+                                            <span id="LwVisitasCR_LblCargoEmpleado_6">TECNICO ADMINISTRATIVO</span></td>
+                                        <td style="width: 120px">
+                                            <span id="LwVisitasCR_LblOficinaEmpleado_6">G.F. DE SERVICIO SOCIAL</span></td>
+                                        <td style="width: 50px; text-align: center">
+                                            <span id="LwVisitasCR_LblHoraSalida_6"></span></td>
+                                    </tr>
+                                
+                                    <tr>
+                                        <td style="width:60px; text-align:center"> 8</td>
+                                        <td style="width: 60px; text-align: center">
+                                            <span id="LwVisitasCR_LblHoraIngreso_7">08:17 </span></td>
+                                        <td style="width: 140px; text-align: justify">
+                                            <span id="LwVisitasCR_LblNomVisitante_7">CAMPOS COZ, MARIA ALEXANDRA</span></td>
+                                        <td style="width: 50px; text-align: center">
+                                            <span id="LwVisitasCR_LblTipoDocVisitante_7">DNI/LE</span></td>
+                                        <td style="width: 60px; text-align: center">
+                                            <span id="LwVisitasCR_LblNroDocVisitante_7">71722159</span></td>
+                                        <td style="width: 130px; text-align: center">
+                                            <span id="LwVisitasCR_LblEntidadVisitante_7">EL ROCOTO</span></td>
+                                        <td style="width: 190px; text-align: justify">
+                                            <span id="LwVisitasCR_LblMotivoVisita_7">PERSONAL DEL  CONCESIONARIO</span></td>
+                                        <td style="width: 140px; text-align: justify">
+                                            <span id="LwVisitasCR_LblNomEmpleado_7">PEREYRA SALAZAR, WALTER                                          </span></td>
+                                        <td style="width: 90px; text-align: center">
+                                            <span id="LwVisitasCR_LblCargoEmpleado_7">TECNICO ADMINISTRATIVO</span></td>
+                                        <td style="width: 120px">
+                                            <span id="LwVisitasCR_LblOficinaEmpleado_7">G.F. DE SERVICIO SOCIAL</span></td>
+                                        <td style="width: 50px; text-align: center">
+                                            <span id="LwVisitasCR_LblHoraSalida_7"></span></td>
+                                    </tr>
+                                
+                                    <tr>
+                                        <td style="width:60px; text-align:center"> 9</td>
+                                        <td style="width: 60px; text-align: center">
+                                            <span id="LwVisitasCR_LblHoraIngreso_8">08:17 </span></td>
+                                        <td style="width: 140px; text-align: justify">
+                                            <span id="LwVisitasCR_LblNomVisitante_8">RUIZ  VILELA , SUSSAN JUDITH </span></td>
+                                        <td style="width: 50px; text-align: center">
+                                            <span id="LwVisitasCR_LblTipoDocVisitante_8">DNI/LE</span></td>
+                                        <td style="width: 60px; text-align: center">
+                                            <span id="LwVisitasCR_LblNroDocVisitante_8">43347088</span></td>
+                                        <td style="width: 130px; text-align: center">
+                                            <span id="LwVisitasCR_LblEntidadVisitante_8">EL ROCOTO</span></td>
+                                        <td style="width: 190px; text-align: justify">
+                                            <span id="LwVisitasCR_LblMotivoVisita_8">PERSONAL DEL  CONCESIONARIO</span></td>
+                                        <td style="width: 140px; text-align: justify">
+                                            <span id="LwVisitasCR_LblNomEmpleado_8">PEREYRA SALAZAR, WALTER                                          </span></td>
+                                        <td style="width: 90px; text-align: center">
+                                            <span id="LwVisitasCR_LblCargoEmpleado_8">TECNICO ADMINISTRATIVO</span></td>
+                                        <td style="width: 120px">
+                                            <span id="LwVisitasCR_LblOficinaEmpleado_8">G.F. DE SERVICIO SOCIAL</span></td>
+                                        <td style="width: 50px; text-align: center">
+                                            <span id="LwVisitasCR_LblHoraSalida_8"></span></td>
+                                    </tr>
+                                
+                                    <tr>
+                                        <td style="width:60px; text-align:center"> 10</td>
+                                        <td style="width: 60px; text-align: center">
+                                            <span id="LwVisitasCR_LblHoraIngreso_9">08:17 </span></td>
+                                        <td style="width: 140px; text-align: justify">
+                                            <span id="LwVisitasCR_LblNomVisitante_9">PACCO HUALLA, ANDERSON</span></td>
+                                        <td style="width: 50px; text-align: center">
+                                            <span id="LwVisitasCR_LblTipoDocVisitante_9">DNI/LE</span></td>
+                                        <td style="width: 60px; text-align: center">
+                                            <span id="LwVisitasCR_LblNroDocVisitante_9">44056508</span></td>
+                                        <td style="width: 130px; text-align: center">
+                                            <span id="LwVisitasCR_LblEntidadVisitante_9">EL ROCOTO</span></td>
+                                        <td style="width: 190px; text-align: justify">
+                                            <span id="LwVisitasCR_LblMotivoVisita_9">PERSONAL DEL  CONCESIONARIO</span></td>
+                                        <td style="width: 140px; text-align: justify">
+                                            <span id="LwVisitasCR_LblNomEmpleado_9">PEREYRA SALAZAR, WALTER                                          </span></td>
+                                        <td style="width: 90px; text-align: center">
+                                            <span id="LwVisitasCR_LblCargoEmpleado_9">TECNICO ADMINISTRATIVO</span></td>
+                                        <td style="width: 120px">
+                                            <span id="LwVisitasCR_LblOficinaEmpleado_9">G.F. DE SERVICIO SOCIAL</span></td>
+                                        <td style="width: 50px; text-align: center">
+                                            <span id="LwVisitasCR_LblHoraSalida_9"></span></td>
+                                    </tr>
+                                
+                                    </table>
+                                    <div id="paginado">
+                                        <span id="LwVisitasCR_DpVisitasCR"><input type="image" name="LwVisitasCR$DpVisitasCR$ctl00$ctl00" disabled="disabled" class="aspNetDisabled alinear" src="Imagenes/first.png" alt="&lt;&lt;" />&nbsp;<input type="image" name="LwVisitasCR$DpVisitasCR$ctl00$ctl01" disabled="disabled" class="aspNetDisabled alinear" src="Imagenes/previous.png" alt="&lt;" />&nbsp;
+                                                        Pág. 1 
+                                                        de 54
+                                                    <input type="image" name="LwVisitasCR$DpVisitasCR$ctl02$ctl00" class="alinear" src="Imagenes/next.png" alt=">" />&nbsp;<input type="image" name="LwVisitasCR$DpVisitasCR$ctl02$ctl01" class="alinear" src="Imagenes/last.png" alt=">>" />&nbsp;</span>
+                                    </div>
+                                
+                            <div style="text-align: center; margin-top: 5px;font-size:11px">
+                                <span id="LblTotal">Total de visitas: 535</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <!-- Fin box_int-->
+            </div>
+            <!-- FIN CUERPO -->
+            <!-- INICIO PIE DE PAGINA -->
+            <div id="box_horizontal">
+                <div id='linep'></div>
+                <div id='direccion'>
+                    Congreso de la República<br />
+                    Plaza Bolívar, Av. Abancay s/n - Lima, Perú<br />
+                    Central telefónica: 311-7777
+                </div>
+            </div>
+        </div>
+    
+<input type="hidden" name="__VIEWSTATEENCRYPTED" id="__VIEWSTATEENCRYPTED" value="" />
+<input type="hidden" name="__EVENTVALIDATION" id="__EVENTVALIDATION" value="rke6qIYJ3FDDO52QqUdkA3FkpJLSdKypZk3eULtVXOZnwjZsqzCn/eTZBp1B66WmE2T2THwS92E/WjK1v09D6boTje4DEuLCdWwpFgLVrHBp1lAJadsR/f71y65QHZLC7hvTzLD5dDQQUDMcH/eYJUb81wVEtL0kbv7s4u3CIXPbMJlO01UBASUJp0EmZS/Yb58mWM++oTY5bP7P50M9yG7WVsoW2EqLR068sFjj8qM=" /></form>
+</body>
+</html>
