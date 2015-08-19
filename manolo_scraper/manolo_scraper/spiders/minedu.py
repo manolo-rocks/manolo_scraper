@@ -2,7 +2,7 @@
 from spiders import SireviSpider
 
 
-class MinedurSpider(SireviSpider):
+class MineduSpider(SireviSpider):
     name = 'minedu'
 
     allowed_domains = ['visitasmed.perueduca.edu.pe']
