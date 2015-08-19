@@ -6,7 +6,7 @@ from manolo_scraper.spiders.minedu import MineduSpider
 from utils import fake_response_from_file
 
 
-class TestCongresoSpider(unittest.TestCase):
+class TestMineduSpider(unittest.TestCase):
 
     def setUp(self):
         self.spider = MineduSpider()

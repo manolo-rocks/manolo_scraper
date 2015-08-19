@@ -5,7 +5,7 @@ from manolo_scraper.spiders.minagr import MinagrSpider
 from utils import fake_response_from_file
 
 
-class TestCongresoSpider(unittest.TestCase):
+class TestMinagrSpider(unittest.TestCase):
 
     def setUp(self):
         self.spider = MinagrSpider()
