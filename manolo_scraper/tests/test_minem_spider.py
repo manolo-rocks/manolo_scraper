@@ -4,6 +4,7 @@ import os
 import unittest
 
 from manolo_scraper.spiders.minem import MinemSpider
+from manolo_scraper.utils import make_hash
 from utils import fake_response_from_file
 
 
@@ -33,3 +34,24 @@ class TestMinemSpider(unittest.TestCase):
         number_of_items = 1 + sum(1 for _ in items)
 
         self.assertEqual(number_of_items, 20)
+
+    def test_correct_hash_sha1_for_legacy_data(self):
+        item = {
+            'date': '2012-01-04',
+            'entity': u'PARTICULAR',
+            'full_name': u'BUENO NINAHUANCA, JHON BILL',
+            'host_name': u'RIVAS CIFUENTES, BENJAMIN DIONISIO',
+            'id_document': u'DNI',
+            'id_number': u'40748332',
+            'institution': u'minem',
+            'location': '',
+            'meeting_place': '',
+            'office': u'DGER - SALA DEP',
+            'reason': u'CONSULTA CIUDADANA',
+            'time_start': u'08:39',
+            'time_end': u'',
+            'title': u'Especialista I',
+        }
+        result = make_hash(item)
+        expected = '09dc4688afd00bb9ba60e69a4d1369b09dc261cf'
+        self.assertEqual(expected, result['sha1'])
