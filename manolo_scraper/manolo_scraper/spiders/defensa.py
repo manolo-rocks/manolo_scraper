@@ -61,6 +61,7 @@ class DefensaSpider(ManoloBaseSpider):
                 l.add_value('date', date)
 
                 l.add_xpath('full_name', './/td[@class="clsdetalle"][2]/text()')
+                l.add_xpath('entity', './/td[@class="clsdetalle"][4]/text()')
                 l.add_xpath('reason', './/td[@class="clsdetalle"][5]/text()')
                 l.add_xpath('host_name', './/td[@class="clsdetalle"][6]/text()')
                 l.add_xpath('time_start', './/td[@class="clsdetalle"][7]/text()')
