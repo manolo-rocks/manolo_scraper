@@ -1,14 +1,11 @@
 # -*- coding: utf-8 -*-
 import datetime
 from datetime import timedelta
-
-import re
 import math
 
 import scrapy
 
 from spiders import ManoloBaseSpider
-
 from ..items import ManoloItem
 from ..item_loaders import ManoloItemLoader
 from ..utils import make_hash, get_dni
@@ -101,7 +98,7 @@ class MinemSpider(ManoloBaseSpider):
             'Li_ResultadoPorPagina': '20',
             'FlgBuscador': '1',
             'Ls_ParametrosBuscador': 'TXT_FechaVisita_Inicio=10/08/2015|Ls_Pagina={}'.format(str(start_from_record)),
-            }
+        }
 
         request = scrapy.FormRequest(url=page_url, formdata=params,
                                      meta={'date': date_str},
