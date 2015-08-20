@@ -3,6 +3,7 @@ import os
 import unittest
 
 from manolo_scraper.spiders.defensa import DefensaSpider
+from manolo_scraper.utils import make_hash
 from utils import fake_response_from_file
 
 
@@ -26,6 +27,28 @@ class TestMineduSpider(unittest.TestCase):
         self.assertEqual(item.get('host_name'), u'HUGO DAVID MEJIA HUAMAN')
         self.assertEqual(item.get('time_end'), None)
         self.assertEqual(item.get('date'), u'2015-08-19')
+        self.assertEqual(item.get('sha1'), u'd9f07e3a5effd7f0b9164dfc14822c5395ed3b58')
 
         number_of_items = 1 + sum(1 for _ in items)
         self.assertEqual(number_of_items, 14)
+
+    def test_correct_hash_sha1_for_legacy_data(self):
+        item = {
+            'date': '2013-10-24',
+            'entity': u'',
+            'full_name': u'JUAN PONCE VILLARROEL',
+            'host_name': u'FERNANDO NOBLECILLA ZUÑIGA',
+            'id_document': u'DNI',
+            'id_number': u'08882615',
+            'institution': u'defensa',
+            'location': '',
+            'meeting_place': '',
+            'office': u'',
+            'reason': u'VISITA PERSONAL',
+            'time_start': u'17:28',
+            'time_end': u'18:00',
+            'title': u'',
+        }
+        result = make_hash(item)
+        expected = 'dd3e23e4a1b146e250f759666bd0cfdcf0c3db8d'
+        self.assertEqual(expected, result['sha1'])
