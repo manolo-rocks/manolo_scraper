@@ -30,6 +30,7 @@ class TestMinemSpider(unittest.TestCase):
         self.assertEqual(item.get('meeting_place'), u'OFICINA DEL FUNCIONARIO')
         self.assertEqual(item.get('institution'), u'minem')
         self.assertEqual(item.get('date'), u'2015-08-19')
+        self.assertEqual(item.get('sha1'), u'fa5238c796089a49ed8583ce36457c30e5e58e05')
 
         number_of_items = 1 + sum(1 for _ in items)
 
