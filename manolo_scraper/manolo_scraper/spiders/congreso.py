@@ -36,8 +36,6 @@ class CongresoSpider(ManoloBaseSpider):
                               dont_filter=True,
                               callback=self.parse_initial_request)
 
-            request.meta['date'] = date_str
-
             yield request
 
     def parse_initial_request(self, response):
