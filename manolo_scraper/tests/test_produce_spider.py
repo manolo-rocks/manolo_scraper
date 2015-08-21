@@ -3,6 +3,7 @@ import os
 import unittest
 
 from manolo_scraper.spiders.produce import ProduceSpider
+from manolo_scraper.utils import make_hash
 from utils import fake_response_from_file
 
 
@@ -42,9 +43,29 @@ class TestProduceSpider(unittest.TestCase):
         self.assertEqual(item.get('host_name'), u'KASTNER URIBE, MONICA CARLOTA')
         self.assertEqual(item.get('time_end'), u'11:53:16')
         self.assertEqual(item.get('date'), u'2015-08-20')
-
         self.assertEqual(item.get('sha1'), u'd435683995c845a4a947895d3197725e255753ef')
 
         number_of_items = 1 + sum(1 for _ in items)
 
         self.assertEqual(number_of_items, 28)
+
+    def test_correct_hash_sha1_for_legacy_data(self):
+        item = {
+            'full_name': 'LAVERIAN HERRERA, EFRAIN',
+            'entity': '',
+            'meeting_place': '',
+            'office': 'OFICINA DE LOGISTICA',
+            'host_name': 'URDANEGUI CABREJOS, FABRIZIO MARIO RAUL',
+            'reason': 'DEJAR DOCUMENTO',
+            'institution': 'produce',
+            'location': '',
+            'id_number': '32613418',
+            'id_document': 'DNI',
+            'date': '2008-01-02',
+            'time_start': '16:16:51',
+            'time_end': '17:15:31',
+            'objective': '',
+        }
+        result = make_hash(item)
+        expected = 'af716f0ed4aa8e3d3f4e1b05908c30f02f3e74fa'
+        self.assertEqual(expected, result['sha1'])
