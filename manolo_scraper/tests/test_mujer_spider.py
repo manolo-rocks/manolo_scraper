@@ -3,6 +3,7 @@ import os
 import unittest
 
 from manolo_scraper.spiders.mujer import MujerSpider
+from manolo_scraper.utils import make_hash
 from utils import fake_response_from_file
 
 
@@ -27,6 +28,30 @@ class TestMujerSpider(unittest.TestCase):
         self.assertEqual(item.get('office'), u'PROGRAMA NACIONAL CONTRA LA VIOLENCIA FAMILIAR Y SEXUAL')
         self.assertEqual(item.get('time_end'), u'10:42 AM')
         self.assertEqual(item.get('date'), u'2015-08-20')
+        self.assertEqual(item.get('sha1'), u'a00e952857d8c86ab3877ee3805bda686bd3a999')
 
         number_of_items = 1 + sum(1 for x in items)
         self.assertEqual(number_of_items, 20)
+
+    def test_correct_hash_sha1_for_legacy_data(self):
+        item = {
+            'full_name': 'FIGUEROA BERMUDEZ FRANKLIN',
+            'entity': 'SCOTIABANK',
+            'meeting_place': '',
+            'office': 'DESPACHO VICE - MINISTERIAL DE LA MUJER',
+            'host_name': 'CENTRO DOCUMENTARIO',
+            'reason': '',
+            'institution': 'min. mujer',
+            'location': '',
+            'id_number': '42982496',
+            'id_document': 'DNI',
+            'date': '2012-02-29',
+            'time_start': '12:33',
+            'time_end': '13:18',
+            'objective': '',
+            'num_visit': '',
+            'title': '',
+        }
+        result = make_hash(item)
+        expected = '50aa11295b04317f97e6e27dcb965c50d3e78a3b'
+        self.assertEqual(expected, result['sha1'])
