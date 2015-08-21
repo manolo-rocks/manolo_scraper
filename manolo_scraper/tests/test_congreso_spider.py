@@ -31,3 +31,15 @@ class TestCongresoSpider(unittest.TestCase):
         number_of_items = 1 + sum(1 for x in items)
 
         self.assertEqual(number_of_items, 10)
+
+    def test_start_request(self):
+        self.spider.date_start = '2015-08-18'
+        self.spider.date_end = '2015-08-19'
+        requests = self.spider.start_requests()
+
+        request = next(requests)
+        self.assertEqual(request.url, 'http://regvisitas.congreso.gob.pe/regvisitastransparencia/')
+        self.assertEqual(request.meta, {'date': '18/08/2015'})
+
+        number_of_requests = sum(1 for _ in requests)
+        self.assertEqual(number_of_requests, 1)

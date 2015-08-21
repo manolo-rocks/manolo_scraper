@@ -19,7 +19,7 @@ class CongresoSpider(ManoloBaseSpider):
 
     def start_requests(self):
         d1 = datetime.datetime.strptime(self.date_start, '%Y-%m-%d').date()
-        d2 = datetime.date.today()
+        d2 = datetime.datetime.strptime(self.date_end, '%Y-%m-%d').date()
         delta = d2 - d1
 
         for i in range(delta.days + 1):
@@ -35,8 +35,6 @@ class CongresoSpider(ManoloBaseSpider):
                               },
                               dont_filter=True,
                               callback=self.parse_initial_request)
-
-            request.meta['date'] = date_str
 
             yield request
 
