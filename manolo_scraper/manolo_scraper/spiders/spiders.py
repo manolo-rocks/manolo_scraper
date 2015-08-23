@@ -14,6 +14,7 @@ from ..utils import make_hash, get_dni
 
 
 class ManoloBaseSpider(scrapy.Spider):
+
     def __init__(self, date_start=None, date_end=None, *args, **kwargs):
         super(ManoloBaseSpider, self).__init__(*args, **kwargs)
 
@@ -28,13 +29,15 @@ class ManoloBaseSpider(scrapy.Spider):
         if self.date_end is None:
             self.date_end = today.strftime('%Y-%m-%d')
 
-        d1 = datetime.datetime.strptime(self.date_start, '%Y-%m-%d').date()
-        d2 = datetime.datetime.strptime(self.date_end, '%Y-%m-%d').date()
+        if (self.days_between_dates(self.date_start, self.date_end) < 0):
+            raise exceptions.UsageError("date_start must be less or equal to date_end")
 
+    def days_between_dates(self, date_start, date_end):
+        d1 = datetime.datetime.strptime(date_start, '%Y-%m-%d').date()
+        d2 = datetime.datetime.strptime(date_end, '%Y-%m-%d').date()
         delta = d2 - d1
 
-        if (delta.days < 0):
-            raise exceptions.UsageError("date_start must be less or equal to date_end")
+        return delta.days
 
 
 # SIstema de REgistro de VIsitas
