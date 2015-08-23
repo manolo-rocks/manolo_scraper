@@ -28,6 +28,14 @@ class ManoloBaseSpider(scrapy.Spider):
         if self.date_end is None:
             self.date_end = today.strftime('%Y-%m-%d')
 
+        d1 = datetime.datetime.strptime(self.date_start, '%Y-%m-%d').date()
+        d2 = datetime.datetime.strptime(self.date_end, '%Y-%m-%d').date()
+
+        delta = d2 - d1
+
+        if (delta.days < 0):
+            raise exceptions.UsageError("date_start must be less or equal to date_end")
+
 
 # SIstema de REgistro de VIsitas
 class SireviSpider(ManoloBaseSpider):
