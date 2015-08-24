@@ -29,6 +29,7 @@ class TestINPESpider(unittest.TestCase):
         self.assertEqual(item.get('office'), u'Unidad De Recursos Humanos')
         self.assertEqual(item.get('time_end'), u'08:54:00')
         self.assertEqual(item.get('date'), u'2015-08-19')
+        self.assertEqual(item.get('sha1'), u'b5e65b73ec827ec50734d748e09e641b2990d679')
 
         number_of_items = 1 + sum(1 for _ in items)
         self.assertEqual(number_of_items, 60)
