@@ -3,6 +3,7 @@ import os
 import unittest
 
 from manolo_scraper.spiders.inpe import INPESpider
+from manolo_scraper.utils import make_hash
 from utils import fake_response_from_file
 
 
@@ -31,3 +32,26 @@ class TestINPESpider(unittest.TestCase):
 
         number_of_items = 1 + sum(1 for _ in items)
         self.assertEqual(number_of_items, 60)
+
+    def test_correct_hash_sha1_for_legacy_data(self):
+        item = {
+            'full_name': 'Victor Alberto Menacho Aguinaga',
+            'entity': 'E.P.Ancon 1',
+            'meeting_place': '',
+            'office': 'Unidad De Recursos Humanos',
+            'host_name': 'WENDY DIANA HINOSTROZA HUARANGA',
+            'reason': 'DOCUMENTACION',
+            'institution': 'inpe',
+            'location': '',
+            'id_number': '42000454',
+            'id_document': 'DNI/LE',
+            'date': '2011-08-01',
+            'time_start': '11:35',
+            'time_end': '11:49',
+            'objective': 'Documentacion',
+            'num_visit': '',
+            'title': '',
+        }
+        result = make_hash(item)
+        expected = 'cad139c1cc501911d881edc6587f0ce887c2d6ce'
+        self.assertEqual(expected, result['sha1'])
