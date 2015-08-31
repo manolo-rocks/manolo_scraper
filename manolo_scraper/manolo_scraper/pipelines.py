@@ -49,6 +49,12 @@ class CleanItemPipeline(object):
         if 'location' not in item:
             item['location'] = ''
 
+        if 'office' not in item:
+            item['office'] = ''
+
+        if 'entity' not in item:
+            item['entity'] = ''
+
         if item['full_name'] == '':
             raise DropItem("Missing visitor in %s" % item)
 
