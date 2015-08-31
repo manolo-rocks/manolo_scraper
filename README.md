@@ -88,7 +88,7 @@ production database.
 * [x] Congreso de la Republica
    * **url**: http://regvisitas.congreso.gob.pe/regvisitastransparencia/
 
-* [ ] Presidencia
+* [x] Presidencia
     * **url**: http://www.presidencia.gob.pe/visitas/consulta_visitas.php
 
 * [x] Ministerio de Vivienda
