@@ -1,6 +1,5 @@
 # -*- coding: utf-8 -*-
 import datetime
-from datetime import timedelta
 import math
 
 import scrapy
@@ -19,25 +18,12 @@ class MinemSpider(ManoloBaseSpider):
 
     NUMBER_OF_PAGES_PER_PAGE = 20
 
-    def start_requests(self):
-        """
-        Get starting date to scrape from our database
+    def initial_request(self, date):
+        date_str = date.strftime("%d/%m/%Y")
 
-        :return: set of URLs
-        """
-        d1 = datetime.datetime.strptime(self.date_start, '%Y-%m-%d').date()
-        d2 = datetime.datetime.strptime(self.date_end, '%Y-%m-%d').date()
-        # range to fetch
-        delta = d2 - d1
+        request = self.make_form_request(date_str, self.parse_pages, 1)
 
-        for i in range(delta.days + 1):
-            my_date = d1 + timedelta(days=i)
-            my_date_str = my_date.strftime("%d/%m/%Y")
-            print("SCRAPING: %s" % my_date_str)
-
-            request = self.make_form_request(my_date_str, self.parse_pages, 1)
-
-            yield request
+        return request
 
     def parse_pages(self, response):
         total_of_records = response.css('#HID_CantidadRegistros').xpath('./@value').extract_first(default=1)

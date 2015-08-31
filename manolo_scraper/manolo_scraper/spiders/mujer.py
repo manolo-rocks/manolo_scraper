@@ -22,32 +22,26 @@ class MujerSpider(ManoloBaseSpider):
     base_url = 'http://webapp.mimp.gob.pe:8080/visitaweb/ListarVisitas.do'
     NUMBER_OF_ITEMS_PER_PAGE = 20
 
-    def start_requests(self):
-        d1 = datetime.datetime.strptime(self.date_start, '%Y-%m-%d').date()
-        d2 = datetime.datetime.strptime(self.date_end, '%Y-%m-%d').date()
-        delta = d2 - d1
+    def initial_request(self, date):
+        date_str = date.strftime("%d/%m/%Y")
 
-        for i in range(delta.days + 1):
-            date = d1 + datetime.timedelta(days=i)
-            date_str = date.strftime('%d/%m/%Y')
-            logging.info('SCRAPING: {}'.format(date_str))
+        params = {
+            'page': '1',
+            'rows': str(self.NUMBER_OF_ITEMS_PER_PAGE)
+        }
 
-            params = {
-                'page': '1',
-                'rows': str(self.NUMBER_OF_ITEMS_PER_PAGE)
-            }
+        url = self._get_url(date)
 
-            url = self._get_url(date)
-
-            yield scrapy.FormRequest(url=url, formdata=params,
-                                     meta={'date': date_str},
-                                     dont_filter=True,
-                                     callback=self.after_post)
+        return scrapy.FormRequest(url=url, formdata=params,
+                                 meta={'date': date_str},
+                                 dont_filter=True,
+                                 callback=self.after_post)
 
     def after_post(self, response):
         # send requests based on pagination
         res = json.loads(response.body)
         total_records = res['total']
+
         logging.info("Found {} records to scrape".format(total_records))
         pages = total_records / self.NUMBER_OF_ITEMS_PER_PAGE + 1
 
