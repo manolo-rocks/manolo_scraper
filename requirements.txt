@@ -2,7 +2,7 @@ Mako==1.0.0
 MarkupSafe==0.23
 PyYAML==3.11
 SQLAlchemy==1.0.6
-Scrapy==1.0.1
+scrapy==1.0.3
 Twisted==14.0.2
 Unidecode==0.04.16
 Unipath==1.0
