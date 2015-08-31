@@ -20,9 +20,9 @@ class DefensaSpider(ManoloBaseSpider):
         params = {'fechaqry': date_str}
 
         return scrapy.FormRequest(url=self.base_url, formdata=params,
-                                 meta={'date': date_str},
-                                 dont_filter=True,
-                                 callback=self.after_post)
+                                  meta={'date': date_str},
+                                  dont_filter=True,
+                                  callback=self.after_post)
 
     def after_post(self, response):
         # send requests based on pagination
@@ -38,7 +38,6 @@ class DefensaSpider(ManoloBaseSpider):
                                      callback=self.parse)
 
     def parse(self, response):
-
         date_obj = datetime.datetime.strptime(response.meta['date'], '%d/%m/%Y')
         date = datetime.datetime.strftime(date_obj, '%Y-%m-%d')
 
