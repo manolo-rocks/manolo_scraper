@@ -7,7 +7,6 @@ from scrapy import FormRequest, Request
 from spiders import ManoloBaseSpider
 from ..items import ManoloItem
 from ..item_loaders import ManoloItemLoader
-
 from ..utils import make_hash
 
 
@@ -19,11 +18,11 @@ class CongresoSpider(ManoloBaseSpider):
     def initial_request(self, date):
         date_str = date.strftime("%d/%m/%Y")
 
-        # This initial request always hit the current page of the date.
+        # This initial request always hits the current page of the date.
         request = Request(url='http://regvisitas.congreso.gob.pe/regvisitastransparencia/',
                           meta={
                               'date': date_str,
-                              },
+                          },
                           dont_filter=True,
                           callback=self.parse_initial_request)
 
@@ -31,10 +30,25 @@ class CongresoSpider(ManoloBaseSpider):
 
     def parse_initial_request(self, response):
         date = response.meta['date']
-
         request = self._request_initial_date_page(response, date, self.parse_pages)
-
         yield request
+
+    def _request_initial_date_page(self, response, date_str, callback):
+        formdata = {
+            'TxtFecha': date_str,
+            'BtnBuscar': 'Buscar'
+        }
+
+        request = FormRequest.from_response(response,
+                                            formdata=formdata,
+                                            dont_click=True,
+                                            dont_filter=True,
+                                            callback=callback
+                                            )
+
+        request.meta['date'] = date_str
+        request.meta['current_page'] = 1
+        return request
 
     def parse_pages(self, response):
         date = response.meta['date']
@@ -80,9 +94,6 @@ class CongresoSpider(ManoloBaseSpider):
 
                     yield item
 
-    def _get_number_of_pages(self, total_of_records):
-        return int(math.ceil(total_of_records / float(self.NUMBER_OF_PAGES_PER_PAGE)))
-
     def _request_next_page(self, response, date_str, callback):
         current_page = int(response.meta['current_page'])
 
@@ -109,27 +120,13 @@ class CongresoSpider(ManoloBaseSpider):
                                                     formdata=formdata,
                                                     dont_click=True,
                                                     dont_filter=True,
-                                                    callback=callback
-                )
+                                                    callback=callback,
+                                                    )
 
                 request.meta['date'] = date_str
                 request.meta['current_page'] = current_page
 
                 return request
 
-    def _request_initial_date_page(self, response, date_str, callback):
-        formdata = {
-            'TxtFecha': date_str,
-            'BtnBuscar': 'Buscar'
-        }
-
-        request = FormRequest.from_response(response,
-                                            formdata=formdata,
-                                            dont_click=True,
-                                            dont_filter=True,
-                                            callback=callback
-        )
-
-        request.meta['date'] = date_str
-        request.meta['current_page'] = 1
-        return request
+    def _get_number_of_pages(self, total_of_records):
+        return int(math.ceil(total_of_records / float(self.NUMBER_OF_PAGES_PER_PAGE)))
