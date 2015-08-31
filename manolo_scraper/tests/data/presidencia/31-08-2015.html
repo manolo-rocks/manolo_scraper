@@ -1,0 +1,479 @@
+
+<html>
+<link rel="stylesheet" type="text/css" href="css/principal.css" />
+<link rel="stylesheet" type="text/css" href="css/egcc.css" />
+<script language="Javascript"> document.oncontextmenu = function(){return false} </script>
+
+<script language="Javascript"> 
+function disableselect(e){ 
+return false 
+} 
+function reEnable(){ 
+return true 
+} 
+document.onselectstart=new Function ("return false" ) 
+if (window.sidebar){ 
+document.onmousedown=disableselect 
+document.onclick=reEnable 
+} 
+ 
+</script>
+<script LANGUAGE="JavaScript"> 
+function ventanaSecundaria (URL){ 
+   window.open(URL,"ventana1","resizable=YES,width=650,height=300,Scrollbars=YES") 
+}
+
+/*function refrescar() 
+   { 
+   //show_clock();
+    document.form1.action="sop_lista_bloqueo_acceso.php?ano=$ano&est=$est";
+    document.form1.submit();
+   } 
+*/   
+function Paginar1() { 
+
+  //alert("hola");
+  document.form1.pagina.value=document.form1.cmbPag1.value;     
+  document.form1.submit();
+}
+
+function Paginar(pagina) { 
+
+    document.form1.pagina.value=pagina; 
+  //alert(document.form1.pagina.value);   
+  document.form1.submit();
+}  
+
+
+
+
+</script>   
+<body>
+<form name="form1" method="get" action="">
+
+<table width="220" align="center" cellpadding="0" cellspacing="0" >
+    <tr class="arial11">
+      <td width="1%">&nbsp;</td>
+    <td width="1%">
+            </td>
+    <td width="10%" class="textocampo2">
+    
+        P&aacute;gina: <b> 
+        <select name="cmbPag1" onChange="javascript:Paginar1()" class="textochico">
+    <option value="1" selected>1</option>
+            <option value="0">1</option>
+            <option value="12">2</option>
+        </select>
+    </b> de <b>2<b> 
+    </td>
+    <td width="5%">
+      
+      <img src="images/next.gif" border=0 style="cursor:hand" alt="Página Siguiente" onClick="javascript:Paginar(12)">
+        </td>
+  </tr>
+  </table>
+<table width="100%" border="0" align="center" cellpadding="0" cellspacing="0" class="tabla">
+<tr align="center" class="heading">
+<td width="3%">ITEM</td>
+
+<td width="5%" align="left">FECHA</td>
+<td width="12%" align="left">VISITANTE</td>
+<td width="7%" align="left">DOCUMENTO</td>
+<td width="15%" align="left">ENTIDAD</td>
+<td width="20%" align="left">MOTIVO</td>
+<td width="13%" align="left">EMPLEADO P&#xDA;BLICO</td>
+<td width="15%" align="left">OFICINA - CARGO</td>
+<td width="5%" >HORA INGRESO</td>
+<td width="5%" >HORA SALIDA</td>
+<td width="5%" >LOCAL</td>
+<td></td>
+
+  
+
+<tr height="30" onmouseover=style.backgroundColor='#ECF9FF' onmouseout=style.backgroundColor='#EEEEEF' bgcolor=EEEEEF>
+   <td width="3%" align="center">1</td>      
+      
+ 
+   <td width="5%" align="left">31/08/2015</td>
+    
+    <td width="12%" align="left">RICCE CHUMBE WALTER HUMBERTO</td>
+    
+      <td width="7%" align="left">DNI 25424360</td>
+      
+    <td width="15%" align="left">MINISTERIO DE AMBIENTE</td>
+      
+    <td width="20%" align="left">REUNION DE TRABAJO</td>
+      
+    <td width="13%" align="left">MONTALVA DE FALLA JOSE</td>
+     
+   
+     <td width="15%" align="left">SUBSECRETARIA GENERAL - DIRECTOR GENERAL</td>
+     
+   
+     <td width="5%" align="center">10:50</td>
+     
+   
+     <td width="5%" align="center">10:54</td>
+     
+      <td width="5%" align="center">EDIFICIO PALACIO</td>
+     
+     
+   </tr>    
+  
+
+<tr height="30" onmouseover=style.backgroundColor='#ECF9FF' onmouseout=style.backgroundColor='#FFFFFF' bgcolor=FFFFFF>
+   <td width="3%" align="center">2</td>      
+      
+ 
+   <td width="5%" align="left">31/08/2015</td>
+    
+    <td width="12%" align="left">LEON GARCIA CARLOS VICENTE</td>
+    
+      <td width="7%" align="left">DNI 41381716</td>
+      
+    <td width="15%" align="left">VENDOMATICA</td>
+      
+    <td width="20%" align="left">OTROS: ABASTECER VENDOMATICA</td>
+      
+    <td width="13%" align="left">GONZALES ACOSTA AUGUSTO</td>
+     
+   
+     <td width="15%" align="left">DIRECCION DE OPERACIONES - AUXILIAR ADMINISTRATIVO</td>
+     
+   
+     <td width="5%" align="center">10:45</td>
+     
+   
+     <td width="5%" align="center">10:58</td>
+     
+      <td width="5%" align="center">DESAMPARADOS</td>
+     
+     
+   </tr>    
+  
+
+<tr height="30" onmouseover=style.backgroundColor='#ECF9FF' onmouseout=style.backgroundColor='#EEEEEF' bgcolor=EEEEEF>
+   <td width="3%" align="center">3</td>      
+      
+ 
+   <td width="5%" align="left">31/08/2015</td>
+    
+    <td width="12%" align="left">FIGUEIREDO AGUILAR NILCE PATRICIA</td>
+    
+      <td width="7%" align="left">DNI 47049001</td>
+      
+    <td width="15%" align="left">GRUPO INTECSA SAC</td>
+      
+    <td width="20%" align="left">REUNION DE TRABAJO</td>
+      
+    <td width="13%" align="left">MARCOS APAZA CARLOS</td>
+     
+   
+     <td width="15%" align="left">DIRECCION DE LOGISTICA - TECNICO ADMINISTRATIVO II</td>
+     
+   
+     <td width="5%" align="center">10:38</td>
+     
+   
+     <td width="5%" align="center">10:44</td>
+     
+      <td width="5%" align="center">EDIFICIO PALACIO</td>
+     
+     
+   </tr>    
+  
+
+<tr height="30" onmouseover=style.backgroundColor='#ECF9FF' onmouseout=style.backgroundColor='#FFFFFF' bgcolor=FFFFFF>
+   <td width="3%" align="center">4</td>      
+      
+ 
+   <td width="5%" align="left">31/08/2015</td>
+    
+    <td width="12%" align="left">ESTRADA CHAMBERGO EDGAR ROBERTO</td>
+    
+      <td width="7%" align="left">DNI 10763666</td>
+      
+    <td width="15%" align="left">VIDRIERIA RIMAC</td>
+      
+    <td width="20%" align="left">OTROS: TRABAJOS DE VIDRIERIA</td>
+      
+    <td width="13%" align="left">ESCOBAR IGLESIAS AUGUSTO</td>
+     
+   
+     <td width="15%" align="left">DIRECCION DE OPERACIONES - ASISTENTE DE AREA I</td>
+     
+   
+     <td width="5%" align="center">10:27</td>
+     
+   
+     <td width="5%" align="center">10:37</td>
+     
+      <td width="5%" align="center">DESAMPARADOS</td>
+     
+     
+   </tr>    
+  
+
+<tr height="30" onmouseover=style.backgroundColor='#ECF9FF' onmouseout=style.backgroundColor='#EEEEEF' bgcolor=EEEEEF>
+   <td width="3%" align="center">5</td>      
+      
+ 
+   <td width="5%" align="left">31/08/2015</td>
+    
+    <td width="12%" align="left">LOPEZ CAZORLA ALVARO FERNANDO</td>
+    
+      <td width="7%" align="left">DNI 10553202</td>
+      
+    <td width="15%" align="left">PARTICULAR</td>
+      
+    <td width="20%" align="left">PERSONAL</td>
+      
+    <td width="13%" align="left">MONTALVA DE FALLA JOSE</td>
+     
+   
+     <td width="15%" align="left">SUBSECRETARIA GENERAL - DIRECTOR GENERAL</td>
+     
+   
+     <td width="5%" align="center">10:23</td>
+     
+   
+     <td width="5%" align="center">10:47</td>
+     
+      <td width="5%" align="center">EDIFICIO PALACIO</td>
+     
+     
+   </tr>    
+  
+
+<tr height="30" onmouseover=style.backgroundColor='#ECF9FF' onmouseout=style.backgroundColor='#FFFFFF' bgcolor=FFFFFF>
+   <td width="3%" align="center">6</td>      
+      
+ 
+   <td width="5%" align="left">31/08/2015</td>
+    
+    <td width="12%" align="left">RAFAEL RAMIREZ GILMER</td>
+    
+      <td width="7%" align="left">DNI 42725433</td>
+      
+    <td width="15%" align="left">PARTICULAR</td>
+      
+    <td width="20%" align="left">REUNION DE TRABAJO</td>
+      
+    <td width="13%" align="left">MUGA MELGAREJO CARLOS</td>
+     
+   
+     <td width="15%" align="left">DIRECCION DE LOGISTICA - AUXILIAR ADMINISTRATIVO</td>
+     
+   
+     <td width="5%" align="center">09:56</td>
+     
+   
+     <td width="5%" align="center">10:03</td>
+     
+      <td width="5%" align="center">EDIFICIO PALACIO</td>
+     
+     
+   </tr>    
+  
+
+<tr height="30" onmouseover=style.backgroundColor='#ECF9FF' onmouseout=style.backgroundColor='#EEEEEF' bgcolor=EEEEEF>
+   <td width="3%" align="center">7</td>      
+      
+ 
+   <td width="5%" align="left">31/08/2015</td>
+    
+    <td width="12%" align="left">MENDOZA GIL ROGELIO</td>
+    
+      <td width="7%" align="left">DNI 10369699</td>
+      
+    <td width="15%" align="left">PARTICULAR</td>
+      
+    <td width="20%" align="left">REUNION DE TRABAJO</td>
+      
+    <td width="13%" align="left">MUGA MELGAREJO CARLOS</td>
+     
+   
+     <td width="15%" align="left">DIRECCION DE LOGISTICA - AUXILIAR ADMINISTRATIVO</td>
+     
+   
+     <td width="5%" align="center">09:54</td>
+     
+   
+     <td width="5%" align="center">10:03</td>
+     
+      <td width="5%" align="center">EDIFICIO PALACIO</td>
+     
+     
+   </tr>    
+  
+
+<tr height="30" onmouseover=style.backgroundColor='#ECF9FF' onmouseout=style.backgroundColor='#FFFFFF' bgcolor=FFFFFF>
+   <td width="3%" align="center">8</td>      
+      
+ 
+   <td width="5%" align="left">31/08/2015</td>
+    
+    <td width="12%" align="left">ORTEGA HARTMANN SANTIAGO JESUS</td>
+    
+      <td width="7%" align="left">DNI 07929601</td>
+      
+    <td width="15%" align="left">PARTICULAR</td>
+      
+    <td width="20%" align="left">REUNION DE TRABAJO</td>
+      
+    <td width="13%" align="left">AYO WONG JORGE</td>
+     
+   
+     <td width="15%" align="left">OFICINA DE PLANEAMIENTO Y PRESUPUESTO - DIRECTOR GENERAL</td>
+     
+   
+     <td width="5%" align="center">09:52</td>
+     
+   
+     <td width="5%" align="center">10:43</td>
+     
+      <td width="5%" align="center">EDIFICIO PALACIO</td>
+     
+     
+   </tr>    
+  
+
+<tr height="30" onmouseover=style.backgroundColor='#ECF9FF' onmouseout=style.backgroundColor='#EEEEEF' bgcolor=EEEEEF>
+   <td width="3%" align="center">9</td>      
+      
+ 
+   <td width="5%" align="left">31/08/2015</td>
+    
+    <td width="12%" align="left">ROMERO SALAZAR SUSANA PALMIRA</td>
+    
+      <td width="7%" align="left">DNI 06640445</td>
+      
+    <td width="15%" align="left">PARTICULAR</td>
+      
+    <td width="20%" align="left">REUNION DE TRABAJO</td>
+      
+    <td width="13%" align="left">AYO WONG JORGE</td>
+     
+   
+     <td width="15%" align="left">OFICINA DE PLANEAMIENTO Y PRESUPUESTO - DIRECTOR GENERAL</td>
+     
+   
+     <td width="5%" align="center">09:49</td>
+     
+   
+     <td width="5%" align="center">10:43</td>
+     
+      <td width="5%" align="center">EDIFICIO PALACIO</td>
+     
+     
+   </tr>    
+  
+
+<tr height="30" onmouseover=style.backgroundColor='#ECF9FF' onmouseout=style.backgroundColor='#FFFFFF' bgcolor=FFFFFF>
+   <td width="3%" align="center">10</td>      
+      
+ 
+   <td width="5%" align="left">31/08/2015</td>
+    
+    <td width="12%" align="left">YSLA SEGURA ANDREA MEDALIT</td>
+    
+      <td width="7%" align="left">DNI 40692939</td>
+      
+    <td width="15%" align="left">PARTICULAR</td>
+      
+    <td width="20%" align="left">PERSONAL</td>
+      
+    <td width="13%" align="left">AYO WONG JORGE</td>
+     
+   
+     <td width="15%" align="left">OFICINA DE PLANEAMIENTO Y PRESUPUESTO - DIRECTOR GENERAL</td>
+     
+   
+     <td width="5%" align="center">08:18</td>
+     
+   
+     <td width="5%" align="center">10:12</td>
+     
+      <td width="5%" align="center">EDIFICIO PALACIO</td>
+     
+     
+   </tr>    
+  
+
+<tr height="30" onmouseover=style.backgroundColor='#ECF9FF' onmouseout=style.backgroundColor='#EEEEEF' bgcolor=EEEEEF>
+   <td width="3%" align="center">11</td>      
+      
+ 
+   <td width="5%" align="left">31/08/2015</td>
+    
+    <td width="12%" align="left">GONZALES QUISPE MIGUEL ANGEL</td>
+    
+      <td width="7%" align="left">DNI 45570009</td>
+      
+    <td width="15%" align="left">JAMBE</td>
+      
+    <td width="20%" align="left">OTROS: PROVEEDOR</td>
+      
+    <td width="13%" align="left">HUAMAN ARTICA JUAN</td>
+     
+   
+     <td width="15%" align="left">DIRECCION DE OPERACIONES - TECNICO ADMINISTRATIVO I</td>
+     
+   
+     <td width="5%" align="center">08:00</td>
+     
+   
+     <td width="5%" align="center">08:23</td>
+     
+      <td width="5%" align="center">DESAMPARADOS</td>
+     
+     
+   </tr>    
+  
+
+<tr height="30" onmouseover=style.backgroundColor='#ECF9FF' onmouseout=style.backgroundColor='#FFFFFF' bgcolor=FFFFFF>
+   <td width="3%" align="center">12</td>      
+      
+ 
+   <td width="5%" align="left">31/08/2015</td>
+    
+    <td width="12%" align="left">QUISPE GARAMENDI JUAN ALBERTO</td>
+    
+      <td width="7%" align="left">DNI 80114379</td>
+      
+    <td width="15%" align="left">JAMBE</td>
+      
+    <td width="20%" align="left">OTROS: PROVEEDOR</td>
+      
+    <td width="13%" align="left">HUAMAN ARTICA JUAN</td>
+     
+   
+     <td width="15%" align="left">DIRECCION DE OPERACIONES - TECNICO ADMINISTRATIVO I</td>
+     
+   
+     <td width="5%" align="center">08:00</td>
+     
+   
+     <td width="5%" align="center">08:23</td>
+     
+      <td width="5%" align="center">DESAMPARADOS</td>
+     
+     
+   </tr>    
+  
+  <td><input name="pagina" type="hidden" id="pagina" value="0"><input name="fecha" type="hidden" id="fecha" value="31/08/2015"></td>
+    
+    </td> 
+    <td></td>     
+</table>
+<table class="arial09" width="100%" border="0" align="center" cellspacing="0">
+      <tr> 
+      <td colspan="4" align="left">
+      
+
+    </td>
+    </tr>   
+</table>
+</form>
+</body>
+</html>
