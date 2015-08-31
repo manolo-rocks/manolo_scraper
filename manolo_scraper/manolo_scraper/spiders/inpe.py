@@ -4,7 +4,6 @@ import datetime
 import scrapy
 
 from spiders import ManoloBaseSpider
-
 from ..item_loaders import ManoloItemLoader
 from ..items import ManoloItem
 from ..utils import make_hash
@@ -38,11 +37,9 @@ class INPESpider(ManoloBaseSpider):
         rows = response.xpath('//tr')
 
         for row in rows:
-
             data = row.xpath('td')
 
             if len(data) > 7:
-
                 l = ManoloItemLoader(item=ManoloItem(), selector=row)
 
                 l.add_value('institution', 'inpe')
@@ -61,7 +58,7 @@ class INPESpider(ManoloBaseSpider):
                 l.add_xpath('reason', './td[7]/p/text()')
                 l.add_xpath('host_name', './td[8]/p/text()')
 
-                # Add conditional to don't accept "---"
+                # Add conditional, don't accept "---"
                 l.add_xpath('title', './td[9]/p/text()')
 
                 l.add_xpath('office', './td[10]/p/text()')
