@@ -1,7 +1,6 @@
 import re
 import math
 import datetime
-from datetime import timedelta
 
 from scrapy import FormRequest, Request
 
@@ -14,29 +13,21 @@ from ..utils import make_hash
 
 class CongresoSpider(ManoloBaseSpider):
     name = 'congreso'
-    allowed_domains = ["regvisitas.congreso.gob.pe"]
+    allowed_domains = ['regvisitas.congreso.gob.pe']
     NUMBER_OF_PAGES_PER_PAGE = 10
 
-    def start_requests(self):
-        d1 = datetime.datetime.strptime(self.date_start, '%Y-%m-%d').date()
-        d2 = datetime.datetime.strptime(self.date_end, '%Y-%m-%d').date()
-        delta = d2 - d1
+    def initial_request(self, date):
+        date_str = date.strftime("%d/%m/%Y")
 
-        for i in range(delta.days + 1):
-            date = d1 + timedelta(days=i)
-            date_str = date.strftime("%d/%m/%Y")
-
-            print("SCRAPING: %s" % date_str)
-
-            # This initial request always hit the current page of the date.
-            request = Request(url="http://regvisitas.congreso.gob.pe/regvisitastransparencia/",
-                              meta={
-                                  'date': date_str,
+        # This initial request always hit the current page of the date.
+        request = Request(url='http://regvisitas.congreso.gob.pe/regvisitastransparencia/',
+                          meta={
+                              'date': date_str,
                               },
-                              dont_filter=True,
-                              callback=self.parse_initial_request)
+                          dont_filter=True,
+                          callback=self.parse_initial_request)
 
-            yield request
+        return request
 
     def parse_initial_request(self, response):
         date = response.meta['date']
