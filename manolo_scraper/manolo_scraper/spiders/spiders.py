@@ -59,7 +59,6 @@ class ManoloBaseSpider(scrapy.Spider):
         date_obj = datetime.datetime.strptime(date_str, format)
         return datetime.datetime.strftime(date_obj, '%Y-%m-%d')
 
-
 # SIstema de REgistro de VIsitas
 class SireviSpider(ManoloBaseSpider):
 
