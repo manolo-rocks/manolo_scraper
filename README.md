@@ -72,7 +72,7 @@ production database.
 * [x] Ministerio de Salud
     * **url**: http://intranet5.minsa.gob.pe/RegVisitasCons/listado.aspx
 
-* [ ] Ministerio del Ambiente
+* [x] Ministerio del Ambiente
    * **url**: http://visitas.minam.gob.pe/frmConsulta.aspx
 
 * [x] Ministerio de Agricultura y Riesgo
