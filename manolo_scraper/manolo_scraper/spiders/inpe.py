@@ -30,9 +30,7 @@ class INPESpider(ManoloBaseSpider):
         return request
 
     def parse(self, response):
-
-        date_obj = datetime.datetime.strptime(response.meta['date'], '%d/%m/%Y')
-        date = datetime.datetime.strftime(date_obj, '%Y-%m-%d')
+        date = self.get_date_item(response.meta['date'], '%d/%m/%Y')
 
         rows = response.xpath('//tr')
 

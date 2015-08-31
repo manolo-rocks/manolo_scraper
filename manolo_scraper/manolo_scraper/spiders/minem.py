@@ -1,5 +1,4 @@
 # -*- coding: utf-8 -*-
-import datetime
 import math
 
 import scrapy
@@ -57,8 +56,7 @@ class MinemSpider(ManoloBaseSpider):
         return int(math.ceil(total_of_records / float(self.NUMBER_OF_PAGES_PER_PAGE)))
 
     def parse(self, response):
-        date_obj = datetime.datetime.strptime(response.meta['date'], '%d/%m/%Y')
-        date = datetime.datetime.strftime(date_obj, '%Y-%m-%d')
+        date = self.get_date_item(response.meta['date'], '%d/%m/%Y')
 
         rows = response.xpath("//tr")
 

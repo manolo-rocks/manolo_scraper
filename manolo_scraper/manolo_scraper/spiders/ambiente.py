@@ -1,5 +1,3 @@
-import datetime
-
 from scrapy import FormRequest, Request
 
 from spiders import ManoloBaseSpider
@@ -64,8 +62,7 @@ class AmbienteSpider(ManoloBaseSpider):
             yield request
 
     def parse(self, response):
-        date_obj = datetime.datetime.strptime(response.meta['date'], self.DATE_REQUEST_FORMAT)
-        date = datetime.datetime.strftime(date_obj, '%Y-%m-%d')
+        date = self.get_date_item(response.meta['date'], self.DATE_REQUEST_FORMAT)
 
         rows = response.xpath('//table[@id="gvwConsulta"]/tr[@class="rgRow" or @class="rgAltRow"]')
 
