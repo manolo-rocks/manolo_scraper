@@ -32,7 +32,8 @@ class ManoloBaseSpider(scrapy.Spider):
         if self.days_between_dates(self.date_start, self.date_end) < 0:
             raise exceptions.UsageError("date_start must be less or equal to date_end")
 
-    def days_between_dates(self, date_start, date_end):
+    @staticmethod
+    def days_between_dates(date_start, date_end):
         d1 = datetime.datetime.strptime(date_start, '%Y-%m-%d').date()
         d2 = datetime.datetime.strptime(date_end, '%Y-%m-%d').date()
         delta = d2 - d1
@@ -54,7 +55,8 @@ class ManoloBaseSpider(scrapy.Spider):
     def initial_request(self, date_obj):
         raise NotImplementedError
 
-    def get_date_item(self, date_str, format):
+    @staticmethod
+    def get_date_item(date_str, format):
         date_obj = datetime.datetime.strptime(date_str, format)
         return datetime.datetime.strftime(date_obj, '%Y-%m-%d')
 
