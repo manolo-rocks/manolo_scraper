@@ -37,7 +37,6 @@ class ProduceSpider(ManoloBaseSpider):
             data = row.xpath('td[@valign="top"]')
 
             if len(data) > 9:
-
                 l = ManoloItemLoader(item=ManoloItem(), selector=row)
 
                 l.add_value('institution', 'produce')
