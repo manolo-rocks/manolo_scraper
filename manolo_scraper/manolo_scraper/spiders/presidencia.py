@@ -32,6 +32,22 @@ class PresidenciaSpider(ManoloBaseSpider):
             for page in range(1, number_of_pages + 1):
                 yield self._request_page(date_str, page, self.parse)
 
+    def _request_page(self, date_str, page, callback):
+        offset = self.NUMBER_OF_ITEMS_PER_PAGE * (page - 1)
+
+        url = self.base_url + '/consulta_visitas.php?fecha={}&pagina={}'.format(date_str, offset)
+
+        request = Request(url=url,
+                          meta={
+                              'date': date_str,
+                              },
+                          dont_filter=True,
+                          callback=callback)
+
+        request.meta['date'] = date_str
+
+        return request
+
     def parse(self, response):
         rows = response.xpath('//table[@class="tabla"]/tr[@height="30"]')
 
@@ -74,19 +90,3 @@ class PresidenciaSpider(ManoloBaseSpider):
             item = make_hash(item)
 
             yield item
-
-    def _request_page(self, date_str, page, callback):
-        offset = self.NUMBER_OF_ITEMS_PER_PAGE * (page - 1)
-
-        url = self.base_url + '/consulta_visitas.php?fecha={}&pagina={}'.format(date_str, offset)
-
-        request = Request(url=url,
-                          meta={
-                              'date': date_str,
-                              },
-                          dont_filter=True,
-                          callback=callback)
-
-        request.meta['date'] = date_str
-
-        return request
