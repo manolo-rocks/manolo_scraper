@@ -45,7 +45,7 @@ production database.
 * [x] Presidencial del Consejo de Ministros
     * **url**: http://hera.pcm.gob.pe/Visitas/controlVisitas/index.php?r=consultas/visitaConsulta/index
 
-* [x] Organizmo Supervisor de las Contrataciones del Estado
+* [x] Organismo Supervisor de las Contrataciones del Estado
     * **url**: http://visitas.osce.gob.pe/controlVisitas/index.php?r=consultas/visitaConsulta/index
 
 * [x] Ministerio de Produccion
