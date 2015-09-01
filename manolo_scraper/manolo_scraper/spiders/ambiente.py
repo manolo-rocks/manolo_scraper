@@ -64,6 +64,22 @@ class AmbienteSpider(ManoloBaseSpider):
             request = self._get_page_request(response, page, date)
             yield request
 
+    def _get_page_request(self, response, page, date):
+
+        request = FormRequest.from_response(response,
+                                            formdata={
+                                                'txtDesde': date,
+                                                '__EVENTTARGET': 'gvwConsulta',
+                                                '__EVENTARGUMENT': 'Page${}'.format(page)
+                                            },
+                                            dont_filter=True,
+                                            callback=self.parse_page_items
+        )
+
+        request.meta['date'] = date
+
+        return request
+
     def parse(self, response):
 
         date_obj = datetime.datetime.strptime(response.meta['date'], self.DATE_REQUEST_FORMAT)
@@ -107,19 +123,3 @@ class AmbienteSpider(ManoloBaseSpider):
             return date[1] + ' ' + date[2]
 
         return None
-
-    def _get_page_request(self, response, page, date):
-
-        request = FormRequest.from_response(response,
-                                            formdata={
-                                                'txtDesde': date,
-                                                '__EVENTTARGET': 'gvwConsulta',
-                                                '__EVENTARGUMENT': 'Page${}'.format(page)
-                                            },
-                                            dont_filter=True,
-                                            callback=self.parse_page_items
-        )
-
-        request.meta['date'] = date
-
-        return request
