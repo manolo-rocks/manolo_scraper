@@ -1,6 +1,5 @@
 # -*- coding: utf-8 -*-
 import datetime
-import logging
 
 import scrapy
 
@@ -15,21 +14,15 @@ class DefensaSpider(ManoloBaseSpider):
     allowed_domains = ['mindef.gob.pe']
     base_url = 'http://www.mindef.gob.pe/visitas/qryvisitas.php'
 
-    def start_requests(self):
-        d1 = datetime.datetime.strptime(self.date_start, '%Y-%m-%d').date()
-        d2 = datetime.datetime.strptime(self.date_end, '%Y-%m-%d').date()
-        delta = d2 - d1
+    def initial_request(self, date):
+        date_str = date.strftime("%d/%m/%Y")
 
-        for i in range(delta.days + 1):
-            date = d1 + datetime.timedelta(days=i)
-            date_str = date.strftime("%d/%m/%Y")
-            logging.info("SCRAPING: {}".format(date_str))
+        params = {'fechaqry': date_str}
 
-            params = {'fechaqry': date_str}
-            yield scrapy.FormRequest(url=self.base_url, formdata=params,
-                                     meta={'date': date_str},
-                                     dont_filter=True,
-                                     callback=self.after_post)
+        return scrapy.FormRequest(url=self.base_url, formdata=params,
+                                  meta={'date': date_str},
+                                  dont_filter=True,
+                                  callback=self.after_post)
 
     def after_post(self, response):
         # send requests based on pagination
@@ -45,8 +38,6 @@ class DefensaSpider(ManoloBaseSpider):
                                      callback=self.parse)
 
     def parse(self, response):
-        logging.info("PARSED URL {}".format(response.url))
-
         date_obj = datetime.datetime.strptime(response.meta['date'], '%d/%m/%Y')
         date = datetime.datetime.strftime(date_obj, '%Y-%m-%d')
 

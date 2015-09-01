@@ -1,6 +1,5 @@
 # -*- coding: utf-8 -*-
 import datetime
-from datetime import timedelta
 import math
 
 import scrapy
@@ -19,25 +18,29 @@ class MinemSpider(ManoloBaseSpider):
 
     NUMBER_OF_PAGES_PER_PAGE = 20
 
-    def start_requests(self):
-        """
-        Get starting date to scrape from our database
+    def initial_request(self, date):
+        date_str = date.strftime("%d/%m/%Y")
+        request = self.make_form_request(date_str, self.parse_pages, 1)
+        return request
 
-        :return: set of URLs
-        """
-        d1 = datetime.datetime.strptime(self.date_start, '%Y-%m-%d').date()
-        d2 = datetime.datetime.strptime(self.date_end, '%Y-%m-%d').date()
-        # range to fetch
-        delta = d2 - d1
+    def make_form_request(self, date_str, callback, page_number):
+        page_url = 'http://intranet.minem.gob.pe/GESTION/visitas_pcm/Busqueda/DMET_html_SelectMaestraBuscador'
 
-        for i in range(delta.days + 1):
-            my_date = d1 + timedelta(days=i)
-            my_date_str = my_date.strftime("%d/%m/%Y")
-            print("SCRAPING: %s" % my_date_str)
+        start_from_record = self.NUMBER_OF_PAGES_PER_PAGE * (page_number - 1) + 1
 
-            request = self.make_form_request(my_date_str, self.parse_pages, 1)
+        params = {
+            'TXT_FechaVisita_Inicio': date_str,
+            'Ls_Pagina': str(start_from_record),
+            'Li_ResultadoPorPagina': '20',
+            'FlgBuscador': '1',
+            'Ls_ParametrosBuscador': 'TXT_FechaVisita_Inicio=10/08/2015|Ls_Pagina={}'.format(str(start_from_record)),
+        }
 
-            yield request
+        request = scrapy.FormRequest(url=page_url, formdata=params,
+                                     meta={'date': date_str},
+                                     dont_filter=True,
+                                     callback=callback)
+        return request
 
     def parse_pages(self, response):
         total_of_records = response.css('#HID_CantidadRegistros').xpath('./@value').extract_first(default=1)
@@ -49,6 +52,9 @@ class MinemSpider(ManoloBaseSpider):
         for page in range(1, number_of_pages + 1):
             request = self.make_form_request(response.meta['date'], self.parse, page)
             yield request
+
+    def get_number_of_pages(self, total_of_records):
+        return int(math.ceil(total_of_records / float(self.NUMBER_OF_PAGES_PER_PAGE)))
 
     def parse(self, response):
         date_obj = datetime.datetime.strptime(response.meta['date'], '%d/%m/%Y')
@@ -83,25 +89,3 @@ class MinemSpider(ManoloBaseSpider):
             item = make_hash(item)
 
             yield item
-
-    def get_number_of_pages(self, total_of_records):
-        return int(math.ceil(total_of_records / float(self.NUMBER_OF_PAGES_PER_PAGE)))
-
-    def make_form_request(self, date_str, callback, page_number):
-        page_url = 'http://intranet.minem.gob.pe/GESTION/visitas_pcm/Busqueda/DMET_html_SelectMaestraBuscador'
-
-        start_from_record = self.NUMBER_OF_PAGES_PER_PAGE * (page_number - 1) + 1
-
-        params = {
-            'TXT_FechaVisita_Inicio': date_str,
-            'Ls_Pagina': str(start_from_record),
-            'Li_ResultadoPorPagina': '20',
-            'FlgBuscador': '1',
-            'Ls_ParametrosBuscador': 'TXT_FechaVisita_Inicio=10/08/2015|Ls_Pagina={}'.format(str(start_from_record)),
-        }
-
-        request = scrapy.FormRequest(url=page_url, formdata=params,
-                                     meta={'date': date_str},
-                                     dont_filter=True,
-                                     callback=callback)
-        return request

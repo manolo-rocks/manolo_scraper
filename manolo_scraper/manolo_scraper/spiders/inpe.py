@@ -1,11 +1,9 @@
 # -*- coding: utf-8 -*-
 import datetime
-from datetime import timedelta
 
 import scrapy
 
 from spiders import ManoloBaseSpider
-
 from ..item_loaders import ManoloItemLoader
 from ..items import ManoloItem
 from ..utils import make_hash
@@ -18,34 +16,18 @@ class INPESpider(ManoloBaseSpider):
         'visitasadm.inpe.gob.pe'
     ]
 
-    def start_requests(self):
-        """
-        Get starting date to scrape from argument
-        e.g.: 2010-02-21
+    def initial_request(self, date):
+        date_str = date.strftime('%d/%m/%Y')
+        request = scrapy.FormRequest('http://visitasadm.inpe.gob.pe/VisitasadmInpe/Controller',
+                                     formdata={
+                                         'vis_fec_ing': date_str
+                                     },
+                                     meta={
+                                         'date': date_str
+                                     },
+                                     callback=self.parse)
 
-        :return: set of URLs
-        """
-        d1 = datetime.datetime.strptime(self.date_start, '%Y-%m-%d').date()
-        d2 = datetime.datetime.strptime(self.date_end, '%Y-%m-%d').date()
-        # range to fetch
-        delta = d2 - d1
-
-        for i in range(delta.days + 1):
-            date = d1 + timedelta(days=i)
-            date_str = date.strftime('%d/%m/%Y')
-
-            print("SCRAPING: %s" % date)
-
-            request = scrapy.FormRequest('http://visitasadm.inpe.gob.pe/VisitasadmInpe/Controller',
-                                         formdata={
-                                             'vis_fec_ing': date_str
-                                         },
-                                         meta={
-                                            'date': date_str
-                                         },
-                                         callback=self.parse)
-
-            yield request
+        return request
 
     def parse(self, response):
 
@@ -54,15 +36,10 @@ class INPESpider(ManoloBaseSpider):
 
         rows = response.xpath('//tr')
 
-        # inspect_response(response, self)
-        # open_in_browser(response)
-
         for row in rows:
-
             data = row.xpath('td')
 
             if len(data) > 7:
-
                 l = ManoloItemLoader(item=ManoloItem(), selector=row)
 
                 l.add_value('institution', 'inpe')
@@ -81,7 +58,7 @@ class INPESpider(ManoloBaseSpider):
                 l.add_xpath('reason', './td[7]/p/text()')
                 l.add_xpath('host_name', './td[8]/p/text()')
 
-                # Add conditional to don't accept "---"
+                # Add conditional, don't accept "---"
                 l.add_xpath('title', './td[9]/p/text()')
 
                 l.add_xpath('office', './td[10]/p/text()')

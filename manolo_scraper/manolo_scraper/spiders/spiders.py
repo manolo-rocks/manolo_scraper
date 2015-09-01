@@ -5,6 +5,8 @@ from datetime import timedelta
 import logging
 import re
 
+from exceptions import NotImplementedError
+
 import scrapy
 from scrapy import exceptions
 
@@ -36,8 +38,23 @@ class ManoloBaseSpider(scrapy.Spider):
         d1 = datetime.datetime.strptime(date_start, '%Y-%m-%d').date()
         d2 = datetime.datetime.strptime(date_end, '%Y-%m-%d').date()
         delta = d2 - d1
-
         return delta.days
+
+    def start_requests(self):
+        d1 = datetime.datetime.strptime(self.date_start, '%Y-%m-%d').date()
+        d2 = datetime.datetime.strptime(self.date_end, '%Y-%m-%d').date()
+        # range to fetch
+        delta = d2 - d1
+
+        for day in range(delta.days + 1):
+            date_obj = d1 + timedelta(days=day)
+            print("SCRAPING: {}".format(date_obj))
+
+            yield self.initial_request(date_obj)
+
+    # Check if instance of requests
+    def initial_request(self, date_obj):
+        raise NotImplementedError
 
 
 # SIstema de REgistro de VIsitas
@@ -51,22 +68,11 @@ class SireviSpider(ManoloBaseSpider):
         if self.institution_name is None:
             raise exceptions.UsageError('Enter a institution_name.')
 
-    def start_requests(self):
-        d1 = datetime.datetime.strptime(self.date_start, '%Y-%m-%d').date()
-        d2 = datetime.datetime.strptime(self.date_end, '%Y-%m-%d').date()
-        # range to fetch
-        delta = d2 - d1
-
-        for day in range(delta.days + 1):
-            my_date = d1 + timedelta(days=day)
-            date_str = my_date.strftime("%d/%m/%Y")
-
-            print("SCRAPING: {}".format(date_str))
-
-            yield self._request_page(date_str, 1, self.after_post)
+    def initial_request(self, date):
+        date_str = date.strftime("%d/%m/%Y")
+        return self._request_page(date_str, 1, self.after_post)
 
     def after_post(self, response):
-        # TODO: Check this
         page_links = response.css('li.last').xpath('./a/@href').extract_first(default='')
         is_number_of_pages = re.search(r'lstVisitasResult_page=(\d+)', page_links)
         number_of_pages = 1
@@ -76,6 +82,23 @@ class SireviSpider(ManoloBaseSpider):
 
         for page_number in range(1, number_of_pages + 1):
             yield self._request_page(response.meta['date'], page_number, self.parse)
+
+    def _request_page(self, date_str, page_number, callback):
+        params = {
+            'VisitaConsultaQueryForm[feConsulta]': date_str,
+            'yt0': 'Consultar',
+        }
+
+        page_url = self._get_page_url(page_number)
+
+        return scrapy.FormRequest(url=page_url,
+                                  formdata=params,
+                                  meta={'date': date_str},
+                                  dont_filter=True,
+                                  callback=callback)
+
+    def _get_page_url(self, page_number):
+        return self.base_url + self.ajax_page_pattern % page_number
 
     def parse(self, response):
         logging.info("PARSED URL {}".format(response.url))
@@ -94,23 +117,6 @@ class SireviSpider(ManoloBaseSpider):
                 item = make_hash(item)
 
                 yield item
-
-    def _request_page(self, date_str, page_number, callback):
-        params = {
-            'VisitaConsultaQueryForm[feConsulta]': date_str,
-            'yt0': 'Consultar',
-        }
-
-        page_url = self._get_page_url(page_number)
-
-        return scrapy.FormRequest(url=page_url,
-                                  formdata=params,
-                                  meta={'date': date_str},
-                                  dont_filter=True,
-                                  callback=callback)
-
-    def _get_page_url(self, page_number):
-        return self.base_url + self.ajax_page_pattern % page_number
 
     def get_item(self, data, date_str, row):
         l = ManoloItemLoader(item=ManoloItem(), selector=row)

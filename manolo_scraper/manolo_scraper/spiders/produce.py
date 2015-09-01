@@ -1,6 +1,5 @@
 # -*- coding: utf-8 -*-
 import datetime
-from datetime import timedelta
 
 import scrapy
 
@@ -14,28 +13,19 @@ class ProduceSpider(ManoloBaseSpider):
     name = 'produce'
     allowed_domains = ['http://www2.produce.gob.pe']
 
-    def start_requests(self):
-        d1 = datetime.datetime.strptime(self.date_start, '%Y-%m-%d').date()
-        d2 = datetime.datetime.strptime(self.date_end, '%Y-%m-%d').date()
+    def initial_request(self, date):
+        date_str = date.strftime("%d/%m/%Y")
+        request = scrapy.FormRequest('http://www2.produce.gob.pe/produce/transparencia/visitas/',
+                                     formdata={
+                                         'desFecha': date_str,
+                                         'desFechaF': date_str,
+                                         'buscar': 'Consultar'
+                                     },
+                                     callback=self.parse)
 
-        delta = d2 - d1
+        request.meta['date'] = date_str
 
-        for i in range(delta.days + 1):
-            date = d1 + timedelta(days=i)
-            date_str = date.strftime('%d/%m/%Y')
-
-            print('SCRAPING: %s' % date_str)
-
-            request = scrapy.FormRequest('http://www2.produce.gob.pe/produce/transparencia/visitas/',
-                                         formdata={
-                                             'desFecha': date_str,
-                                             'desFechaF': date_str,
-                                             'buscar': 'Consultar'
-                                         },
-                                         callback=self.parse)
-
-            request.meta['date'] = date_str
-            yield request
+        return request
 
     def parse(self, response):
         date_obj = datetime.datetime.strptime(response.meta['date'], '%d/%m/%Y')
@@ -47,7 +37,6 @@ class ProduceSpider(ManoloBaseSpider):
             data = row.xpath('td[@valign="top"]')
 
             if len(data) > 9:
-
                 l = ManoloItemLoader(item=ManoloItem(), selector=row)
 
                 l.add_value('institution', 'produce')

@@ -1,6 +1,4 @@
 import datetime
-from datetime import timedelta
-
 import re
 
 from scrapy import FormRequest, Request
@@ -8,7 +6,6 @@ from scrapy import FormRequest, Request
 from spiders import ManoloBaseSpider
 from ..items import ManoloItem
 from ..item_loaders import ManoloItemLoader
-
 from ..utils import make_hash
 
 
@@ -19,24 +16,17 @@ class MinsaSpider(ManoloBaseSpider):
     MORE_PAGES_SYMBOL = '...'
     NUMBER_OF_PAGE_REGEX = r'Page\$(\w+)'
 
-    def start_requests(self):
-        d1 = datetime.datetime.strptime(self.date_start, '%Y-%m-%d').date()
-        d2 = datetime.datetime.strptime(self.date_end, '%Y-%m-%d').date()
-        delta = d2 - d1
+    def initial_request(self, date):
+        date_str = date.strftime(self.REQUEST_DATE_FORMAT)
 
-        for i in range(delta.days + 1):
-            date = d1 + timedelta(days=i)
-            date_str = date.strftime(self.REQUEST_DATE_FORMAT)
-            print("SCRAPING: %s" % date_str)
+        request = Request(url='http://intranet5.minsa.gob.pe/RegVisitasCons/listado.aspx',
+                          dont_filter=True,
+                          callback=self.parse_initial_request,
+                          )
 
-            request = Request(url='http://intranet5.minsa.gob.pe/RegVisitasCons/listado.aspx',
-                              dont_filter=True,
-                              callback=self.parse_initial_request,
-            )
+        request.meta['date'] = date_str
 
-            request.meta['date'] = date_str
-
-            yield request
+        return request
 
     def parse_initial_request(self, response):
         date_str = response.meta['date']
@@ -50,8 +40,8 @@ class MinsaSpider(ManoloBaseSpider):
                                             },
                                             dont_filter=True,
                                             dont_click=True,
-                                            callback=self.parse_pages
-        )
+                                            callback=self.parse_pages,
+                                            )
 
         request.meta['date'] = date_str
 
@@ -59,7 +49,6 @@ class MinsaSpider(ManoloBaseSpider):
 
     def parse_pages(self, response):
         page_offset = response.meta.get('page_offset', 2)
-
         date_str = response.meta['date']
 
         # Parse Items
@@ -68,35 +57,44 @@ class MinsaSpider(ManoloBaseSpider):
             yield item
 
         rows = response.xpath('//table[@id="DTGVisitas"]/tr')
-
         pagination_links = rows.xpath('td/font/table//td/font/a')
 
         if pagination_links:
-
             last_page_href = pagination_links.xpath('./@href').extract()[-1]
             last_page_link_text = pagination_links.xpath('./font/text()').extract()[-1]
-
             is_there_pages = re.search(self.NUMBER_OF_PAGE_REGEX, last_page_href)
 
             if is_there_pages:
                 last_page = int(is_there_pages.group(1))
-
                 pages_limit = last_page + 1
 
                 # Is there more pages?
                 if last_page_link_text == self.MORE_PAGES_SYMBOL:
                     pages_limit = last_page
-
                     request = self._request_page(response, last_page, date_str, self.parse_pages)
-
                     request.meta['page_offset'] = last_page + 1
-
                     yield request
 
                 for page in range(page_offset, pages_limit):
                     request = self._request_page(response, page, date_str, self.parse)
-
                     yield request
+
+    def _request_page(self, response, page_number, date_str, callback):
+        request = FormRequest.from_response(response,
+                                            formdata={
+                                                'txtFecha': date_str,
+                                                'txtFechaF': date_str,
+                                                'DDLFuncionario': '[ -- Seleccione Funcionario o Empleado -- ]',
+                                                '__EVENTTARGET': 'DTGVisitas',
+                                                '__EVENTARGUMENT': 'Page${}'.format(page_number),
+                                            },
+                                            dont_filter=True,
+                                            dont_click=True,
+                                            callback=callback,
+                                            )
+
+        request.meta['date'] = date_str
+        return request
 
     def parse(self, response):
         rows = response.xpath('//table[@id="DTGVisitas"]/tr')
@@ -128,20 +126,3 @@ class MinsaSpider(ManoloBaseSpider):
                 item = make_hash(item)
 
                 yield item
-
-    def _request_page(self, response, page_number, date_str, callback):
-        request = FormRequest.from_response(response,
-                                            formdata={
-                                                'txtFecha': date_str,
-                                                'txtFechaF': date_str,
-                                                'DDLFuncionario': '[ -- Seleccione Funcionario o Empleado -- ]',
-                                                '__EVENTTARGET': 'DTGVisitas',
-                                                '__EVENTARGUMENT': 'Page${}'.format(page_number),
-                                            },
-                                            dont_filter=True,
-                                            dont_click=True,
-                                            callback=callback
-        )
-
-        request.meta['date'] = date_str
-        return request
