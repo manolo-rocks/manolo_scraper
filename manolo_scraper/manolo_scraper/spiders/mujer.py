@@ -33,9 +33,12 @@ class MujerSpider(ManoloBaseSpider):
         url = self._get_url(date)
 
         return scrapy.FormRequest(url=url, formdata=params,
-                                 meta={'date': date_str},
-                                 dont_filter=True,
-                                 callback=self.after_post)
+                                  meta={'date': date_str},
+                                  dont_filter=True,
+                                  callback=self.after_post)
+
+    def _get_url(self, date):
+        return "{}?fecha={}".format(self.base_url, datetime.date.strftime(date, '%Y%m%d'))
 
     def after_post(self, response):
         # send requests based on pagination
@@ -87,6 +90,3 @@ class MujerSpider(ManoloBaseSpider):
 
             item = make_hash(item)
             yield item
-
-    def _get_url(self, date):
-        return "{}?fecha={}".format(self.base_url, datetime.date.strftime(date, '%Y%m%d'))
