@@ -1,6 +1,4 @@
 import datetime
-from datetime import timedelta
-
 import re
 
 from scrapy import FormRequest, Request
@@ -19,24 +17,17 @@ class MinsaSpider(ManoloBaseSpider):
     MORE_PAGES_SYMBOL = '...'
     NUMBER_OF_PAGE_REGEX = r'Page\$(\w+)'
 
-    def start_requests(self):
-        d1 = datetime.datetime.strptime(self.date_start, '%Y-%m-%d').date()
-        d2 = datetime.datetime.strptime(self.date_end, '%Y-%m-%d').date()
-        delta = d2 - d1
+    def initial_request(self, date):
+        date_str = date.strftime(self.REQUEST_DATE_FORMAT)
 
-        for i in range(delta.days + 1):
-            date = d1 + timedelta(days=i)
-            date_str = date.strftime(self.REQUEST_DATE_FORMAT)
-            print("SCRAPING: %s" % date_str)
+        request = Request(url='http://intranet5.minsa.gob.pe/RegVisitasCons/listado.aspx',
+                          dont_filter=True,
+                          callback=self.parse_initial_request,
+                          )
 
-            request = Request(url='http://intranet5.minsa.gob.pe/RegVisitasCons/listado.aspx',
-                              dont_filter=True,
-                              callback=self.parse_initial_request,
-            )
+        request.meta['date'] = date_str
 
-            request.meta['date'] = date_str
-
-            yield request
+        return request
 
     def parse_initial_request(self, response):
         date_str = response.meta['date']
