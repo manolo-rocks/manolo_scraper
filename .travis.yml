@@ -9,4 +9,9 @@ install: pip install -r requirements-testing.txt
 
 script: make coverage
 
-after_success: coveralls
+before_install:
+  - pip install codecov
+
+after_success:
+    - coveralls
+    - codecov
