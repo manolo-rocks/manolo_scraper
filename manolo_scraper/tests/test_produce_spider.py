@@ -51,19 +51,19 @@ class TestProduceSpider(unittest.TestCase):
 
     def test_correct_hash_sha1_for_legacy_data(self):
         item = {
-            'full_name': 'LAVERIAN HERRERA, EFRAIN',
+            'full_name': u'LAVERIAN HERRERA, EFRAIN',
             'entity': '',
             'meeting_place': '',
-            'office': 'OFICINA DE LOGISTICA',
-            'host_name': 'URDANEGUI CABREJOS, FABRIZIO MARIO RAUL',
-            'reason': 'DEJAR DOCUMENTO',
-            'institution': 'produce',
+            'office': u'OFICINA DE LOGISTICA',
+            'host_name': u'URDANEGUI CABREJOS, FABRIZIO MARIO RAUL',
+            'reason': u'DEJAR DOCUMENTO',
+            'institution': u'produce',
             'location': '',
-            'id_number': '32613418',
-            'id_document': 'DNI',
-            'date': '2008-01-02',
-            'time_start': '16:16:51',
-            'time_end': '17:15:31',
+            'id_number': u'32613418',
+            'id_document': u'DNI',
+            'date': u'2008-01-02',
+            'time_start': u'16:16:51',
+            'time_end': u'17:15:31',
             'objective': '',
         }
         result = make_hash(item)
