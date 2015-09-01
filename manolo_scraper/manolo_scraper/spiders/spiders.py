@@ -47,13 +47,13 @@ class ManoloBaseSpider(scrapy.Spider):
         delta = d2 - d1
 
         for day in range(delta.days + 1):
-            date = d1 + timedelta(days=day)
-            print("SCRAPING: {}".format(date))
+            date_obj = d1 + timedelta(days=day)
+            print("SCRAPING: {}".format(date_obj))
 
-            yield self.initial_request(date)
+            yield self.initial_request(date_obj)
 
     # Check if instance of requests
-    def initial_request(self, date):
+    def initial_request(self, date_obj):
         raise NotImplementedError
 
 
