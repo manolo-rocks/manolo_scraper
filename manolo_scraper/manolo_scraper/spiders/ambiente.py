@@ -73,7 +73,7 @@ class AmbienteSpider(ManoloBaseSpider):
                                                 '__EVENTARGUMENT': 'Page${}'.format(page)
                                             },
                                             dont_filter=True,
-                                            callback=self.parse_page_items
+                                            callback=self.parse
         )
 
         request.meta['date'] = date
