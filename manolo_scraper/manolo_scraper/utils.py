@@ -40,27 +40,18 @@ def get_dni(document_identity):
 
 
 def get_this_month(number):
-    if number == '01':
-        return 'enero'
-    elif number == '02':
-        return 'febrero'
-    elif number == '03':
-        return 'marzo'
-    elif number == '04':
-        return 'abril'
-    elif number == '05':
-        return 'mayo'
-    elif number == '06':
-        return 'junio'
-    elif number == '07':
-        return 'julio'
-    elif number == '08':
-        return 'agosto'
-    elif number == '09':
-        return 'setiembre'
-    elif number == '10':
-        return 'octubre'
-    elif number == '11':
-        return 'noviembre'
-    elif number == '12':
-        return 'diciembre'
+    months = {
+        '01': 'enero',
+        '02': 'febrero',
+        '03': 'marzo',
+        '04': 'abril',
+        '05': 'mayo',
+        '06': 'junio',
+        '07': 'julio',
+        '08': 'agosto',
+        '09': 'setiembre',
+        '10': 'octubre',
+        '11': 'noviembre',
+        '12': 'diciembre',
+    }
+    return months[number]

@@ -2,6 +2,7 @@
 import unittest
 
 from manolo_scraper.utils import get_dni
+from manolo_scraper.utils import get_this_month
 from manolo_scraper.utils import make_hash
 
 
@@ -94,3 +95,10 @@ class TestMakeHash(unittest.TestCase):
         result = make_hash(item)
         expected = '4784d22af48c79154d69b4dd4c1562b8f3a7d182'
         self.assertEqual(expected, result['sha1'])
+
+
+class TestGetThisMonth(unittest.TestCase):
+    def test_diciembre(self):
+        expected = 'diciembre'
+        result = get_this_month('12')
+        self.assertEqual(expected, result)
