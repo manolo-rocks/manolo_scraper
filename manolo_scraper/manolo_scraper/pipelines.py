@@ -36,9 +36,8 @@ class CleanItemPipeline(object):
                 item[k] = v
         try:
             item['date'] = datetime.date.strftime(item['date'], '%Y-%m-%d')
-        except TypeError:
-            # our date is good, continue
-            pass
+        except TypeError as e:
+            print("Our date is good, continue: {}".format(e))
 
         if 'time_end' not in item:
             item['time_end'] = ''
