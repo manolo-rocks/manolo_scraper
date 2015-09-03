@@ -1,5 +1,4 @@
 # -*- coding: utf-8 -*-
-import datetime
 import math
 
 import scrapy
@@ -33,7 +32,7 @@ class MinemSpider(ManoloBaseSpider):
             'Ls_Pagina': str(start_from_record),
             'Li_ResultadoPorPagina': '20',
             'FlgBuscador': '1',
-            'Ls_ParametrosBuscador': 'TXT_FechaVisita_Inicio=10/08/2015|Ls_Pagina={}'.format(str(start_from_record)),
+            'Ls_ParametrosBuscador': 'TXT_FechaVisita_Inicio=10/08/2015|Ls_Pagina={}'.format(start_from_record),
         }
 
         request = scrapy.FormRequest(url=page_url, formdata=params,
@@ -44,9 +43,7 @@ class MinemSpider(ManoloBaseSpider):
 
     def parse_pages(self, response):
         total_of_records = response.css('#HID_CantidadRegistros').xpath('./@value').extract_first(default=1)
-
         total_of_records = int(total_of_records)
-
         number_of_pages = self.get_number_of_pages(total_of_records)
 
         for page in range(1, number_of_pages + 1):
@@ -57,8 +54,7 @@ class MinemSpider(ManoloBaseSpider):
         return int(math.ceil(total_of_records / float(self.NUMBER_OF_PAGES_PER_PAGE)))
 
     def parse(self, response):
-        date_obj = datetime.datetime.strptime(response.meta['date'], '%d/%m/%Y')
-        date = datetime.datetime.strftime(date_obj, '%Y-%m-%d')
+        date = self.get_date_item(response.meta['date'], '%d/%m/%Y')
 
         rows = response.xpath("//tr")
 

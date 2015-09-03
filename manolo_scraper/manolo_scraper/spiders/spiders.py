@@ -1,10 +1,7 @@
 # -*- coding: utf-8 -*-
 import datetime
-from datetime import date
-from datetime import timedelta
 import logging
 import re
-
 from exceptions import NotImplementedError
 
 import scrapy
@@ -23,7 +20,7 @@ class ManoloBaseSpider(scrapy.Spider):
         self.date_start = date_start
         self.date_end = date_end
 
-        today = date.today()
+        today = datetime.date.today()
 
         if self.date_start is None:
             self.date_start = today.strftime('%Y-%m-%d')
@@ -34,7 +31,8 @@ class ManoloBaseSpider(scrapy.Spider):
         if self.days_between_dates(self.date_start, self.date_end) < 0:
             raise exceptions.UsageError("date_start must be less or equal to date_end")
 
-    def days_between_dates(self, date_start, date_end):
+    @staticmethod
+    def days_between_dates(date_start, date_end):
         d1 = datetime.datetime.strptime(date_start, '%Y-%m-%d').date()
         d2 = datetime.datetime.strptime(date_end, '%Y-%m-%d').date()
         delta = d2 - d1
@@ -47,7 +45,7 @@ class ManoloBaseSpider(scrapy.Spider):
         delta = d2 - d1
 
         for day in range(delta.days + 1):
-            date_obj = d1 + timedelta(days=day)
+            date_obj = d1 + datetime.timedelta(days=day)
             print("SCRAPING: {}".format(date_obj))
 
             yield self.initial_request(date_obj)
@@ -55,6 +53,11 @@ class ManoloBaseSpider(scrapy.Spider):
     # Check if instance of requests
     def initial_request(self, date_obj):
         raise NotImplementedError
+
+    @staticmethod
+    def get_date_item(date_str, format):
+        date_obj = datetime.datetime.strptime(date_str, format)
+        return datetime.datetime.strftime(date_obj, '%Y-%m-%d')
 
 
 # SIstema de REgistro de VIsitas
@@ -103,8 +106,7 @@ class SireviSpider(ManoloBaseSpider):
     def parse(self, response):
         logging.info("PARSED URL {}".format(response.url))
 
-        date_obj = datetime.datetime.strptime(response.meta['date'], '%d/%m/%Y')
-        date_str = datetime.datetime.strftime(date_obj, '%Y-%m-%d')
+        date_str = self.get_date_item(response.meta['date'], '%d/%m/%Y')
 
         rows = response.xpath("//tr")
 

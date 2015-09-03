@@ -1,6 +1,6 @@
+# -*- coding: utf-8 -*-
 import re
 import math
-import datetime
 
 from scrapy import FormRequest, Request
 
@@ -63,8 +63,7 @@ class CongresoSpider(ManoloBaseSpider):
         yield request
 
     def parse(self, response):
-        date_obj = datetime.datetime.strptime(response.meta['date'], '%d/%m/%Y')
-        date = datetime.datetime.strftime(date_obj, '%Y-%m-%d')
+        date = self.get_date_item(response.meta['date'], '%d/%m/%Y')
 
         for row in response.xpath('//table[@class="grid"]/tr'):
             data = row.xpath('td')

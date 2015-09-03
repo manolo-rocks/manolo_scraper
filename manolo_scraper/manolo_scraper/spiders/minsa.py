@@ -1,4 +1,4 @@
-import datetime
+# -*- coding: utf-8 -*-
 import re
 
 from scrapy import FormRequest, Request
@@ -99,8 +99,7 @@ class MinsaSpider(ManoloBaseSpider):
     def parse(self, response):
         rows = response.xpath('//table[@id="DTGVisitas"]/tr')
 
-        date_obj = datetime.datetime.strptime(response.meta['date'], '%d/%m/%Y')
-        date = datetime.datetime.strftime(date_obj, '%Y-%m-%d')
+        date = self.get_date_item(response.meta['date'], '%d/%m/%Y')
 
         for row in rows:
             data = row.xpath('td')

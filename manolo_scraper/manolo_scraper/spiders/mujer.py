@@ -1,7 +1,4 @@
 # -*- coding: utf-8 -*-
-"""
-Scraper for Ministerio de la Mujer
-"""
 import datetime
 import json
 import logging
@@ -23,7 +20,7 @@ class MujerSpider(ManoloBaseSpider):
     NUMBER_OF_ITEMS_PER_PAGE = 20
 
     def initial_request(self, date):
-        date_str = date.strftime("%d/%m/%Y")
+        date_str = date.strftime('%d/%m/%Y')
 
         params = {
             'page': '1',
@@ -45,10 +42,10 @@ class MujerSpider(ManoloBaseSpider):
         res = json.loads(response.body)
         total_records = res['total']
 
-        logging.info("Found {} records to scrape".format(total_records))
+        logging.info('Found {} records to scrape'.format(total_records))
         pages = total_records / self.NUMBER_OF_ITEMS_PER_PAGE + 1
 
-        logging.info("Found {} pages to scrape".format(pages))
+        logging.info('Found {} pages to scrape'.format(pages))
 
         for page in range(pages):
             params = {
@@ -64,9 +61,7 @@ class MujerSpider(ManoloBaseSpider):
                                      callback=self.parse)
 
     def parse(self, response):
-
-        date_obj = datetime.datetime.strptime(response.meta['date'], '%d/%m/%Y')
-        date = datetime.datetime.strftime(date_obj, '%Y-%m-%d')
+        date = self.get_date_item(response.meta['date'], '%d/%m/%Y')
 
         data = json.loads(response.body)
         rows = data['rows']
