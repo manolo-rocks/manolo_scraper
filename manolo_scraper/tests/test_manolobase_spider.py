@@ -1,7 +1,8 @@
+# -*- coding: utf-8 -*-
 import unittest
 from datetime import date
-
 from exceptions import NotImplementedError
+
 from scrapy import exceptions
 
 from manolo_scraper.spiders.spiders import ManoloBaseSpider

@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-
 from scrapy import FormRequest, Request
 
 from spiders import ManoloBaseSpider

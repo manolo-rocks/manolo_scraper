@@ -1,6 +1,4 @@
 # -*- coding: utf-8 -*-
-import datetime
-
 import scrapy
 
 from spiders import ManoloBaseSpider
@@ -19,13 +17,10 @@ class INPESpider(ManoloBaseSpider):
     def initial_request(self, date):
         date_str = date.strftime('%d/%m/%Y')
         request = scrapy.FormRequest('http://visitasadm.inpe.gob.pe/VisitasadmInpe/Controller',
-                                     formdata={
-                                         'vis_fec_ing': date_str
-                                     },
-                                     meta={
-                                         'date': date_str
-                                     },
-                                     callback=self.parse)
+                                     formdata={'vis_fec_ing': date_str},
+                                     meta={'date': date_str},
+                                     callback=self.parse,
+                                     )
 
         return request
 

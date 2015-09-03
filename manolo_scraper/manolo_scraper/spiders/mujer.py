@@ -1,7 +1,4 @@
 # -*- coding: utf-8 -*-
-"""
-Scraper for Ministerio de la Mujer
-"""
 import datetime
 import json
 import logging
