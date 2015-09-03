@@ -5,7 +5,6 @@ from scrapy import FormRequest, Request
 from spiders import ManoloBaseSpider
 from ..items import ManoloItem
 from ..item_loaders import ManoloItemLoader
-
 from ..utils import make_hash
 
 
@@ -22,7 +21,7 @@ class AmbienteSpider(ManoloBaseSpider):
         request = Request(url='http://visitas.minam.gob.pe/frmConsulta.aspx',
                           meta={
                               'date': date_str,
-                              },
+                          },
                           dont_filter=True,
                           callback=self.parse_initial_request)
 
@@ -34,14 +33,14 @@ class AmbienteSpider(ManoloBaseSpider):
         date = response.meta['date']
 
         request = FormRequest.from_response(response,
-                                  formdata={
-                                     'txtDesde': date,
-                                     'btnBuscar.x': '1',
-                                     'btnBuscar.y': '1'
-                                  },
-                                  dont_filter=True,
-                                  callback=self.parse_page
-        )
+                                            formdata={
+                                                'txtDesde': date,
+                                                'btnBuscar.x': '1',
+                                                'btnBuscar.y': '1',
+                                            },
+                                            dont_filter=True,
+                                            callback=self.parse_page,
+                                            )
 
         request.meta['date'] = date
 
@@ -64,24 +63,7 @@ class AmbienteSpider(ManoloBaseSpider):
             request = self._get_page_request(response, page, date)
             yield request
 
-    def _get_page_request(self, response, page, date):
-
-        request = FormRequest.from_response(response,
-                                            formdata={
-                                                'txtDesde': date,
-                                                '__EVENTTARGET': 'gvwConsulta',
-                                                '__EVENTARGUMENT': 'Page${}'.format(page)
-                                            },
-                                            dont_filter=True,
-                                            callback=self.parse
-        )
-
-        request.meta['date'] = date
-
-        return request
-
     def parse(self, response):
-
         date_obj = datetime.datetime.strptime(response.meta['date'], self.DATE_REQUEST_FORMAT)
         date = datetime.datetime.strftime(date_obj, '%Y-%m-%d')
 
@@ -115,6 +97,22 @@ class AmbienteSpider(ManoloBaseSpider):
             item = make_hash(item)
 
             yield item
+
+    def _get_page_request(self, response, page, date):
+
+        request = FormRequest.from_response(response,
+                                            formdata={
+                                                'txtDesde': date,
+                                                '__EVENTTARGET': 'gvwConsulta',
+                                                '__EVENTARGUMENT': 'Page${}'.format(page),
+                                            },
+                                            dont_filter=True,
+                                            callback=self.parse,
+                                            )
+
+        request.meta['date'] = date
+
+        return request
 
     # date_string: '28/08/2015 05:11:38 p.m.'
     def _get_time(self, date_string):
