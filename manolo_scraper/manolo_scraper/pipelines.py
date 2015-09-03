@@ -20,7 +20,7 @@ class DuplicatesPipeline(object):
 
     def process_item(self, item, spider):
         if item['sha1'] in self.ids_seen:
-            raise DropItem("Duplicate item found: %s" % item)
+            raise DropItem("Duplicate item found: {}".format(item))
         else:
             self.ids_seen.add(item['sha1'])
             return item
@@ -55,10 +55,10 @@ class CleanItemPipeline(object):
             item['entity'] = ''
 
         if item['full_name'] == '':
-            raise DropItem("Missing visitor in %s" % item)
+            raise DropItem("Missing visitor in item: {}".format(item))
 
         if 'HORA DE' in item['time_start']:
-            raise DropItem("This is a header, drop it: %s" % item)
+            raise DropItem("This is a header, drop it: {}".format(item))
 
         self.save_item(item)
         return item
@@ -71,6 +71,6 @@ class CleanItemPipeline(object):
             item['created'] = datetime.datetime.now()
             item['modified'] = datetime.datetime.now()
             table.insert(item)
-            logging.info("Saving: {}, date: {}".format(item['sha1'], item['date']))
+            logging.info("Saving: {0}, date: {1}".format(item['sha1'], item['date']))
         else:
-            logging.info("{}, date: {} is found in db, not saving".format(item['sha1'], item['date']))
+            logging.info("{0}, date: {1} is found in db, not saving".format(item['sha1'], item['date']))
