@@ -6,7 +6,6 @@ from utils import fake_response_from_file
 
 
 # http://visitas.minam.gob.pe/frmConsulta.aspx
-
 class TestAmbienteSpider(unittest.TestCase):
 
     def setUp(self):
