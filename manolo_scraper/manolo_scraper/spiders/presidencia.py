@@ -1,9 +1,9 @@
+# -*- coding: utf-8 -*-
 from scrapy import Request
 
 from spiders import ManoloBaseSpider
 from ..items import ManoloItem
 from ..item_loaders import ManoloItemLoader
-
 from ..utils import make_hash, get_dni
 
 
@@ -20,18 +20,6 @@ class PresidenciaSpider(ManoloBaseSpider):
 
         return request
 
-    def parse_initial_request(self, response):
-        # open_in_browser(response)
-        # inspect_response(response, self)
-
-        date_str = response.meta['date']
-
-        number_of_pages = int(response.xpath('//td[@class="textocampo2"]/b//option/text()').extract()[-1])
-
-        if number_of_pages > 0:
-            for page in range(1, number_of_pages + 1):
-                yield self._request_page(date_str, page, self.parse)
-
     def _request_page(self, date_str, page, callback):
         offset = self.NUMBER_OF_ITEMS_PER_PAGE * (page - 1)
 
@@ -40,13 +28,22 @@ class PresidenciaSpider(ManoloBaseSpider):
         request = Request(url=url,
                           meta={
                               'date': date_str,
-                              },
+                          },
                           dont_filter=True,
                           callback=callback)
 
         request.meta['date'] = date_str
 
         return request
+
+    def parse_initial_request(self, response):
+        date_str = response.meta['date']
+
+        number_of_pages = int(response.xpath('//td[@class="textocampo2"]/b//option/text()').extract()[-1])
+
+        if number_of_pages > 0:
+            for page in range(1, number_of_pages + 1):
+                yield self._request_page(date_str, page, self.parse)
 
     def parse(self, response):
         rows = response.xpath('//table[@class="tabla"]/tr[@height="30"]')
