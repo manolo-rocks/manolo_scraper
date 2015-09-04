@@ -25,6 +25,5 @@ def fake_response_from_file(filename, url=None, meta=None):
 
     file_content = open(file_path, 'r').read()
 
-    response = TextResponse(url=url, request=request, body=file_content)
-    response._encoding = 'latin-1'
+    response = TextResponse(url=url, request=request, body=file_content, encoding='latin-1')
     return response
