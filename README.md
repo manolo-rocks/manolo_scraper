@@ -58,7 +58,7 @@ production database.
 * [x] Ministerio de Cultura
     * **url**: http://visitas.mcultura.gob.pe/?r=consultas/visitaConsulta/index
 
-* [ ] Ministerio de Justicia
+* [x] Ministerio de Justicia
     * **url**: http://app3.minjus.gob.pe:8080/visita_web/consulta_visita_comision
 
 * [ ] Ministerio de Relaciones Exteriores
