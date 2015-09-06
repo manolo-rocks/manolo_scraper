@@ -92,6 +92,7 @@ class JusticiaSpider(ManoloBaseSpider):
         date = self.get_date_item(response.meta['date'], '%d/%m/%Y')
 
         for row in rows:
+            warnings = []
             l = ManoloItemLoader(item=ManoloItem(), selector=row)
 
             l.add_value('institution', 'justicia')
@@ -108,13 +109,15 @@ class JusticiaSpider(ManoloBaseSpider):
             l.add_xpath('location', './/td[1]/text()')
 
             l.add_xpath('id_document', './/td[5]/br/preceding-sibling::node()/self::text()')
-            l.add_xpath('id_number', './/td[5]/br/following-sibling::node()/self::text()')
+            try:
+                l.add_xpath('id_number', './/td[5]/br/following-sibling::node()/self::text()')
+            except KeyError as e:
+                warnings.append("No id number, error: {} for item: ".format(e))
 
             time_start_time_end = response.xpath('.//td[2]/div/br/following-sibling::node()/self::text()').extract_first(default='')
 
             time_start_time_end = time_start_time_end.split('-')
 
-            warnings = []
             try:
                 l.add_value('time_start', time_start_time_end[0])
             except IndexError:
