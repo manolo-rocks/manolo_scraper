@@ -1,4 +1,6 @@
 # -*- coding: utf-8 -*-
+import logging
+
 from scrapy import Request
 
 from spiders import ManoloBaseSpider
@@ -76,14 +78,22 @@ class PresidenciaSpider(ManoloBaseSpider):
             office_title = row.xpath('.//td[8]/text()').extract_first(default='')
             office_title = office_title.split('-')
 
+            warnings = []
             try:
                 l.add_value('office', office_title[0])
+            except IndexError:
+                warnings.append("No office for item: ")
+
+            try:
                 l.add_value('title', office_title[1])
             except IndexError:
-                pass
+                warnings.append("No title for item: ")
 
             item = l.load_item()
-
             item = make_hash(item)
+
+            if warnings:
+                for i in warnings:
+                    logging.warning("{0}{1}".format(i, item))
 
             yield item
