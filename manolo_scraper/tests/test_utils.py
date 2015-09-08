@@ -75,7 +75,7 @@ class TestMakeHash(unittest.TestCase):
     def setUp(self):
         pass
 
-    def test_congreso_scrapped_item(self):
+    def test_hash_using_complete_data(self):
         item = {
             'date': '2015-08-11',
             'entity': u'SCOTIANK BANCK',
@@ -94,6 +94,26 @@ class TestMakeHash(unittest.TestCase):
         }
         result = make_hash(item)
         expected = '4784d22af48c79154d69b4dd4c1562b8f3a7d182'
+        self.assertEqual(expected, result['sha1'])
+
+    def test_hash_missing_id_number(self):
+        item = {
+            'date': '2015-08-11',
+            'entity': u'SCOTIANK BANCK',
+            'full_name': u'DOMINGUEZ OCAÑA, SANDRA BEATRIZ',
+            'host_name': u'AGUADO ALFARO, JOSE ALBERTO',
+            'id_document': u'DNI/LE',
+            'institution': u'congreso',
+            'location': '',
+            'meeting_place': '',
+            'office': u'ADMINISTRACION LUIS ALBERTO SANCHEZ - FERNANDO BELAUNDE TERRY',
+            'reason': u'MANTENIMIENTO PROGRAMADO',
+            'time_end': u'15:06',
+            'time_start': u'09:04',
+            'title': u'ADMINISTRADOR DE EDIFICIOS',
+        }
+        result = make_hash(item)
+        expected = 'daf54933e2164e0c2da44ea0fc2b66dce011ecc1'
         self.assertEqual(expected, result['sha1'])
 
 
