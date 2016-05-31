@@ -60,7 +60,7 @@ class CleanItemPipeline(object):
         if 'HORA DE' in item['time_start']:
             raise DropItem("This is a header, drop it: {}".format(item))
 
-        self.save_item(item)
+        # self.save_item(item)
         return item
 
     def save_item(self, item):
