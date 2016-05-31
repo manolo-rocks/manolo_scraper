@@ -1,0 +1,5 @@
+scrapy==1.0.3
+Unipath==1.0
+dataset==0.6.0
+python-slugify==0.1.0
+Unidecode==0.4.16
