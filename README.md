@@ -92,3 +92,8 @@ production database.
 
 * [x] Ministerio de Vivienda
     * **url**: http://geo.vivienda.gob.pe/Visitas/controlVisitas/index.php?r=consultas/visitaConsulta/index
+
+# Run this way
+```shell
+scrapy crawl SPIDER_NAME -a date_start=DATE_ISO_FORMAT -a date_end=DATE_ISO_FORMAT
+```
