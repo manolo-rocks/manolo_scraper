@@ -1,0 +1,8 @@
+endpoints:
+  default: https://app.scrapinghub.com/api/
+projects:
+  default: 104926
+version: GIT
+stacks:
+  default: scrapy:1.1
+requirements_file: ../requirements.txt
