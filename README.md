@@ -92,3 +92,11 @@ production database.
 
 * [x] Ministerio de Vivienda
     * **url**: http://geo.vivienda.gob.pe/Visitas/controlVisitas/index.php?r=consultas/visitaConsulta/index
+
+
+## Deploying to Scrapinghub
+
+```
+cd manolo_scraper
+shub deploy
+```

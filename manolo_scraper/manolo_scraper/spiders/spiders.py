@@ -4,8 +4,10 @@ import logging
 import re
 from exceptions import NotImplementedError
 
+
 import scrapy
 from scrapy import exceptions
+from delorean import Delorean, parse
 
 from ..items import ManoloItem
 from ..item_loaders import ManoloItemLoader
@@ -20,7 +22,9 @@ class ManoloBaseSpider(scrapy.Spider):
         self.date_start = date_start
         self.date_end = date_end
 
-        today = datetime.date.today()
+        d = Delorean()
+        d.shift("America/Lima")
+        today = d.date
 
         if self.date_start is None:
             self.date_start = today.strftime('%Y-%m-%d')
@@ -39,8 +43,8 @@ class ManoloBaseSpider(scrapy.Spider):
         return delta.days
 
     def start_requests(self):
-        d1 = datetime.datetime.strptime(self.date_start, '%Y-%m-%d').date()
-        d2 = datetime.datetime.strptime(self.date_end, '%Y-%m-%d').date()
+        d1 = parse(self.date_start, dayfirst=False, yearfirst=True).date
+        d2 = parse(self.date_end, dayfirst=False, yearfirst=True).date
         # range to fetch
         delta = d2 - d1
 

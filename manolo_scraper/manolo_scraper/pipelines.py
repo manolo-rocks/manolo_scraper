@@ -27,6 +27,19 @@ class DuplicatesPipeline(object):
 
 
 class CleanItemPipeline(object):
+
+    def save_item(self, item):
+        db = db_connect()
+        table = db['visitors_visitor']
+
+        if table.find_one(sha1=item['sha1']) is None:
+            item['created'] = datetime.datetime.now()
+            item['modified'] = datetime.datetime.now()
+            table.insert(item)
+            logging.info("Saving: {0}, date: {1}".format(item['sha1'], item['date']))
+        else:
+            logging.info("{0}, date: {1} is found in db, not saving".format(item['sha1'], item['date']))
+
     def process_item(self, item, spider):
         for k, v in item.items():
             if isinstance(v, basestring) is True:
@@ -60,17 +73,6 @@ class CleanItemPipeline(object):
         if 'HORA DE' in item['time_start']:
             raise DropItem("This is a header, drop it: {}".format(item))
 
-        self.save_item(item)
+        if spider.settings.get('STORE_IN_DATABASE'):
+            self.save_item(item)
         return item
-
-    def save_item(self, item):
-        db = db_connect()
-        table = db['visitors_visitor']
-
-        if table.find_one(sha1=item['sha1']) is None:
-            item['created'] = datetime.datetime.now()
-            item['modified'] = datetime.datetime.now()
-            table.insert(item)
-            logging.info("Saving: {0}, date: {1}".format(item['sha1'], item['date']))
-        else:
-            logging.info("{0}, date: {1} is found in db, not saving".format(item['sha1'], item['date']))
