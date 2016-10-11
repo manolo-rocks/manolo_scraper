@@ -52,3 +52,4 @@ Unipath==1.0
 w3lib==1.15.0
 wcwidth==0.1.7
 zope.interface==4.3.2
+tqdm
