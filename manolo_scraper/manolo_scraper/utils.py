@@ -6,7 +6,10 @@ import re
 
 def make_hash(item):
     hash_input = ''
-    hash_input += str(item['institution']) + str(unidecode(item['full_name']))
+    hash_input += str(item['institution'])
+
+    if 'full_name' in item:
+        hash_input += str(unidecode(item['full_name']))
 
     if 'id_document' in item:
         hash_input += str(unidecode(item['id_document']))
