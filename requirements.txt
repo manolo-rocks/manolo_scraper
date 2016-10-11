@@ -8,9 +8,9 @@ Unidecode==0.04.16
 Unipath==1.0
 alembic==0.7.1
 argparse==1.2.1
-cffi==0.8.6
+cffi==1.8.3
 characteristic==14.2.0
-cryptography==0.6.1
+cryptography==1.5.2
 cssselect==0.9.1
 dataset==0.6.0
 lxml==3.4.1
