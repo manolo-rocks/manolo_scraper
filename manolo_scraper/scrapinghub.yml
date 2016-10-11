@@ -1,8 +1,10 @@
 endpoints:
-  default: http://dash.scrapinghub.com/api/
+  default: https://dash.scrapinghub.com/api/
 projects:
   default: 104926
 version: GIT
+stacks:
+  default: scrapy:1.1
 
 requirements:
   file: ../requirements.txt
