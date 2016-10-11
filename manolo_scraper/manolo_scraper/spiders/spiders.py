@@ -26,7 +26,8 @@ class ManoloBaseSpider(scrapy.Spider):
             self.date_start = today.strftime('%Y-%m-%d')
 
         if self.date_end is None:
-            self.date_end = today.strftime('%Y-%m-%d')
+            date_end = today - datetime.timedelta(days=40)
+            self.date_end = date_end.strftime('%Y-%m-%d')
 
         if self.days_between_dates(self.date_start, self.date_end) < 0:
             raise exceptions.UsageError("date_start must be less or equal to date_end")
