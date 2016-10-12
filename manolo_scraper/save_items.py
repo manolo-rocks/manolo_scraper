@@ -21,6 +21,8 @@ def save_items(data):
                 del item['_type']
             if 'title' not in item:
                 item['title'] = ""
+            if 'id_number' not in item:
+                item['id_number'] = ""
             item['created'] = datetime.datetime.now()
             item['modified'] = datetime.datetime.now()
             item['date'] = datetime.datetime.strptime(item['date'], "%Y-%m-%d")
