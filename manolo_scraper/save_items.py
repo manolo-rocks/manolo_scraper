@@ -17,7 +17,8 @@ def save_items(data):
     items_to_upload = []
     for item in tqdm(data):
         if item['sha1'] not in hashes_in_db:
-            del item['_type']
+            if '_type' in item:
+                del item['_type']
             if 'title' not in item:
                 item['title'] = ""
             item['created'] = datetime.datetime.now()
