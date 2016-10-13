@@ -18,6 +18,8 @@ Create a file `config.json` with the following info:
     "port": "5432",
     "password": "",
     "database": "manolo"
+    "api_key": "scrapinghub's api key",
+    "sh_project": "scrapinghub's project"
 }
 ```
 

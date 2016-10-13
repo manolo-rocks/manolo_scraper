@@ -1,24 +1,56 @@
 """Save scraped items into our database"""
 import datetime
-import json
 import logging
-import sys
 
 from tqdm import tqdm
+from hubstorage import HubstorageClient
 
 from manolo_scraper.models import db_connect
+from manolo_scraper.settings import API_KEY
+from manolo_scraper.settings import SH_PROJECT
 
 
-def save_items(data):
-    institution = data[0]['institution']
+SPIDERS = [
+    {
+        "spider_name": "osce",
+        "institution_name": "osce",
+    },
+    {
+        "spider_name": "minagr",
+        "institution_name": "minagr",
+    },
+    {
+        "spider_name": "justicia",
+        "institution_name": "justicia",
+    }
+]
+
+def fetch_and_save_items():
+    hc = HubstorageClient(auth=API_KEY)
+    project = hc.get_project(SH_PROJECT)
+    for spider in SPIDERS:
+        print("\nworking on spider {}".format(spider['spider_name']))
+        spider_id = project.ids.spider(spider['spider_name'])
+        summary = project.spiders.lastjobsummary(spiderid=spider_id)
+        for element in summary:
+            print(element['key'])
+            job = hc.get_job(element['key'])
+            items = job.items.iter_values()
+            save_items(items, spider['institution_name'])
+
+
+def save_items(items, institution):
+    print("processing {}".format(institution))
     db = db_connect()
     table = db['visitors_visitor']
     hashes_in_db = [i['sha1'] for i in table.find(institution=institution)]
     items_to_upload = []
-    for item in tqdm(data):
+    for item in tqdm(items):
         if item['sha1'] not in hashes_in_db:
             if '_type' in item:
                 del item['_type']
+            if '_key' in item:
+                del item['_key']
             if 'title' not in item:
                 item['title'] = ""
             if 'id_number' not in item:
@@ -44,9 +76,7 @@ def save_items(data):
 
 
 def main():
-    with open(sys.argv[1].strip(), "r") as handle:
-        data = [json.loads(i) for i in handle.readlines()]
-    save_items(data)
+    fetch_and_save_items()
 
 
 if __name__ == "__main__":

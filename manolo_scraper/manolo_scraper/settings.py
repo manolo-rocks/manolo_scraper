@@ -31,7 +31,8 @@ else:
         "username": "",
         "host": "",
         "password": "",
-        "port": ""
+        "port": "",
+        "api_key": ""
     }
 
 
@@ -53,6 +54,8 @@ NEWSPIDER_MODULE = 'manolo_scraper.spiders'
 
 # Crawl responsibly by identifying yourself (and your website) on the user-agent
 USER_AGENT = 'manolo_scraper (+http://manolo.rocks)'
+API_KEY = get_secret("api_key")
+SH_PROJECT = get_secret("sh_project")
 CRAWLERA_ENABLED = False
 CRAWLERA_USER = get_secret("CRAWLERA_USER")
 CRAWLERA_PASS = get_secret("CRAWLERA_PASS")
