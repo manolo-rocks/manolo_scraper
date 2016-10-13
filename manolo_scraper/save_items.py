@@ -12,18 +12,71 @@ from manolo_scraper.settings import SH_PROJECT
 
 SPIDERS = [
     {
-        "spider_name": "osce",
-        "institution_name": "osce",
+        "spider_name": "ambiente",
+        "institution_name": "ambiente",
+    },
+    {
+        "spider_name": "congreso",
+        "institution_name": "congreso",
+    },
+    {
+        "spider_name": "defensa",
+        "institution_name": "defensa",
+    },
+    {
+        "spider_name": "inpe",
+        "institution_name": "inpe",
+    },
+    {
+        "spider_name": "justicia",
+        "institution_name": "justicia",
     },
     {
         "spider_name": "minagr",
         "institution_name": "minagr",
     },
     {
-        "spider_name": "justicia",
-        "institution_name": "justicia",
-    }
+        "spider_name": "mincu",
+        "institution_name": "mincu",
+    },
+    {
+        "spider_name": "minedu",
+        "institution_name": "minedu",
+    },
+    {
+        "spider_name": "minem",
+        "institution_name": "minem",
+    },
+    {
+        "spider_name": "minsa",
+        "institution_name": "minsa",
+    },
+    {
+        "spider_name": "minvi",
+        "institution_name": "vivienda",
+    },
+    {
+        "spider_name": "mujer",
+        "institution_name": "min. mujer",
+    },
+    {
+        "spider_name": "osce",
+        "institution_name": "osce",
+    },
+    {
+        "spider_name": "pcm",
+        "institution_name": "pcm",
+    },
+    {
+        "spider_name": "presidencia",
+        "institution_name": "presidencia",
+    },
+    {
+        "spider_name": "produce",
+        "institution_name": "produce",
+    },
 ]
+
 
 def fetch_and_save_items():
     hc = HubstorageClient(auth=API_KEY)

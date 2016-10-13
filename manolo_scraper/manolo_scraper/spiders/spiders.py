@@ -23,7 +23,7 @@ class ManoloBaseSpider(scrapy.Spider):
         today = datetime.date.today()
 
         if self.date_start is None:
-            date_start = today - datetime.timedelta(days=40)
+            date_start = today - datetime.timedelta(days=14)
             self.date_start = date_start.strftime('%Y-%m-%d')
 
         if self.date_end is None:
