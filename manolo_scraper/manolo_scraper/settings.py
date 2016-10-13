@@ -32,7 +32,8 @@ else:
         "host": "",
         "password": "",
         "port": "",
-        "api_key": ""
+        "api_key": "",
+        "sh_project": "",
     }
 
 

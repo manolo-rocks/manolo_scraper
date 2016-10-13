@@ -17,6 +17,7 @@ lxml==3.6.4
 Mako==1.0.4
 MarkupSafe==0.23
 normality==0.2.4
+nose
 parsel==1.0.3
 pathlib2==2.1.0
 pexpect==4.2.1
