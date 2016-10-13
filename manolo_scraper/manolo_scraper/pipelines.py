@@ -54,13 +54,15 @@ class CleanItemPipeline(object):
         if 'entity' not in item:
             item['entity'] = ''
 
+        if not 'full_name' in item:
+            raise DropItem("Missing visitor in item: {}".format(item))
+
         if item['full_name'] == '':
             raise DropItem("Missing visitor in item: {}".format(item))
 
         if 'HORA DE' in item['time_start']:
             raise DropItem("This is a header, drop it: {}".format(item))
 
-        # self.save_item(item)
         return item
 
     def save_item(self, item):
