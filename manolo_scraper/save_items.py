@@ -10,6 +10,28 @@ from manolo_scraper.settings import API_KEY
 from manolo_scraper.settings import SH_PROJECT
 from manolo_scraper.settings import SCRAPING_PAST_NUMBER_OF_DAYS
 
+
+KEYS_TO_FIX = [
+    "title",
+    "id_number",
+    "full_name",
+    "entity",
+    "meeting_place",
+    "office",
+    "host_name",
+    "reason",
+    "institution",
+    "location",
+    "id_number",
+    "id_document",
+    "date",
+    "title",
+    "time_start",
+    "time_end",
+    "created",
+    "modified",
+]
+
 SPIDERS = [
     {
         "spider_name": "ambiente",
@@ -113,10 +135,11 @@ def save_items(items, institution):
                 del item['_type']
             if '_key' in item:
                 del item['_key']
-            if 'title' not in item:
-                item['title'] = ""
-            if 'id_number' not in item:
-                item['id_number'] = ""
+
+            for key in KEYS_TO_FIX:
+                if key not in item:
+                    item[key] = ""
+
             item['created'] = datetime.datetime.now()
             item['modified'] = datetime.datetime.now()
             item['date'] = datetime.datetime.strptime(item['date'], "%Y-%m-%d")
