@@ -12,7 +12,7 @@ from ..utils import make_hash
 class MinsaSpider(ManoloBaseSpider):
     name = 'minsa'
     allowed_domains = ['appsalud.minsa.gob.pe']
-    REQUEST_DATE_FORMAT = '%m/%d/%Y'
+    REQUEST_DATE_FORMAT = '%d/%m/%Y'
     MORE_PAGES_SYMBOL = '...'
     NUMBER_OF_PAGE_REGEX = r'Page\$(\w+)'
 
