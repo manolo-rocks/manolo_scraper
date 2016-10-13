@@ -19,7 +19,8 @@ Create a file `config.json` with the following info:
     "password": "",
     "database": "manolo"
     "api_key": "scrapinghub's api key",
-    "sh_project": "scrapinghub's project"
+    "sh_project": "scrapinghub's project",
+    "scraping_past_number_of_days": "14"
 }
 ```
 

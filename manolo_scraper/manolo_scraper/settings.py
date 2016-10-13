@@ -34,6 +34,7 @@ else:
         "port": "",
         "api_key": "",
         "sh_project": "",
+        "scraping_past_number_of_days": ""
     }
 
 
@@ -57,9 +58,13 @@ NEWSPIDER_MODULE = 'manolo_scraper.spiders'
 USER_AGENT = 'manolo_scraper (+http://manolo.rocks)'
 API_KEY = get_secret("api_key")
 SH_PROJECT = get_secret("sh_project")
+
+# scraping last X number of days
+SCRAPING_PAST_NUMBER_OF_DAYS = get_secret("scraping_past_number_of_days")
 CRAWLERA_ENABLED = False
 CRAWLERA_USER = get_secret("CRAWLERA_USER")
 CRAWLERA_PASS = get_secret("CRAWLERA_PASS")
+
 DOWNLOADER_MIDDLEWARES = {
     'scrapylib.crawlera.CrawleraMiddleware': 600,
     'scrapy.downloadermiddlewares.useragent.UserAgentMiddleware': "Mozilla/5.0 (Windows NT 6.2; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/32.0.1667.0 Safari/537.36",

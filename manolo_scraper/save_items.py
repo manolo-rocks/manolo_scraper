@@ -8,7 +8,7 @@ from hubstorage import HubstorageClient
 from manolo_scraper.models import db_connect
 from manolo_scraper.settings import API_KEY
 from manolo_scraper.settings import SH_PROJECT
-
+from manolo_scraper.settings import SCRAPING_PAST_NUMBER_OF_DAYS
 
 SPIDERS = [
     {
@@ -95,8 +95,17 @@ def fetch_and_save_items():
 def save_items(items, institution):
     print("processing {}".format(institution))
     db = db_connect()
-    table = db['visitors_visitor']
-    hashes_in_db = [i['sha1'] for i in table.find(institution=institution)]
+    today = datetime.datetime.today()
+    earliest_date_to_search = today - datetime.timedelta(days=int(SCRAPING_PAST_NUMBER_OF_DAYS) * 2)
+    sql_query = """
+        SELECT sha1 FROM visitors_visitor
+           WHERE institution='{0}'
+           AND modified > '{1}'
+    """.format(institution, earliest_date_to_search.date())
+    hashes_in_db = [
+        i['sha1']
+        for i in db.query(sql_query)
+    ]
     items_to_upload = []
     for item in tqdm(items):
         if item['sha1'] not in hashes_in_db:
@@ -123,6 +132,7 @@ def save_items(items, institution):
             )
     if items_to_upload:
         print("uploading {} items".format(len(items_to_upload)))
+        table = db['visitors_visitor']
         table.insert_many(items_to_upload)
     else:
         print("nothing to upload to db")
