@@ -15,7 +15,7 @@ from unipath import Path
 
 
 BASE_DIR = Path(__file__).absolute().ancestor(3)
-SECRETS_FILE = os.path.join(BASE_DIR, 'config.json')
+SECRETS_FILE = os.path.join(BASE_DIR, 'config.yaml')
 
 if os.path.isfile(SECRETS_FILE):
     with open(SECRETS_FILE) as f:
@@ -34,7 +34,8 @@ else:
         "port": "",
         "api_key": "",
         "sh_project": "",
-        "scraping_past_number_of_days": ""
+        "scraping_past_number_of_days": "",
+        "banned_spiders": "",
     }
 
 
@@ -64,6 +65,7 @@ SCRAPING_PAST_NUMBER_OF_DAYS = get_secret("scraping_past_number_of_days")
 CRAWLERA_ENABLED = False
 CRAWLERA_USER = get_secret("CRAWLERA_USER")
 CRAWLERA_PASS = get_secret("CRAWLERA_PASS")
+BANNED_SPIDERS = get_secret("banned_spiders")
 
 DOWNLOADER_MIDDLEWARES = {
     'scrapylib.crawlera.CrawleraMiddleware': 600,
