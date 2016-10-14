@@ -6,22 +6,24 @@
 Spiders are based on [Scrapy](https://github.com/scrapy/scrapy).
 
 # Configuration
-Create a file `config.json` with the following info:
+Create a file `config.yml` with the following info:
 
-```javascript
-{
-    "CRAWLERA_USER": "",
-    "CRAWLERA_PASS": "",
-    "drivername": "postgres",
-    "username": "postgres",
-    "host": "localhost",
-    "port": "5432",
-    "password": "",
-    "database": "manolo"
-    "api_key": "scrapinghub's api key",
-    "sh_project": "scrapinghub's project",
-    "scraping_past_number_of_days": "14"
-}
+```yaml
+    CRAWLERA_USER: abc
+    CRAWLERA_PASS: abc
+    drivername: postgres
+    username: postgres
+    host: localhost
+    port: 5432
+    password: pass
+    database: manolo
+    api_key: scrapinghub's api key
+    sh_project: scrapinghub's project
+    scraping_past_number_of_days: 14
+    
+    # spiders that are banned when working from scrapinghub.com
+    banned_spiders:
+      - inpe
 ```
 
 The database credentials are needed so that the spider will upload data to the
