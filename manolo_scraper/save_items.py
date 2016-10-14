@@ -1,5 +1,7 @@
 """Save scraped items into our database"""
+import argparse
 import datetime
+import json
 import logging
 
 from tqdm import tqdm
@@ -161,8 +163,27 @@ def save_items(items, institution):
         print("nothing to upload to db")
 
 
+def save_items_from_file(input_file):
+    with open(input_file, "r") as handle:
+        items = [json.loads(i) for i in handle.readlines()]
+    institution = items[0]['institution']
+    save_items(items, institution)
+
+
 def main():
-    fetch_and_save_items()
+    parser = argparse.ArgumentParser(description="Save manolo items in database")
+    parser.add_argument(
+        '-i',
+        '--input',
+        dest="input_file",
+        action="store",
+        required=False,
+    )
+    args = parser.parse_args()
+    if not args.input_file:
+        fetch_and_save_items()
+    else:
+        save_items_from_file(args.input_file)
 
 
 if __name__ == "__main__":
