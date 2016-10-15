@@ -7,7 +7,7 @@
 #
 #     http://doc.scrapy.org/en/latest/topics/settings.html
 #
-import json
+import yaml
 import os
 import sys
 
@@ -19,7 +19,7 @@ SECRETS_FILE = os.path.join(BASE_DIR, 'config.yaml')
 
 if os.path.isfile(SECRETS_FILE):
     with open(SECRETS_FILE) as f:
-        secrets = json.loads(f.read())
+        secrets = yaml.load(f.read())
 else:
     secrets = {
         "SECRET_KEY": "",
