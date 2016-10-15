@@ -15,7 +15,7 @@ from unipath import Path
 
 
 BASE_DIR = Path(__file__).absolute().ancestor(3)
-SECRETS_FILE = os.path.join(BASE_DIR, 'config.yaml')
+SECRETS_FILE = os.path.join(BASE_DIR, 'config.yml')
 
 if os.path.isfile(SECRETS_FILE):
     with open(SECRETS_FILE) as f:
