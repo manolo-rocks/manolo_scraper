@@ -3,6 +3,7 @@ import argparse
 import datetime
 import json
 import logging
+import os
 
 from tqdm import tqdm
 from hubstorage import HubstorageClient
@@ -184,6 +185,8 @@ def main():
         fetch_and_save_items()
     else:
         save_items_from_file(args.input_file)
+        print("removing {}".format(args.input_file))
+        os.remove(args.input_file)
 
 
 if __name__ == "__main__":

@@ -1,6 +1,6 @@
 #!/bin/bash
 
-last_week=$(date --date='7 days ago' +"%Y-%m-%d")
+last_weeks=$(date --date='14 days ago' +"%Y-%m-%d")
 today=$(date +"%Y-%m-%d")
 
 # edit these path
