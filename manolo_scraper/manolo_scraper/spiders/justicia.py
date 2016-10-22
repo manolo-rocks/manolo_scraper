@@ -95,7 +95,7 @@ class JusticiaSpider(ManoloBaseSpider):
             warnings = []
             l = ManoloItemLoader(item=ManoloItem(), selector=row)
 
-            l.add_value('institution', 'justicia')
+            l.add_value('institution', 'minjus')
             l.add_value('date', date)
 
             l.add_xpath('full_name', './/td[4]/br/preceding-sibling::node()/self::text()')
@@ -114,7 +114,9 @@ class JusticiaSpider(ManoloBaseSpider):
             except KeyError as e:
                 warnings.append("No id number, error: {} for item: ".format(e))
 
-            time_start_time_end = response.xpath('.//td[2]/div/br/following-sibling::node()/self::text()').extract_first(default='')
+            time_start_time_end = row.xpath(
+                './/td[2]/div/br/following-sibling::node()/self::text()',
+            ).extract_first(default='')
 
             time_start_time_end = time_start_time_end.split('-')
 
