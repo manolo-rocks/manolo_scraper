@@ -54,7 +54,7 @@ SPIDERS = [
     },
     {
         "spider_name": "justicia",
-        "institution_name": "justicia",
+        "institution_name": "minjus",
     },
     {
         "spider_name": "minagr",
