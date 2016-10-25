@@ -10,8 +10,6 @@ from ..utils import make_hash, get_dni
 class MinceturSpider(ManoloBaseSpider):
     name = 'mincetur'
     allowed_domains = ["mincetur.gob.pe"]
-    NUMBER_OF_PAGES_PER_PAGE = 20
-    date_str = "14/10/2016"
     base_url = "http://consultasenlinea.mincetur.gob.pe/visitaspublico/Visitas/FrmVisitantes.aspx"
 
     def initial_request(self, date):
