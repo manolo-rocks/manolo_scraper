@@ -18,6 +18,7 @@ class MinceturSpider(ManoloBaseSpider):
             meta={
                 'date_str': date.strftime("%d/%m/%Y"),
             },
+            dont_filter=True,
             callback=self.parse_initial_request,
         )
 
@@ -37,7 +38,7 @@ class MinceturSpider(ManoloBaseSpider):
     def parse_pages(self, response):
         number_of_pages = int(response.xpath(
             "//span[@id='gvVisitante_lblTotalPaginas']/text()",
-        ).extract_first())
+        ).extract_first(default=1))
 
         for page in range(number_of_pages):
             yield scrapy.FormRequest.from_response(
@@ -77,7 +78,10 @@ class MinceturSpider(ManoloBaseSpider):
             l.add_value('id_document', id_document)
             l.add_value('id_number', id_number)
             l.add_xpath('reason', './td[4]/text()')
-            host_name, office = row.xpath('./td[5]/span/text()').extract()
+            try:
+                host_name, office = row.xpath('./td[5]/span/text()').extract()
+            except ValueError:
+                host_name, office = "", ""
             l.add_value('host_name', host_name)
             l.add_value('office', office)
             l.add_xpath('time_end', './td[6]/span/text()')
