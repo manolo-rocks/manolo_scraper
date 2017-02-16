@@ -8,9 +8,9 @@ from ..utils import get_dni
 
 class PcmSpider(SireviSpider):
     name = 'pcm'
-    allowed_domains = ['hera.pcm.gob.pe']
+    allowed_domains = ['horus.pcm.gob.pe']
 
-    base_url = 'http://hera.pcm.gob.pe/Visitas/controlVisitas'
+    base_url = 'http://horus.pcm.gob.pe/Visitas/controlVisitas'
 
     institution_name = 'pcm'
 
