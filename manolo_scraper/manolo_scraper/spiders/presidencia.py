@@ -25,7 +25,7 @@ class PresidenciaSpider(ManoloBaseSpider):
     def _request_page(self, date_str, page, callback):
         offset = self.NUMBER_OF_ITEMS_PER_PAGE * (page - 1)
 
-        url = self.base_url + '/consulta_visitas.php?fecha={}&pagina={}'.format(date_str, offset)
+        url = self.base_url + '/index_server.php?valorCaja1={}&pagina={}'.format(date_str, offset)
 
         request = Request(url=url,
                           meta={
