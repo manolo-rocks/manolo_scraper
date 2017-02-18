@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 import logging
 
-from scrapy import Request
+from scrapy import Request, FormRequest
 
 from spiders import ManoloBaseSpider
 from ..items import ManoloItem
@@ -25,14 +25,17 @@ class PresidenciaSpider(ManoloBaseSpider):
     def _request_page(self, date_str, page, callback):
         offset = self.NUMBER_OF_ITEMS_PER_PAGE * (page - 1)
 
-        url = self.base_url + '/index_server.php?valorCaja1={}&pagina={}'.format(date_str, offset)
+        url = self.base_url + '/index_server.php'
 
-        request = Request(url=url,
-                          meta={
-                              'date': date_str,
-                          },
-                          dont_filter=True,
-                          callback=callback)
+        request = FormRequest(
+            url=url,
+            meta={
+                'date': date_str,
+            },
+            formdata={"valorCaja1": date_str, "pagina": offset},
+            dont_filter=True,
+            callback=callback,
+        )
 
         request.meta['date'] = date_str
 
@@ -41,7 +44,9 @@ class PresidenciaSpider(ManoloBaseSpider):
     def parse_initial_request(self, response):
         date_str = response.meta['date']
 
-        number_of_pages = int(response.xpath('//td[@class="textocampo2"]/b//option/text()').extract()[-1])
+        # They have changed the HTML need to find pagination.
+        #number_of_pages = int(response.xpath('//td[@class="textocampo2"]/b//option/text()').extract()[-1])
+        number_of_pages = 0
 
         if number_of_pages > 0:
             for page in range(1, number_of_pages + 1):
