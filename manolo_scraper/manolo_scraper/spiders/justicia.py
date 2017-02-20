@@ -10,8 +10,8 @@ from ..utils import make_hash
 
 class JusticiaSpider(ManoloBaseSpider):
     name = 'justicia'
-    allowed_domains = ['http://app3.minjus.gob.pe']
-    base_url = 'http://app3.minjus.gob.pe:8080/visita_web'
+    allowed_domains = ['http://visitas.minjus.gob.pe']
+    base_url = 'http://visitas.minjus.gob.pe/visita_web'
 
     def initial_request(self, date):
         date_str = date.strftime('%d/%m/%Y')

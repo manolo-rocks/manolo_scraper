@@ -47,8 +47,9 @@ def get_secret(setting, secrets=secrets):
         print(error_msg)
         sys.exit(1)
 
-CONCURRENT_REQUESTS = 10
-CONCURRENT_REQUESTS_PER_DOMAIN = 10
+CONCURRENT_REQUESTS = 1
+CONCURRENT_REQUESTS_PER_DOMAIN = 1
+DOWNLOAD_DELAY = 5
 
 BOT_NAME = 'manolo_scraper'
 
@@ -56,7 +57,7 @@ SPIDER_MODULES = ['manolo_scraper.spiders']
 NEWSPIDER_MODULE = 'manolo_scraper.spiders'
 
 # Crawl responsibly by identifying yourself (and your website) on the user-agent
-USER_AGENT = 'manolo_scraper (+http://manolo.rocks)'
+USER_AGENT = "Mozilla/5.0 (Linux; Android 4.0.4; Galaxy Nexus Build/IMM76B) AppleWebKit/535.19 (KHTML, like Gecko) Chrome/18.0.1025.133 Mobile Safari/535.19"
 API_KEY = get_secret("api_key")
 SH_PROJECT = get_secret("sh_project")
 
