@@ -107,19 +107,17 @@ class MinsaSpider(ManoloBaseSpider):
                 l.add_value('institution', 'minsa')
                 l.add_value('date', date)
 
-                l.add_xpath('full_name', './td[3]/font/text()')
-                l.add_xpath('id_document', './td[4]/font/text()')
-                l.add_xpath('id_number', './td[5]/font/text()')
-                l.add_xpath('entity', './td[6]/font/text()')
-                l.add_xpath('reason', './td[7]/font/text()')
-                l.add_xpath('host_name', './td[8]/font/text()')
-                l.add_xpath('office', './td[9]/font/text()')
-                l.add_xpath('title', './td[10]/font/text()')
-                l.add_xpath('time_start', './td[11]/font/text()')
-                l.add_xpath('time_end', './td[12]/font/text()')
+                l.add_xpath('full_name', './td[3]/text()')
+                l.add_xpath('id_document', './td[4]/text()')
+                l.add_xpath('id_number', './td[5]/text()')
+                l.add_xpath('entity', './td[6]/text()')
+                l.add_xpath('reason', './td[7]/text()')
+                l.add_xpath('host_name', './td[8]/text()')
+                l.add_xpath('office', './td[9]/text()')
+                l.add_xpath('title', './td[10]/text()')
+                l.add_xpath('time_start', './td[11]/text()')
+                l.add_xpath('time_end', './td[12]/text()')
 
                 item = l.load_item()
-
                 item = make_hash(item)
-
                 yield item
