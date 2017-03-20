@@ -10,17 +10,18 @@ from ..utils import make_hash, get_dni
 class DefensaSpider(ManoloBaseSpider):
     name = 'defensa'
     allowed_domains = ['mindef.gob.pe']
-    base_url = 'http://www.mindef.gob.pe/visitas/qryvisitas.php'
+    base_url = 'https://www.mindef.gob.pe/visitas/qryvisitas.php'
 
     def initial_request(self, date):
         date_str = date.strftime("%d/%m/%Y")
-
         params = {'fechaqry': date_str}
-
-        return scrapy.FormRequest(url=self.base_url, formdata=params,
-                                  meta={'date': date_str},
-                                  dont_filter=True,
-                                  callback=self.after_post)
+        return scrapy.FormRequest(
+            url=self.base_url,
+            formdata=params,
+            meta={'date': date_str},
+            dont_filter=True,
+            callback=self.after_post,
+        )
 
     def after_post(self, response):
         # send requests based on pagination
@@ -30,19 +31,21 @@ class DefensaSpider(ManoloBaseSpider):
                 'fechaqry': response.meta['date'],
                 'pag_actual': page,
             }
-            yield scrapy.FormRequest(url=self.base_url, formdata=params,
-                                     meta={'date': response.meta['date']},
-                                     dont_filter=True,
-                                     callback=self.parse)
+            yield scrapy.FormRequest(
+                url=self.base_url,
+                formdata=params,
+                meta={'date': response.meta['date']},
+                dont_filter=True,
+                callback=self.parse,
+            )
 
     def parse(self, response):
         date = self.get_date_item(response.meta['date'], '%d/%m/%Y')
-
         rows = response.xpath('//tr')
         for row in rows:
             data = row.xpath('.//td[@class="clsdetalle"]')
 
-            if len(data) == 8:
+            if len(data) > 5:
                 l = ManoloItemLoader(item=ManoloItem(), selector=row)
 
                 l.add_value('institution', 'defensa')

@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 import logging
 
-from scrapy import Request
+from scrapy import Request, FormRequest
 
 from spiders import ManoloBaseSpider
 from ..items import ManoloItem
@@ -13,46 +13,39 @@ class PresidenciaSpider(ManoloBaseSpider):
     name = 'presidencia'
     allowed_domains = ['http://www.presidencia.gob.pe']
     base_url = 'http://www.presidencia.gob.pe/visitas'
-    NUMBER_OF_ITEMS_PER_PAGE = 12
 
     def initial_request(self, date):
         date_str = date.strftime('%d/%m/%Y')
 
-        request = self._request_page(date_str, 1, self.parse_initial_request)
+        request = self._request_page(date_str, self.parse)
 
         return request
 
-    def _request_page(self, date_str, page, callback):
-        offset = self.NUMBER_OF_ITEMS_PER_PAGE * (page - 1)
-
-        url = self.base_url + '/consulta_visitas.php?fecha={}&pagina={}'.format(date_str, offset)
-
-        request = Request(url=url,
-                          meta={
-                              'date': date_str,
-                          },
-                          dont_filter=True,
-                          callback=callback)
-
+    def _request_page(self, date_str, callback):
+        url = self.base_url + '/index_server.php'
+        request = FormRequest(
+            url=url,
+            meta={
+                'date': date_str,
+            },
+            formdata={"valorCaja1": date_str},
+            dont_filter=True,
+            callback=callback,
+        )
         request.meta['date'] = date_str
-
         return request
 
-    def parse_initial_request(self, response):
-        date_str = response.meta['date']
-
-        number_of_pages = int(response.xpath('//td[@class="textocampo2"]/b//option/text()').extract()[-1])
-
-        if number_of_pages > 0:
-            for page in range(1, number_of_pages + 1):
-                yield self._request_page(date_str, page, self.parse)
 
     def parse(self, response):
-        rows = response.xpath('//table[@class="tabla"]/tr[@height="30"]')
+        with open("a.html", "w") as handle:
+            handle.write(response.body)
+        rows = response.xpath('//tr')
 
         date = self.get_date_item(response.meta['date'], '%d/%m/%Y')
 
         for row in rows:
+            if len(row.xpath(".//td")) < 4:
+                continue
             l = ManoloItemLoader(item=ManoloItem(), selector=row)
 
             l.add_value('institution', 'presidencia')

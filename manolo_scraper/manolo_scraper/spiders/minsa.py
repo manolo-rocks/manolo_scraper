@@ -11,40 +11,37 @@ from ..utils import make_hash
 
 class MinsaSpider(ManoloBaseSpider):
     name = 'minsa'
-    allowed_domains = ['intranet5.minsa.gob.pe']
-    REQUEST_DATE_FORMAT = '%d/%-m/%Y'
+    allowed_domains = ['appsalud.minsa.gob.pe']
+    REQUEST_DATE_FORMAT = '%d/%m/%Y'
     MORE_PAGES_SYMBOL = '...'
     NUMBER_OF_PAGE_REGEX = r'Page\$(\w+)'
 
     def initial_request(self, date):
         date_str = date.strftime(self.REQUEST_DATE_FORMAT)
 
-        request = Request(url='http://intranet5.minsa.gob.pe/RegVisitasCons/listado.aspx',
-                          dont_filter=True,
-                          callback=self.parse_initial_request,
-                          )
-
+        request = Request(
+            url="http://appsalud.minsa.gob.pe/regvisitascons/listado.aspx",
+            dont_filter=True,
+            callback=self.parse_initial_request,
+        )
         request.meta['date'] = date_str
-
         return request
 
     def parse_initial_request(self, response):
         date_str = response.meta['date']
-
-        request = FormRequest.from_response(response,
-                                            formdata={
-                                                'txtFecha': date_str,
-                                                'txtFechaF': date_str,
-                                                'btnListar': 'Listar',
-                                                'DDLFuncionario': '[ -- Seleccione Funcionario o Empleado -- ]',
-                                            },
-                                            dont_filter=True,
-                                            dont_click=True,
-                                            callback=self.parse_pages,
-                                            )
-
+        request = FormRequest.from_response(
+            response,
+            formdata={
+                'txtFecha': date_str,
+                'txtFechaF': date_str,
+                'btnListar': 'Listar',
+                'DDLFuncionario': '',
+            },
+            dont_filter=True,
+            dont_click=True,
+            callback=self.parse_pages,
+        )
         request.meta['date'] = date_str
-
         yield request
 
     def parse_pages(self, response):
@@ -80,18 +77,19 @@ class MinsaSpider(ManoloBaseSpider):
                     yield request
 
     def _request_page(self, response, page_number, date_str, callback):
-        request = FormRequest.from_response(response,
-                                            formdata={
-                                                'txtFecha': date_str,
-                                                'txtFechaF': date_str,
-                                                'DDLFuncionario': '[ -- Seleccione Funcionario o Empleado -- ]',
-                                                '__EVENTTARGET': 'DTGVisitas',
-                                                '__EVENTARGUMENT': 'Page${}'.format(page_number),
-                                            },
-                                            dont_filter=True,
-                                            dont_click=True,
-                                            callback=callback,
-                                            )
+        request = FormRequest.from_response(
+            response,
+            formdata={
+                'txtFecha': date_str,
+                'txtFechaF': date_str,
+                'DDLFuncionario': '',
+                '__EVENTTARGET': 'DTGVisitas',
+                '__EVENTARGUMENT': 'Page${}'.format(page_number),
+            },
+            dont_filter=True,
+            dont_click=True,
+            callback=callback,
+        )
 
         request.meta['date'] = date_str
         return request
@@ -109,19 +107,17 @@ class MinsaSpider(ManoloBaseSpider):
                 l.add_value('institution', 'minsa')
                 l.add_value('date', date)
 
-                l.add_xpath('full_name', './td[3]/font/text()')
-                l.add_xpath('id_document', './td[4]/font/text()')
-                l.add_xpath('id_number', './td[5]/font/text()')
-                l.add_xpath('entity', './td[6]/font/text()')
-                l.add_xpath('reason', './td[7]/font/text()')
-                l.add_xpath('host_name', './td[8]/font/text()')
-                l.add_xpath('office', './td[9]/font/text()')
-                l.add_xpath('title', './td[10]/font/text()')
-                l.add_xpath('time_start', './td[11]/font/text()')
-                l.add_xpath('time_end', './td[12]/font/text()')
+                l.add_xpath('full_name', './td[3]/text()')
+                l.add_xpath('id_document', './td[4]/text()')
+                l.add_xpath('id_number', './td[5]/text()')
+                l.add_xpath('entity', './td[6]/text()')
+                l.add_xpath('reason', './td[7]/text()')
+                l.add_xpath('host_name', './td[8]/text()')
+                l.add_xpath('office', './td[9]/text()')
+                l.add_xpath('title', './td[10]/text()')
+                l.add_xpath('time_start', './td[11]/text()')
+                l.add_xpath('time_end', './td[12]/text()')
 
                 item = l.load_item()
-
                 item = make_hash(item)
-
                 yield item

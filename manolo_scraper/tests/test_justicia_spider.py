@@ -27,7 +27,7 @@ class TestJusticiaSpider(unittest.TestCase):
         # self.assertEqual(item.get('meeting_place'), u'POR DEFINIR')
         self.assertEqual(item.get('time_start'), u'10:12')
         self.assertEqual(item.get('time_end'), u'11:12')
-        self.assertEqual(item.get('institution'), u'justicia')
+        self.assertEqual(item.get('institution'), u'minjus')
         self.assertEqual(item.get('location'), u'CONSEJO DE REPARACIONES - SECRETARIA TECNICA, NEISER LLACZA ARCE 158, MIRAFLORES')
         self.assertEqual(item.get('date'), u'2015-08-27')
 

@@ -7,7 +7,7 @@
 #
 #     http://doc.scrapy.org/en/latest/topics/settings.html
 #
-import json
+import yaml
 import os
 import sys
 
@@ -15,11 +15,11 @@ from unipath import Path
 
 
 BASE_DIR = Path(__file__).absolute().ancestor(3)
-SECRETS_FILE = os.path.join(BASE_DIR, 'config.json')
+SECRETS_FILE = os.path.join(BASE_DIR, 'config.yml')
 
 if os.path.isfile(SECRETS_FILE):
     with open(SECRETS_FILE) as f:
-        secrets = json.loads(f.read())
+        secrets = yaml.load(f.read())
 else:
     secrets = {
         "SECRET_KEY": "",
@@ -31,7 +31,11 @@ else:
         "username": "",
         "host": "",
         "password": "",
-        "port": ""
+        "port": "",
+        "api_key": "",
+        "sh_project": "",
+        "scraping_past_number_of_days": "",
+        "banned_spiders": "",
     }
 
 
@@ -43,8 +47,9 @@ def get_secret(setting, secrets=secrets):
         print(error_msg)
         sys.exit(1)
 
-CONCURRENT_REQUESTS = 10
-CONCURRENT_REQUESTS_PER_DOMAIN = 10
+CONCURRENT_REQUESTS = 1
+CONCURRENT_REQUESTS_PER_DOMAIN = 1
+DOWNLOAD_DELAY = 5
 
 BOT_NAME = 'manolo_scraper'
 
@@ -52,10 +57,17 @@ SPIDER_MODULES = ['manolo_scraper.spiders']
 NEWSPIDER_MODULE = 'manolo_scraper.spiders'
 
 # Crawl responsibly by identifying yourself (and your website) on the user-agent
-USER_AGENT = 'manolo_scraper (+http://manolo.rocks)'
+USER_AGENT = "Mozilla/5.0 (Linux; Android 4.0.4; Galaxy Nexus Build/IMM76B) AppleWebKit/535.19 (KHTML, like Gecko) Chrome/18.0.1025.133 Mobile Safari/535.19"
+API_KEY = get_secret("api_key")
+SH_PROJECT = get_secret("sh_project")
+
+# scraping last X number of days
+SCRAPING_PAST_NUMBER_OF_DAYS = get_secret("scraping_past_number_of_days")
 CRAWLERA_ENABLED = False
 CRAWLERA_USER = get_secret("CRAWLERA_USER")
 CRAWLERA_PASS = get_secret("CRAWLERA_PASS")
+BANNED_SPIDERS = get_secret("banned_spiders")
+
 DOWNLOADER_MIDDLEWARES = {
     'scrapylib.crawlera.CrawleraMiddleware': 600,
     'scrapy.downloadermiddlewares.useragent.UserAgentMiddleware': "Mozilla/5.0 (Windows NT 6.2; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/32.0.1667.0 Safari/537.36",

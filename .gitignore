@@ -1,3 +1,4 @@
+*.yml
 .idea
 *pyc
 *csv

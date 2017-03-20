@@ -11,7 +11,7 @@ class AmbienteSpider(ManoloBaseSpider):
     name = 'ambiente'
     allowed_domains = ['visitas.minam.gob.pe']
     NUMBER_OF_PAGES_PER_PAGE = 10
-    DATE_REQUEST_FORMAT = '%m/%d/%Y'
+    DATE_REQUEST_FORMAT = '%d/%m/%Y'
 
     def initial_request(self, date):
         date_str = date.strftime(self.DATE_REQUEST_FORMAT)
@@ -30,16 +30,16 @@ class AmbienteSpider(ManoloBaseSpider):
 
     def parse_initial_request(self, response):
         date = response.meta['date']
-
-        request = FormRequest.from_response(response,
-                                            formdata={
-                                                'txtDesde': date,
-                                                'btnBuscar.x': '1',
-                                                'btnBuscar.y': '1',
-                                            },
-                                            dont_filter=True,
-                                            callback=self.parse_page,
-                                            )
+        request = FormRequest.from_response(
+            response,
+            formdata={
+                'txtDesde': date,
+                'btnBuscar.x': '62',
+                'btnBuscar.y': '15',
+            },
+            dont_filter=True,
+            callback=self.parse_page,
+        )
 
         request.meta['date'] = date
 
@@ -97,19 +97,17 @@ class AmbienteSpider(ManoloBaseSpider):
             yield item
 
     def _get_page_request(self, response, page, date):
-
-        request = FormRequest.from_response(response,
-                                            formdata={
-                                                'txtDesde': date,
-                                                '__EVENTTARGET': 'gvwConsulta',
-                                                '__EVENTARGUMENT': 'Page${}'.format(page),
-                                            },
-                                            dont_filter=True,
-                                            callback=self.parse,
-                                            )
-
+        request = FormRequest.from_response(
+            response,
+            formdata={
+                'txtDesde': date,
+                '__EVENTTARGET': 'gvwConsulta',
+                '__EVENTARGUMENT': 'Page${}'.format(page),
+            },
+            dont_filter=True,
+            callback=self.parse,
+        )
         request.meta['date'] = date
-
         return request
 
     # date_string: '28/08/2015 05:11:38 p.m.'

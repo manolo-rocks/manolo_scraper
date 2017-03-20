@@ -23,7 +23,8 @@ class ManoloBaseSpider(scrapy.Spider):
         today = datetime.date.today()
 
         if self.date_start is None:
-            self.date_start = today.strftime('%Y-%m-%d')
+            date_start = today - datetime.timedelta(days=14)
+            self.date_start = date_start.strftime('%Y-%m-%d')
 
         if self.date_end is None:
             self.date_end = today.strftime('%Y-%m-%d')
@@ -57,7 +58,7 @@ class ManoloBaseSpider(scrapy.Spider):
     @staticmethod
     def get_date_item(date_str, format):
         date_obj = datetime.datetime.strptime(date_str, format)
-        return datetime.datetime.strftime(date_obj, '%Y-%m-%d')
+        return date_obj.strftime('%Y-%m-%d')
 
 
 # SIstema de REgistro de VIsitas

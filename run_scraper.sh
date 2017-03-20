@@ -1,6 +1,6 @@
 #!/bin/bash
 
-last_week=$(date --date='7 days ago' +"%Y-%m-%d")
+last_weeks=$(date --date='14 days ago' +"%Y-%m-%d")
 today=$(date +"%Y-%m-%d")
 
 # edit these path
@@ -12,5 +12,5 @@ scraper_log=/home/yoni/manolo_scraper_logs.txt
 cd $scrapy_path
 
 # run using the name of the spider as argument
-$scrapy_bin crawl $spider -a date_start=$last_week -a date_end=$today \
-      >> $scraper_log 2>&1
+$scrapy_bin crawl $spider -a date_start=$last_weeks -a date_end=$today  \
+      -o $1.jl >> $scraper_log 2>&1

@@ -16,7 +16,7 @@ def db_connect():
         settings.DATABASE['drivername'],
         '//' + settings.DATABASE['username'],
         settings.DATABASE['password'] + '@' + settings.DATABASE['host'],
-        settings.DATABASE['port'] + '/' + database_name,
+        str(settings.DATABASE['port']) + '/' + database_name,
     ]
     url = ':'.join(database)
 

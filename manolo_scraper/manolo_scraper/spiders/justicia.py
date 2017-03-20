@@ -10,8 +10,8 @@ from ..utils import make_hash
 
 class JusticiaSpider(ManoloBaseSpider):
     name = 'justicia'
-    allowed_domains = ['http://app3.minjus.gob.pe']
-    base_url = 'http://app3.minjus.gob.pe:8080/visita_web'
+    allowed_domains = ['http://visitas.minjus.gob.pe']
+    base_url = 'http://visitas.minjus.gob.pe/visita_web'
 
     def initial_request(self, date):
         date_str = date.strftime('%d/%m/%Y')
@@ -95,7 +95,7 @@ class JusticiaSpider(ManoloBaseSpider):
             warnings = []
             l = ManoloItemLoader(item=ManoloItem(), selector=row)
 
-            l.add_value('institution', 'justicia')
+            l.add_value('institution', 'minjus')
             l.add_value('date', date)
 
             l.add_xpath('full_name', './/td[4]/br/preceding-sibling::node()/self::text()')
@@ -114,7 +114,9 @@ class JusticiaSpider(ManoloBaseSpider):
             except KeyError as e:
                 warnings.append("No id number, error: {} for item: ".format(e))
 
-            time_start_time_end = response.xpath('.//td[2]/div/br/following-sibling::node()/self::text()').extract_first(default='')
+            time_start_time_end = row.xpath(
+                './/td[2]/div/br/following-sibling::node()/self::text()',
+            ).extract_first(default='')
 
             time_start_time_end = time_start_time_end.split('-')
 

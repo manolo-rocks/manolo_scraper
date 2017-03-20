@@ -1,4 +1,5 @@
-[![Build Status](https://travis-ci.org/manolo-rocks/manolo_scraper.svg)](https://travis-ci.org/aniversarioperu/manolo_scraper)
+[![Build Status](https://travis-ci.org/manolo-rocks/manolo_scraper.svg)](https://travis-ci.org/manolo-rocks/manolo_scraper)
+
 [![codecov.io](http://codecov.io/github/manolo-rocks/manolo_scraper/coverage.svg?branch=master)](http://codecov.io/github/aniversarioperu/manolo_scraper?branch=master)
 [![Code Issues](https://www.quantifiedcode.com/api/v1/project/396d38fe507441fa92d7286d07c8577a/badge.svg)](https://www.quantifiedcode.com/app/project/396d38fe507441fa92d7286d07c8577a)
 
@@ -6,19 +7,24 @@
 Spiders are based on [Scrapy](https://github.com/scrapy/scrapy).
 
 # Configuration
-Create a file `config.json` with the following info:
+Create a file `config.yml` with the following info:
 
-```javascript
-{
-    "CRAWLERA_USER": "",
-    "CRAWLERA_PASS": "",
-    "drivername": "postgres",
-    "username": "postgres",
-    "host": "localhost",
-    "port": "5432",
-    "password": "",
-    "database": "manolo"
-}
+```yaml
+    CRAWLERA_USER: abc
+    CRAWLERA_PASS: abc
+    drivername: postgres
+    username: postgres
+    host: localhost
+    port: 5432
+    password: pass
+    database: manolo
+    api_key: scrapinghub's api key
+    sh_project: scrapinghub's project
+    scraping_past_number_of_days: 14
+    
+    # spiders that are banned when working from scrapinghub.com
+    banned_spiders:
+      - inpe
 ```
 
 The database credentials are needed so that the spider will upload data to the
@@ -92,3 +98,8 @@ production database.
 
 * [x] Ministerio de Vivienda
     * **url**: http://geo.vivienda.gob.pe/Visitas/controlVisitas/index.php?r=consultas/visitaConsulta/index
+
+# Run this way
+```shell
+scrapy crawl SPIDER_NAME -a date_start=DATE_ISO_FORMAT -a date_end=DATE_ISO_FORMAT
+```
