@@ -1,4 +1,5 @@
 [![Build Status](https://travis-ci.org/manolo-rocks/manolo_scraper.svg)](https://travis-ci.org/manolo-rocks/manolo_scraper)
+
 [![codecov.io](http://codecov.io/github/manolo-rocks/manolo_scraper/coverage.svg?branch=master)](http://codecov.io/github/aniversarioperu/manolo_scraper?branch=master)
 [![Code Issues](https://www.quantifiedcode.com/api/v1/project/396d38fe507441fa92d7286d07c8577a/badge.svg)](https://www.quantifiedcode.com/app/project/396d38fe507441fa92d7286d07c8577a)
 
@@ -32,7 +33,7 @@ production database.
 
 ## List of Entities
 
-* [ ] Ministerio de Transportes y Comunicaciones
+* [x] Ministerio de Transportes y Comunicaciones
     * **url**: http://scrv-reporte.mtc.gob.pe/
 
 * [x] Ministerio de la Mujer
@@ -102,3 +103,7 @@ production database.
 ```shell
 scrapy crawl SPIDER_NAME -a date_start=DATE_ISO_FORMAT -a date_end=DATE_ISO_FORMAT
 ```
+
+## Using splash
+
+Run our splash script located in `manolo_scraper/scripts/splash/run-splash.sh` and execute the spider.
