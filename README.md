@@ -32,7 +32,7 @@ production database.
 
 ## List of Entities
 
-* [ ] Ministerio de Transportes y Comunicaciones
+* [x] Ministerio de Transportes y Comunicaciones
     * **url**: http://scrv-reporte.mtc.gob.pe/
 
 * [x] Ministerio de la Mujer
@@ -102,3 +102,7 @@ production database.
 ```shell
 scrapy crawl SPIDER_NAME -a date_start=DATE_ISO_FORMAT -a date_end=DATE_ISO_FORMAT
 ```
+
+## Using splash
+
+Run our splash script located in `manolo_scraper/scripts/splash/run-splash.sh` and execute the spider.
