@@ -20,7 +20,8 @@ Create a file `config.yml` with the following info:
     api_key: scrapinghub's api key
     sh_project: scrapinghub's project
     scraping_past_number_of_days: 14
-    
+    SPLASH_URL: "198.0.0.100"
+
     # spiders that are banned when working from scrapinghub.com
     banned_spiders:
       - inpe
