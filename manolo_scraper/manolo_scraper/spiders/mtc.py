@@ -25,10 +25,13 @@ class MTCSpider(ManoloBaseSpider):
             callback=self.parse,
             meta={
                 'date': date_str,
-            }
+            },
+            dont_filter=True,
         )
 
     def parse(self, response):
+        with open("a.html", "w") as handle:
+            handle.write(response.body)
         rows = response.xpath('//table[@id="ctl00_ContentPlaceHolder_gdvReporteVisitasNuevo"]//tr[@class="gridRow"]')
         date = self.get_date_item(response.meta.get('date'), '%d/%m/%Y')
         for row in rows:
@@ -40,6 +43,7 @@ class MTCSpider(ManoloBaseSpider):
 
             l.add_xpath('reason', './td[9]/text()')
             l.add_xpath('meeting_place', './td[8]/text()')
+            l.add_xpath('office', './td[1]/text()')
             l.add_xpath('host_name', './td[3]/text()')
             l.add_xpath('full_name', './td[7]/text()')
             l.add_xpath('time_start', './td[4]/text()')
