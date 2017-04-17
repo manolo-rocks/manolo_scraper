@@ -13,7 +13,7 @@ class TestAmbienteSpider(unittest.TestCase):
 
     def test_parse_item(self):
         filename = os.path.join('data/ambiente', '19-08-2015.html')
-        items = self.spider.parse(fake_response_from_file(filename, meta={'date': u'08/19/2015'}))
+        items = self.spider.parse(fake_response_from_file(filename, meta={'date': u'19/08/2015'}))
 
         item = next(items)
         self.assertEqual(item.get('full_name'), u'PATRICIA ITURREGUI BYRNE')
@@ -30,24 +30,3 @@ class TestAmbienteSpider(unittest.TestCase):
         self.assertEqual(item.get('date'), u'2015-08-19')
         number_of_items = 1 + sum(1 for _ in items)
         self.assertEqual(number_of_items, 15)
-
-    def test_parse_item_2(self):
-        filename = os.path.join('data/ambiente', '06-02-2017.html')
-        items = self.spider.parse(fake_response_from_file(filename, meta={'date': u'02/06/2017'}))
-
-        item = next(items)
-        self.assertEqual(item.get('full_name'), u'Carolina Margarita Bocanegra Gamboa de Marquina')
-        self.assertEqual(item.get('id_document'), u'DNI')
-        self.assertEqual(item.get('id_number'), u'41724666')
-        self.assertEqual(item.get('entity'), u'AFP INTEGRA')
-        self.assertEqual(item.get('reason'), u'REUNI\xd3N DE TRABAJO')
-        self.assertEqual(item.get('host_name'), u'ROSEMARIE REBECA AVILA BOSQUEANGOSTO')
-        self.assertEqual(item.get('office'), u'POR DEFINIR')
-        self.assertEqual(item.get('meeting_place'), u'POR DEFINIR')
-        self.assertEqual(item.get('time_start'), u'05:47:37 p.m.')
-        self.assertEqual(item.get('time_end'), u'06:53:23 p.m.')
-        self.assertEqual(item.get('institution'), u'ambiente')
-        self.assertEqual(item.get('date'), u'2017-02-06')
-        number_of_items = 1 + sum(1 for _ in items)
-        self.assertEqual(number_of_items, 15)
-

@@ -20,7 +20,8 @@ Create a file `config.yml` with the following info:
     api_key: scrapinghub's api key
     sh_project: scrapinghub's project
     scraping_past_number_of_days: 14
-    
+    SPLASH_URL: "198.0.0.100"
+
     # spiders that are banned when working from scrapinghub.com
     banned_spiders:
       - inpe
@@ -32,7 +33,7 @@ production database.
 
 ## List of Entities
 
-* [ ] Ministerio de Transportes y Comunicaciones
+* [x] Ministerio de Transportes y Comunicaciones
     * **url**: http://scrv-reporte.mtc.gob.pe/
 
 * [x] Ministerio de la Mujer
@@ -102,3 +103,7 @@ production database.
 ```shell
 scrapy crawl SPIDER_NAME -a date_start=DATE_ISO_FORMAT -a date_end=DATE_ISO_FORMAT
 ```
+
+## Using splash
+
+Run our splash script located in `manolo_scraper/scripts/splash/run-splash.sh` and execute the spider.

@@ -2,6 +2,7 @@
 from unidecode import unidecode
 import hashlib
 import re
+import pkgutil
 
 
 def make_hash(item):
@@ -64,3 +65,16 @@ def get_this_month(number):
         '12': 'diciembre',
     }
     return months[number]
+
+
+def get_lua_script(script_name, dependencies=None):
+    dependencies_script = ''
+    if dependencies:
+        for file_name in dependencies:
+            dependencies_script += pkgutil.get_data(
+                "manolo_scraper", "splash/{}".format(file_name))
+
+    lua_script = pkgutil.get_data(
+        "manolo_scraper", "splash/{}".format(script_name))
+
+    return dependencies_script + lua_script
