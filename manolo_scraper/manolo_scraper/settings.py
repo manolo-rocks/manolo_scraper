@@ -34,6 +34,7 @@ else:
         "port": "",
         "api_key": "",
         "sh_project": "",
+        "SPLASH_URL": "",
         "scraping_past_number_of_days": "",
         "banned_spiders": "",
     }
@@ -100,4 +101,6 @@ DUPEFILTER_DEBUG = True
 COOKIES_DEBUG = True
 COOKIES_ENABLED = True
 
-SPLASH_URL = 'http://127.0.0.1:8050'
+SPLASH_URL = 'http://{}:8050'.format(
+    get_secret("SPLASH_URL"),
+)
