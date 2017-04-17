@@ -1,5 +1,4 @@
 [![Build Status](https://travis-ci.org/manolo-rocks/manolo_scraper.svg)](https://travis-ci.org/manolo-rocks/manolo_scraper)
-[![Coverage Status](https://coveralls.io/repos/manolo-rocks/manolo_scraper/badge.svg?branch=master&service=github)](https://coveralls.io/github/aniversarioperu/manolo_scraper?branch=master)
 [![codecov.io](http://codecov.io/github/manolo-rocks/manolo_scraper/coverage.svg?branch=master)](http://codecov.io/github/aniversarioperu/manolo_scraper?branch=master)
 [![Code Issues](https://www.quantifiedcode.com/api/v1/project/396d38fe507441fa92d7286d07c8577a/badge.svg)](https://www.quantifiedcode.com/app/project/396d38fe507441fa92d7286d07c8577a)
 
