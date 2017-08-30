@@ -7,6 +7,7 @@ import os
 
 from tqdm import tqdm
 from hubstorage import HubstorageClient
+from sqlalchemy.exc import IntegrityError
 
 from manolo_scraper.models import db_connect
 from manolo_scraper.settings import API_KEY
@@ -158,7 +159,11 @@ def save_items(items, institution, earliest_age=None):
     if items_to_upload:
         print("uploading {} items".format(len(items_to_upload)))
         table = db['visitors_visitor']
-        table.insert_many(items_to_upload)
+        try:
+            table.insert_many(items_to_upload)
+        except IntegrityError:
+            for item in items_to_upload:
+                table.insert(item)
     else:
         print("nothing to upload to db")
 
