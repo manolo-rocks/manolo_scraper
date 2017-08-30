@@ -113,11 +113,14 @@ def fetch_and_save_items():
             save_items(items, spider['institution_name'])
 
 
-def save_items(items, institution):
-    print("processing {}".format(institution))
+def save_items(items, institution, earliest_age=None):
+    print("processing {}. Age {}".format(institution, earliest_age))
     db = db_connect()
     today = datetime.datetime.today()
-    earliest_date_to_search = today - datetime.timedelta(days=int(SCRAPING_PAST_NUMBER_OF_DAYS) * 2)
+    if earliest_age is None:
+        earliest_date_to_search = today - datetime.timedelta(days=int(SCRAPING_PAST_NUMBER_OF_DAYS) * 2)
+    else:
+        earliest_date_to_search = datetime.datetime.strptime(earliest_age, "YYYY-mm-dd")
     sql_query = """
         SELECT sha1 FROM visitors_visitor
            WHERE institution='{0}'
@@ -160,11 +163,11 @@ def save_items(items, institution):
         print("nothing to upload to db")
 
 
-def save_items_from_file(input_file):
+def save_items_from_file(input_file, earliest_age=None):
     with open(input_file, "r") as handle:
         items = [json.loads(i) for i in handle.readlines()]
     institution = items[0]['institution']
-    save_items(items, institution)
+    save_items(items, institution, earliest_age)
 
 
 def main():
@@ -176,11 +179,19 @@ def main():
         action="store",
         required=False,
     )
+    parser.add_argument(
+        '-a',
+        '--age',
+        dest="earliest_age",
+        action="store",
+        required=False,
+        help="Date in format YYYY-mm-dd",
+    )
     args = parser.parse_args()
     if not args.input_file:
         fetch_and_save_items()
     else:
-        save_items_from_file(args.input_file)
+        save_items_from_file(args.input_file, args.earliest_age)
         print("removing {}".format(args.input_file))
         os.remove(args.input_file)
 
