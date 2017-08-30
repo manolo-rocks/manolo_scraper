@@ -120,7 +120,7 @@ def save_items(items, institution, earliest_age=None):
     if earliest_age is None:
         earliest_date_to_search = today - datetime.timedelta(days=int(SCRAPING_PAST_NUMBER_OF_DAYS) * 2)
     else:
-        earliest_date_to_search = datetime.datetime.strptime(earliest_age, "YYYY-mm-dd")
+        earliest_date_to_search = datetime.datetime.strptime(earliest_age, "%Y-%m-%d")
     sql_query = """
         SELECT sha1 FROM visitors_visitor
            WHERE institution='{0}'
