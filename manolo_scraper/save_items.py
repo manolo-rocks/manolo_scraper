@@ -145,7 +145,10 @@ def save_items(items, institution, earliest_age=None):
 
             item['created'] = datetime.datetime.now()
             item['modified'] = datetime.datetime.now()
-            item['date'] = datetime.datetime.strptime(item['date'], "%Y-%m-%d")
+            if item['institution'] == "defensa":
+                item['date'] = datetime.datetime.strptime(item['date'], "%d/%m/%Y")
+            else:
+                item['date'] = datetime.datetime.strptime(item['date'], "%Y-%m-%d")
             items_to_upload.append(item)
             logging.info(
                 "Saving: {0}, date: {1}".format(item['sha1'], item['date']))
