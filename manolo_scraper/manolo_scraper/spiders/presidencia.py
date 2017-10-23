@@ -11,8 +11,12 @@ from ..utils import make_hash, get_dni
 
 class PresidenciaSpider(ManoloBaseSpider):
     name = 'presidencia'
-    allowed_domains = ['http://www.presidencia.gob.pe']
-    base_url = 'http://www.presidencia.gob.pe/visitas'
+    allowed_domains = ['presidencia.gob.pe']
+    base_url = 'http://transparencia.presidencia.gob.pe/visitas'
+
+    # custom_settings = {
+        # "HTTP_PROXY": "http://127.0.0.1:8118",
+    # }
 
     def initial_request(self, date):
         date_str = date.strftime('%d/%m/%Y')

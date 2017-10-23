@@ -72,11 +72,11 @@ BANNED_SPIDERS = get_secret("banned_spiders")
 DOWNLOADER_MIDDLEWARES = {
     'scrapylib.crawlera.CrawleraMiddleware': 600,
     'scrapy.downloadermiddlewares.useragent.UserAgentMiddleware': "Mozilla/5.0 (Windows NT 6.2; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/32.0.1667.0 Safari/537.36",
-    'scrapy.downloadermiddlewares.httpproxy.HttpProxyMiddleware': "http://" + CRAWLERA_USER + ":" + CRAWLERA_PASS + "@proxy.crawlera.com:8010/",
     'scrapy.downloadermiddlewares.cookies.CookiesMiddleware': 700,
     'scrapy_splash.SplashCookiesMiddleware': 723,
     'scrapy_splash.SplashMiddleware': 725,
     'scrapy.downloadermiddlewares.httpcompression.HttpCompressionMiddleware': 810,
+    'manolo_scraper.middlewares.ProxyMiddleware': 410,
 }
 
 LOG_LEVEL = 'DEBUG'
