@@ -93,9 +93,14 @@ DATABASE = {
 }
 
 ITEM_PIPELINES = {
+    'scrapy.pipelines.files.FilesPipeline': 1,
     'manolo_scraper.pipelines.DuplicatesPipeline': 300,
     'manolo_scraper.pipelines.CleanItemPipeline': 400,
 }
+
+FILES_STORE = '/tmp'
+FILES_URLS_FIELD = "file_urls"
+FILES_RESULT_FIELD = "files"
 
 DUPEFILTER_DEBUG = True
 COOKIES_DEBUG = True

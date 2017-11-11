@@ -26,3 +26,8 @@ class ManoloItem(scrapy.Item):
     time_end = scrapy.Field()
     created = scrapy.Field()
     modified = scrapy.Field()
+
+
+class FileItem(scrapy.Item):
+    file_urls = scrapy.Field()
+    files = scrapy.Field()

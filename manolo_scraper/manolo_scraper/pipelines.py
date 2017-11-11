@@ -19,6 +19,10 @@ class DuplicatesPipeline(object):
         self.ids_seen = set()
 
     def process_item(self, item, spider):
+        if "file_urls" in item:
+            # we are downloading files only
+            return item
+
         if item['sha1'] in self.ids_seen:
             raise DropItem("Duplicate item found: {}".format(item))
         else:
@@ -28,6 +32,10 @@ class DuplicatesPipeline(object):
 
 class CleanItemPipeline(object):
     def process_item(self, item, spider):
+        if "file_urls" in item:
+            # we are downloading files only
+            return item
+
         for k, v in item.items():
             if isinstance(v, basestring) is True:
                 value = re.sub('\s+', ' ', v)
