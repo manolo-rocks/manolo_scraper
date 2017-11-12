@@ -1,0 +1,644 @@
+<html xmlns="http://www.w3.org/1999/xhtml"><head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<title>Consulta de Visitas</title>
+<link rel="stylesheet" type="text/css" href="css/twoColLiqLtHdr.css">
+<link rel="stylesheet" type="text/css" href="css/principal.css">
+<link rel="stylesheet" type="text/css" href="css/egcc.css">
+
+<script type="text/javascript" src="js/jquery-3.1.1.js"></script>
+<script src="js/functions.js" type="text/javascript"></script>
+<script src="js/validacion.js" type="text/javascript"></script>
+
+<!--<link rel="stylesheet" href="//code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
+<script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>-->
+<link rel="stylesheet" href="css/jquery-ui-1.12.1/jquery-ui.css">
+<script src="js/jquery-ui-1.12.1/jquery-ui.js"></script>
+<script src="js/datepicker.js" type="text/javascript"></script>
+<script type="text/javascript" src="chrome-extension://aadgmnobpdmgmigaicncghmmoeflnamj/ng-inspector.js"></script></head>
+<body class="twoColLiqLtHdr">
+<div class="msgStatus" id="divLoad" style="display: none;">
+<div class="divpreload"><img src="images/loading.gif"></div>
+<!--Procesando Solucitud ...-->
+</div>
+<!--<body class="twoColLiqLtHdr">-->
+<div id="container">
+	    <table width="99%" align="center" border="0" cellpadding="0" cellspacing="0">
+      <tbody><tr>
+      	<td>
+        <div style="max-width:1128px;">
+        <img src="images/cab_visitas.png" alt="visitas">
+        </div>
+        </td>
+      </tr>
+      <tr>
+      	<td><hr color="#D9261D" width="100%" size="3"></td>
+      </tr>
+      <tr>
+      	<td align="right">Lunes, 06 de Marzo de 2017</td>
+      </tr>
+      <tr>
+      	<td>
+        <p><span style="font-weight:600; font-size: 0.87em;">Seleccione Fecha:</span> <input type="text" name="datepicker" id="datepicker" value="06/03/2017" readonly="readonly" class="hasDatepicker"> <input type="button" href="javascript:;" onclick="listConsulta($('#datepicker').val()); return false;" value="Buscar"></p>
+        </td>
+      </tr>
+    </tbody></table>
+
+	<!--<div class="divpreload"><img src="images/loading.gif" /></div>-->
+    <div id="resultado">        <span style="font-size:0.9em; font-style:italic; padding:4px;">41 Registros Encontrados</span>
+        <table border="0" cellpadding="0" cellspacing="0" class="tabmod1">
+      <tbody><tr>
+        <th width="3%">Item
+        </th><th width="5%">Fecha
+        </th><th width="17%">Visitante
+        </th><th width="6%">Documento
+        </th><th width="10%">Entidad
+        </th><th width="16%">Motivo
+        </th><th width="12%">Empleado Público
+        </th><th width="14%">Oficina - Cargo
+        </th><th width="5%">Hora Ingreso
+        </th><th width="5%">Hora Salida
+        </th><th width="7%">Local
+      </th></tr>
+
+      <tr class="rw2">
+        <td>1</td>
+        <td>31/08/2015</td>
+        <td>PAJARES CRIADO SERGIO ADOLFO</td>
+        <td>DNI 09272448</td>
+        <td>COSAPI DATA.S.A.</td>
+        <td>OTROS: PROYECTO DE CABLEADO (SUPERVISAR)</td>
+        <td>CALDERON MONTOYA BLAS</td>
+        <td>DIRECCION DE OPERACIONES - </td>
+        <td>19:04</td>
+        <td>19:53</td>
+        <td>DESAMPARADOS</td>
+      </tr>
+
+      <tr class="rw1">
+        <td>2</td>
+        <td>31/08/2015</td>
+        <td>SANDON TARAZONA GINA PATRICIA</td>
+        <td>DNI 44086265</td>
+        <td>PARTICULAR</td>
+        <td>REUNION DE TRABAJO</td>
+        <td>GONZALES CLEMENTE JOSE</td>
+        <td>DIRECCION DE LOGISTICA - DIRECTOR</td>
+        <td>18:05</td>
+        <td>19:22</td>
+        <td>EDIFICIO PALACIO</td>
+      </tr>
+
+      <tr class="rw2">
+        <td>3</td>
+        <td>31/08/2015</td>
+        <td>ALFARO ROLANDO RICARDO WILLIAM</td>
+        <td>DNI 07298314</td>
+        <td>PARTICULAR</td>
+        <td>REUNION DE TRABAJO</td>
+        <td>AGUIRRE ALMEYDA OSCAR</td>
+        <td>DIRECCION DE LOGISTICA - </td>
+        <td>17:10</td>
+        <td>17:20</td>
+        <td>EDIFICIO PALACIO</td>
+      </tr>
+
+      <tr class="rw1">
+        <td>4</td>
+        <td>31/08/2015</td>
+        <td>MATIAS PANTOJA ALEJANDRO DANIEL</td>
+        <td>DNI 46279328</td>
+        <td>SERVIDECOR</td>
+        <td>OTROS: SERVICIO DE LAVADOS DE PRENDAS</td>
+        <td>ALLASI DUEÑAS JOSE</td>
+        <td>DIRECCION DE OPERACIONES - AUXILIAR ADMINISTRATIVO</td>
+        <td>16:51</td>
+        <td>17:44</td>
+        <td>DESAMPARADOS</td>
+      </tr>
+
+      <tr class="rw2">
+        <td>5</td>
+        <td>31/08/2015</td>
+        <td>NOVELLA VELIS CARLOS FELIPE</td>
+        <td>DNI 07225411</td>
+        <td>PARTICULAR</td>
+        <td>REUNION DE TRABAJO</td>
+        <td>TENEMAS ZURITA GUISELLA</td>
+        <td>DIRECCION DE LOGISTICA - </td>
+        <td>16:40</td>
+        <td>16:50</td>
+        <td>EDIFICIO PALACIO</td>
+      </tr>
+
+      <tr class="rw1">
+        <td>6</td>
+        <td>31/08/2015</td>
+        <td>CASTRO SALAZAR ERIK PAUL</td>
+        <td>DNI 10200792</td>
+        <td>JEVANS Y ASOCIADOS SAC</td>
+        <td>REUNION DE TRABAJO</td>
+        <td>QUINTANA DAVILA JAMES</td>
+        <td>DIRECCION DE TECNOLOGIA DE LA INFORMACION Y SISTEMAS - ASISTENTE DE AREA II</td>
+        <td>16:31</td>
+        <td>21:54</td>
+        <td>DESAMPARADOS</td>
+      </tr>
+
+      <tr class="rw2">
+        <td>7</td>
+        <td>31/08/2015</td>
+        <td>LAZO CANAZAS JUAN GABRIEL</td>
+        <td>DNI 42770544</td>
+        <td>ENHACKE</td>
+        <td>REUNION DE TRABAJO</td>
+        <td>FALLA ZEVALLOS ISABEL</td>
+        <td>DIRECCION DE TECNOLOGIA DE LA INFORMACION Y SISTEMAS - </td>
+        <td>16:22</td>
+        <td>17:30</td>
+        <td>DESAMPARADOS</td>
+      </tr>
+
+      <tr class="rw1">
+        <td>8</td>
+        <td>31/08/2015</td>
+        <td>VASQUEZ MACEDO MARIO</td>
+        <td>DNI 08066071</td>
+        <td>COSEMAV SOC. ANONIMA CERRADA</td>
+        <td>REUNION DE TRABAJO</td>
+        <td>HUARHUA FERNANDEZ VICTOR</td>
+        <td>DIRECCION DE OPERACIONES - TRABAJADOR DE MANTENIMIENTO</td>
+        <td>16:10</td>
+        <td>18:04</td>
+        <td>DESAMPARADOS</td>
+      </tr>
+
+      <tr class="rw2">
+        <td>9</td>
+        <td>31/08/2015</td>
+        <td>CRISOSTOMO PARIACHI EDUARDO VICTOR</td>
+        <td>DNI 10585706</td>
+        <td>COSEMAV SOC. ANONIMA CERRADA</td>
+        <td>REUNION DE TRABAJO</td>
+        <td>HUARHUA FERNANDEZ VICTOR</td>
+        <td>DIRECCION DE OPERACIONES - TRABAJADOR DE MANTENIMIENTO</td>
+        <td>16:10</td>
+        <td>18:04</td>
+        <td>DESAMPARADOS</td>
+      </tr>
+
+      <tr class="rw1">
+        <td>10</td>
+        <td>31/08/2015</td>
+        <td>SANCHEZ CORDERO PEDRO JUAN</td>
+        <td>DNI 08399919</td>
+        <td>PARTICULAR</td>
+        <td>OTROS: INSPECCION OCULAR DE TELEFONOS DADOS DE BAJA</td>
+        <td>MEDINA MENDOZA ANGEL</td>
+        <td>DIRECCION DE LOGISTICA - AUXILIAR ADMINISTRATIVO</td>
+        <td>15:28</td>
+        <td>15:40</td>
+        <td>DESAMPARADOS</td>
+      </tr>
+
+      <tr class="rw2">
+        <td>11</td>
+        <td>31/08/2015</td>
+        <td>ZAMUDIO MENDOZA CARLOS AUGUSTO</td>
+        <td>DNI 06698955</td>
+        <td>PARTICULAR</td>
+        <td>PERSONAL</td>
+        <td>TERRY RAMOS EDILBERTO</td>
+        <td>DIRECCION DE RECURSOS HUMANOS - DIRECTOR</td>
+        <td>15:15</td>
+        <td>15:38</td>
+        <td>EDIFICIO PALACIO</td>
+      </tr>
+
+      <tr class="rw1">
+        <td>12</td>
+        <td>31/08/2015</td>
+        <td>VENTO SILVA JOSE ANTONIO</td>
+        <td>DNI 10817739</td>
+        <td>MELVI SAC.</td>
+        <td>OTROS: RETIRO DE MICROFONOS DE LA SALA DE CONSEJO DE MINISTR</td>
+        <td>JUNGBLUTH ROJAS PEDRO</td>
+        <td>DIRECCION DE TECNOLOGIA DE TELECOMUNICACIONES - ESPECIALISTA EN INSTALACIONES </td>
+        <td>14:45</td>
+        <td>15:00</td>
+        <td>DESAMPARADOS</td>
+      </tr>
+
+      <tr class="rw2">
+        <td>13</td>
+        <td>31/08/2015</td>
+        <td>TASAYCO LENGUA JOSE FERNANDO</td>
+        <td>DNI 70140823</td>
+        <td>COSAPI DATA.S.A.</td>
+        <td>OTROS: EJECUCION DE TRABAJOS EN AREAS DE DESPACHO</td>
+        <td>CALDERON MONTOYA BLAS</td>
+        <td>DIRECCION DE OPERACIONES - </td>
+        <td>12:26</td>
+        <td>17:10</td>
+        <td>DESAMPARADOS</td>
+      </tr>
+
+      <tr class="rw1">
+        <td>14</td>
+        <td>31/08/2015</td>
+        <td>TORRES GARAY JOSE LUIS MARTIN</td>
+        <td>DNI 06771891</td>
+        <td>COSAPI DATA.S.A.</td>
+        <td>OTROS: EJECUCION DE TRABAJOS EN AREAS DE DESPACHO</td>
+        <td>CALDERON MONTOYA BLAS</td>
+        <td>DIRECCION DE OPERACIONES - </td>
+        <td>12:26</td>
+        <td>17:10</td>
+        <td>DESAMPARADOS</td>
+      </tr>
+
+      <tr class="rw2">
+        <td>15</td>
+        <td>31/08/2015</td>
+        <td>RICCE CHUMBE WALTER HUMBERTO</td>
+        <td>DNI 25424360</td>
+        <td>MINISTERIO DE AMBIENTE</td>
+        <td>REUNION DE TRABAJO</td>
+        <td>MONTALVA DE FALLA JOSE</td>
+        <td>SUBSECRETARIA GENERAL - DIRECTOR GENERAL</td>
+        <td>10:50</td>
+        <td>10:54</td>
+        <td>EDIFICIO PALACIO</td>
+      </tr>
+
+      <tr class="rw1">
+        <td>16</td>
+        <td>31/08/2015</td>
+        <td>LEON GARCIA CARLOS VICENTE</td>
+        <td>DNI 41381716</td>
+        <td>VENDOMATICA</td>
+        <td>OTROS: ABASTECER VENDOMATICA</td>
+        <td>GONZALES ACOSTA AUGUSTO</td>
+        <td>DIRECCION DE OPERACIONES - AUXILIAR ADMINISTRATIVO</td>
+        <td>10:45</td>
+        <td>10:58</td>
+        <td>DESAMPARADOS</td>
+      </tr>
+
+      <tr class="rw2">
+        <td>17</td>
+        <td>31/08/2015</td>
+        <td>FIGUEIREDO AGUILAR NILCE PATRICIA</td>
+        <td>DNI 47049001</td>
+        <td>GRUPO INTECSA SAC</td>
+        <td>REUNION DE TRABAJO</td>
+        <td>MARCOS APAZA CARLOS</td>
+        <td>DIRECCION DE LOGISTICA - TECNICO ADMINISTRATIVO II</td>
+        <td>10:38</td>
+        <td>10:44</td>
+        <td>EDIFICIO PALACIO</td>
+      </tr>
+
+      <tr class="rw1">
+        <td>18</td>
+        <td>31/08/2015</td>
+        <td>ESTRADA CHAMBERGO EDGAR ROBERTO</td>
+        <td>DNI 10763666</td>
+        <td>VIDRIERIA RIMAC</td>
+        <td>OTROS: TRABAJOS DE VIDRIERIA</td>
+        <td>ESCOBAR IGLESIAS AUGUSTO</td>
+        <td>DIRECCION DE OPERACIONES - ASISTENTE DE AREA I</td>
+        <td>10:27</td>
+        <td>10:37</td>
+        <td>DESAMPARADOS</td>
+      </tr>
+
+      <tr class="rw2">
+        <td>19</td>
+        <td>31/08/2015</td>
+        <td>LOPEZ CAZORLA ALVARO FERNANDO</td>
+        <td>DNI 10553202</td>
+        <td>PARTICULAR</td>
+        <td>PERSONAL</td>
+        <td>MONTALVA DE FALLA JOSE</td>
+        <td>SUBSECRETARIA GENERAL - DIRECTOR GENERAL</td>
+        <td>10:23</td>
+        <td>10:47</td>
+        <td>EDIFICIO PALACIO</td>
+      </tr>
+
+      <tr class="rw1">
+        <td>20</td>
+        <td>31/08/2015</td>
+        <td>VENTURA PAJUELO ALEJANDRO ABEL</td>
+        <td>DNI 07030723</td>
+        <td>PARTICULAR</td>
+        <td>OTROS: TRABAJOS DE RESTAURACION DE SILLAS</td>
+        <td>ROJAS PUNTAS BERNARDINO</td>
+        <td>DIRECCION DE OPERACIONES - TECNICO</td>
+        <td>10:00</td>
+        <td>17:51</td>
+        <td>DESAMPARADOS</td>
+      </tr>
+
+      <tr class="rw2">
+        <td>21</td>
+        <td>31/08/2015</td>
+        <td>RAFAEL RAMIREZ GILMER</td>
+        <td>DNI 42725433</td>
+        <td>PARTICULAR</td>
+        <td>REUNION DE TRABAJO</td>
+        <td>MUGA MELGAREJO CARLOS</td>
+        <td>DIRECCION DE LOGISTICA - AUXILIAR ADMINISTRATIVO</td>
+        <td>09:56</td>
+        <td>10:03</td>
+        <td>EDIFICIO PALACIO</td>
+      </tr>
+
+      <tr class="rw1">
+        <td>22</td>
+        <td>31/08/2015</td>
+        <td>MENDOZA GIL ROGELIO</td>
+        <td>DNI 10369699</td>
+        <td>PARTICULAR</td>
+        <td>REUNION DE TRABAJO</td>
+        <td>MUGA MELGAREJO CARLOS</td>
+        <td>DIRECCION DE LOGISTICA - AUXILIAR ADMINISTRATIVO</td>
+        <td>09:54</td>
+        <td>10:03</td>
+        <td>EDIFICIO PALACIO</td>
+      </tr>
+
+      <tr class="rw2">
+        <td>23</td>
+        <td>31/08/2015</td>
+        <td>ORTEGA HARTMANN SANTIAGO JESUS</td>
+        <td>DNI 07929601</td>
+        <td>PARTICULAR</td>
+        <td>REUNION DE TRABAJO</td>
+        <td>AYO WONG JORGE</td>
+        <td>OFICINA DE PLANEAMIENTO Y PRESUPUESTO - DIRECTOR GENERAL</td>
+        <td>09:52</td>
+        <td>10:43</td>
+        <td>EDIFICIO PALACIO</td>
+      </tr>
+
+      <tr class="rw1">
+        <td>24</td>
+        <td>31/08/2015</td>
+        <td>ROMERO SALAZAR SUSANA PALMIRA</td>
+        <td>DNI 06640445</td>
+        <td>PARTICULAR</td>
+        <td>REUNION DE TRABAJO</td>
+        <td>AYO WONG JORGE</td>
+        <td>OFICINA DE PLANEAMIENTO Y PRESUPUESTO - DIRECTOR GENERAL</td>
+        <td>09:49</td>
+        <td>10:43</td>
+        <td>EDIFICIO PALACIO</td>
+      </tr>
+
+      <tr class="rw2">
+        <td>25</td>
+        <td>31/08/2015</td>
+        <td>AGUILAR TAMBO BARBARA JOCELYM</td>
+        <td>DNI 70214024</td>
+        <td>PARTICULAR</td>
+        <td>OTROS: TECNICO PARA TELEFONIA MOVIL EN ELE DP</td>
+        <td>SARANGO ARIAS MARIO</td>
+        <td>DIRECCION DE TECNOLOGIA DE TELECOMUNICACIONES - ESPECIALISTA EN INSTALACIONES </td>
+        <td>08:51</td>
+        <td>18:03</td>
+        <td>DESAMPARADOS</td>
+      </tr>
+
+      <tr class="rw1">
+        <td>26</td>
+        <td>31/08/2015</td>
+        <td>YSLA SEGURA ANDREA MEDALIT</td>
+        <td>DNI 40692939</td>
+        <td>PARTICULAR</td>
+        <td>PERSONAL</td>
+        <td>AYO WONG JORGE</td>
+        <td>OFICINA DE PLANEAMIENTO Y PRESUPUESTO - DIRECTOR GENERAL</td>
+        <td>08:18</td>
+        <td>10:12</td>
+        <td>EDIFICIO PALACIO</td>
+      </tr>
+
+      <tr class="rw2">
+        <td>27</td>
+        <td>31/08/2015</td>
+        <td>MEDINA ZARAUZ WALTER</td>
+        <td>DNI 08806733</td>
+        <td>COSAPI DATA.S.A.</td>
+        <td>OTROS: SUPERVISION DE TRBAJOS DE LA EMPRESA COSAPI</td>
+        <td>CALDERON MONTOYA BLAS</td>
+        <td>DIRECCION DE OPERACIONES - </td>
+        <td>08:12</td>
+        <td>21:54</td>
+        <td>DESAMPARADOS</td>
+      </tr>
+
+      <tr class="rw1">
+        <td>28</td>
+        <td>31/08/2015</td>
+        <td>NOVOA NOVOA SANTIAGO</td>
+        <td>DNI 27164291</td>
+        <td>COSAPI DATA.S.A.</td>
+        <td>OTROS: TRABAJOS DE CABLEADO ESTRUCTURADO Y ELECTRICO</td>
+        <td>CALDERON MONTOYA BLAS</td>
+        <td>DIRECCION DE OPERACIONES - </td>
+        <td>08:12</td>
+        <td>18:25</td>
+        <td>DESAMPARADOS</td>
+      </tr>
+
+      <tr class="rw2">
+        <td>29</td>
+        <td>31/08/2015</td>
+        <td>CHACON CAMPOS JOSE FRANCISCO</td>
+        <td>DNI 19324044</td>
+        <td>COSAPI DATA.S.A.</td>
+        <td>OTROS: TRABAJOS DE CABLEADO ESTRUCTURADO Y ELECTRICO</td>
+        <td>CALDERON MONTOYA BLAS</td>
+        <td>DIRECCION DE OPERACIONES - </td>
+        <td>08:12</td>
+        <td>18:20</td>
+        <td>DESAMPARADOS</td>
+      </tr>
+
+      <tr class="rw1">
+        <td>30</td>
+        <td>31/08/2015</td>
+        <td>CARRASCO CRUZ WALTER</td>
+        <td>DNI 03489192</td>
+        <td>COSAPI DATA.S.A.</td>
+        <td>OTROS: TRABAJOS DE CABLEADO ESTRUCTURADO Y ELECTRICO</td>
+        <td>CALDERON MONTOYA BLAS</td>
+        <td>DIRECCION DE OPERACIONES - </td>
+        <td>08:12</td>
+        <td>18:26</td>
+        <td>DESAMPARADOS</td>
+      </tr>
+
+      <tr class="rw2">
+        <td>31</td>
+        <td>31/08/2015</td>
+        <td>TEJEDA VILLENA VICTOR RICARDO</td>
+        <td>DNI 09603562</td>
+        <td>COSAPI DATA.S.A.</td>
+        <td>OTROS: TRABAJOS DE CABLEADO ESTRUCTURADO Y ELECTRICO</td>
+        <td>CALDERON MONTOYA BLAS</td>
+        <td>DIRECCION DE OPERACIONES - </td>
+        <td>08:12</td>
+        <td>18:46</td>
+        <td>DESAMPARADOS</td>
+      </tr>
+
+      <tr class="rw1">
+        <td>32</td>
+        <td>31/08/2015</td>
+        <td>VENTOCILLA RODRIGUEZ JOSE MARTIN</td>
+        <td>DNI 47079794</td>
+        <td>COSAPI DATA.S.A.</td>
+        <td>OTROS: TRABAJOS DE CABLEADO ESTRUCTURADO Y ELECTRICO</td>
+        <td>CALDERON MONTOYA BLAS</td>
+        <td>DIRECCION DE OPERACIONES - </td>
+        <td>08:12</td>
+        <td>18:26</td>
+        <td>DESAMPARADOS</td>
+      </tr>
+
+      <tr class="rw2">
+        <td>33</td>
+        <td>31/08/2015</td>
+        <td>ALBURQUEQUE DIAZ WILSON NEIL</td>
+        <td>DNI 27169481</td>
+        <td>COSAPI DATA.S.A.</td>
+        <td>OTROS: TRABAJO DE CABLEADO ESTRUCTURADO Y ELECTRICO</td>
+        <td>CALDERON MONTOYA BLAS</td>
+        <td>DIRECCION DE OPERACIONES - </td>
+        <td>08:12</td>
+        <td>18:20</td>
+        <td>DESAMPARADOS</td>
+      </tr>
+
+      <tr class="rw1">
+        <td>34</td>
+        <td>31/08/2015</td>
+        <td>DE LA CRUZ ESCALANTE MARIA ELENA</td>
+        <td>DNI 09051268</td>
+        <td>PARTICULAR</td>
+        <td>OTROS: TRABAJOS DE RESTAURACION DE SILLAS</td>
+        <td>ROJAS PUNTAS BERNARDINO</td>
+        <td>DIRECCION DE OPERACIONES - TECNICO</td>
+        <td>08:10</td>
+        <td>17:51</td>
+        <td>DESAMPARADOS</td>
+      </tr>
+
+      <tr class="rw2">
+        <td>35</td>
+        <td>31/08/2015</td>
+        <td>GALVAN YENOBI KENJI SIMON</td>
+        <td>DNI 45257468</td>
+        <td>PARTICULAR</td>
+        <td>OTROS: SERVICIO POR LOCACION DE SERVICIO</td>
+        <td>ORTEGA ROJAS JUAN</td>
+        <td>DIRECCION DE TECNOLOGIA DE LA INFORMACION Y SISTEMAS - DIRECTOR</td>
+        <td>08:08</td>
+        <td>18:57</td>
+        <td>DESAMPARADOS</td>
+      </tr>
+
+      <tr class="rw1">
+        <td>36</td>
+        <td>31/08/2015</td>
+        <td>GONZALES MONTES JUAN</td>
+        <td>DNI 07488549</td>
+        <td>JAMBE</td>
+        <td>OTROS: PROVEEDOR DE FRUTAS</td>
+        <td>HUAMAN ARTICA JUAN</td>
+        <td>DIRECCION DE OPERACIONES - TECNICO ADMINISTRATIVO I</td>
+        <td>08:00</td>
+        <td>08:23</td>
+        <td>DESAMPARADOS</td>
+      </tr>
+
+      <tr class="rw2">
+        <td>37</td>
+        <td>31/08/2015</td>
+        <td>QUISPE GARAMENDI JUAN ALBERTO</td>
+        <td>DNI 80114379</td>
+        <td>JAMBE</td>
+        <td>OTROS: PROVEEDOR</td>
+        <td>HUAMAN ARTICA JUAN</td>
+        <td>DIRECCION DE OPERACIONES - TECNICO ADMINISTRATIVO I</td>
+        <td>08:00</td>
+        <td>08:23</td>
+        <td>DESAMPARADOS</td>
+      </tr>
+
+      <tr class="rw1">
+        <td>38</td>
+        <td>31/08/2015</td>
+        <td>GONZALES QUISPE MIGUEL ANGEL</td>
+        <td>DNI 45570009</td>
+        <td>JAMBE</td>
+        <td>OTROS: PROVEEDOR</td>
+        <td>HUAMAN ARTICA JUAN</td>
+        <td>DIRECCION DE OPERACIONES - TECNICO ADMINISTRATIVO I</td>
+        <td>08:00</td>
+        <td>08:23</td>
+        <td>DESAMPARADOS</td>
+      </tr>
+
+      <tr class="rw2">
+        <td>39</td>
+        <td>31/08/2015</td>
+        <td>PALOMINO MAMANI GERSON JUAN</td>
+        <td>DNI 44457777</td>
+        <td>COSAPI DATA.S.A.</td>
+        <td>OTROS: PERVISION DE SEGURIDAD</td>
+        <td>CALDERON MONTOYA BLAS</td>
+        <td>DIRECCION DE OPERACIONES - </td>
+        <td>07:53</td>
+        <td>08:00</td>
+        <td>DESAMPARADOS</td>
+      </tr>
+
+      <tr class="rw1">
+        <td>40</td>
+        <td>31/08/2015</td>
+        <td>HUAMAN ARREGUI WALTER CRISTIAN</td>
+        <td>DNI 43722401</td>
+        <td>ANCRO INSTALACIÓN DE BAÑOS</td>
+        <td>OTROS: LIMPIEZA DE SSHH RELCIONADO AL PROYECTO COSAPI</td>
+        <td>CALDERON MONTOYA BLAS</td>
+        <td>DIRECCION DE OPERACIONES - </td>
+        <td>07:24</td>
+        <td>07:38</td>
+        <td>DESAMPARADOS</td>
+      </tr>
+
+      <tr class="rw2">
+        <td>41</td>
+        <td>31/08/2015</td>
+        <td>HUAMAN MARTEL RUBEN JUNIOR</td>
+        <td>DNI 46915272</td>
+        <td>ANCRO INSTALACIÓN DE BAÑOS</td>
+        <td>OTROS: LIMPIEZA DE SSHH RELACIONADO AL PROYECTO COSAPI</td>
+        <td>CALDERON MONTOYA BLAS</td>
+        <td>DIRECCION DE OPERACIONES - </td>
+        <td>07:24</td>
+        <td>07:38</td>
+        <td>DESAMPARADOS</td>
+      </tr>
+
+    </tbody></table>
+	    <span style="font-size:0.9em; font-style:italic; padding:4px;">41 Registros Encontrados</span>
+    <hr style="width:100%; margin-top:60px; margin-bottom:0px; color:#AEAEAE;">
+    <div id="footervis"><span style="font-size:0.8em;">2016 - Despacho Presidencial</span></div>
+    </div>
+</div>
+
+<div id="ui-datepicker-div" class="ui-datepicker ui-widget ui-widget-content ui-helper-clearfix ui-corner-all" style="position: absolute; top: 146.391px; left: 130.812px; z-index: 1; display: none;"><div class="ui-datepicker-header ui-widget-header ui-helper-clearfix ui-corner-all"><a class="ui-datepicker-prev ui-corner-all" data-handler="prev" data-event="click" title="<Anterior"><span class="ui-icon ui-icon-circle-triangle-w"><anterior< span=""></anterior<></span></a><a class="ui-datepicker-next ui-corner-all" data-handler="next" data-event="click" title="Siguiente>"><span class="ui-icon ui-icon-circle-triangle-e">Siguiente&gt;</span></a><div class="ui-datepicker-title"><select class="ui-datepicker-month" data-handler="selectMonth" data-event="change"><option value="0">Ene</option><option value="1">Feb</option><option value="2">Mar</option><option value="3">Abr</option><option value="4">May</option><option value="5">Jun</option><option value="6">Jul</option><option value="7" selected="selected">Ago</option><option value="8">Sep</option><option value="9">Oct</option><option value="10">Nov</option><option value="11">Dic</option></select><select class="ui-datepicker-year" data-handler="selectYear" data-event="change"><option value="2005">2005</option><option value="2006">2006</option><option value="2007">2007</option><option value="2008">2008</option><option value="2009">2009</option><option value="2010">2010</option><option value="2011">2011</option><option value="2012">2012</option><option value="2013">2013</option><option value="2014">2014</option><option value="2015" selected="selected">2015</option><option value="2016">2016</option><option value="2017">2017</option></select></div></div><table class="ui-datepicker-calendar"><thead><tr><th scope="col"><span title="Lunes">Lu</span></th><th scope="col"><span title="Martes">Ma</span></th><th scope="col"><span title="Miércoles">Mi</span></th><th scope="col"><span title="Jueves">Ju</span></th><th scope="col"><span title="Viernes">Vi</span></th><th scope="col" class="ui-datepicker-week-end"><span title="Sábado">Sá</span></th><th scope="col" class="ui-datepicker-week-end"><span title="Domingo">Do</span></th></tr></thead><tbody><tr><td class=" ui-datepicker-other-month ui-datepicker-unselectable ui-state-disabled">&nbsp;</td><td class=" ui-datepicker-other-month ui-datepicker-unselectable ui-state-disabled">&nbsp;</td><td class=" ui-datepicker-other-month ui-datepicker-unselectable ui-state-disabled">&nbsp;</td><td class=" ui-datepicker-other-month ui-datepicker-unselectable ui-state-disabled">&nbsp;</td><td class=" ui-datepicker-other-month ui-datepicker-unselectable ui-state-disabled">&nbsp;</td><td class=" ui-datepicker-week-end " data-handler="selectDay" data-event="click" data-month="7" data-year="2015"><a class="ui-state-default" href="#">1</a></td><td class=" ui-datepicker-week-end " data-handler="selectDay" data-event="click" data-month="7" data-year="2015"><a class="ui-state-default" href="#">2</a></td></tr><tr><td class=" " data-handler="selectDay" data-event="click" data-month="7" data-year="2015"><a class="ui-state-default" href="#">3</a></td><td class=" " data-handler="selectDay" data-event="click" data-month="7" data-year="2015"><a class="ui-state-default" href="#">4</a></td><td class=" " data-handler="selectDay" data-event="click" data-month="7" data-year="2015"><a class="ui-state-default" href="#">5</a></td><td class=" " data-handler="selectDay" data-event="click" data-month="7" data-year="2015"><a class="ui-state-default" href="#">6</a></td><td class=" " data-handler="selectDay" data-event="click" data-month="7" data-year="2015"><a class="ui-state-default" href="#">7</a></td><td class=" ui-datepicker-week-end " data-handler="selectDay" data-event="click" data-month="7" data-year="2015"><a class="ui-state-default" href="#">8</a></td><td class=" ui-datepicker-week-end " data-handler="selectDay" data-event="click" data-month="7" data-year="2015"><a class="ui-state-default" href="#">9</a></td></tr><tr><td class=" " data-handler="selectDay" data-event="click" data-month="7" data-year="2015"><a class="ui-state-default" href="#">10</a></td><td class=" " data-handler="selectDay" data-event="click" data-month="7" data-year="2015"><a class="ui-state-default" href="#">11</a></td><td class=" " data-handler="selectDay" data-event="click" data-month="7" data-year="2015"><a class="ui-state-default" href="#">12</a></td><td class=" " data-handler="selectDay" data-event="click" data-month="7" data-year="2015"><a class="ui-state-default" href="#">13</a></td><td class=" " data-handler="selectDay" data-event="click" data-month="7" data-year="2015"><a class="ui-state-default" href="#">14</a></td><td class=" ui-datepicker-week-end " data-handler="selectDay" data-event="click" data-month="7" data-year="2015"><a class="ui-state-default" href="#">15</a></td><td class=" ui-datepicker-week-end " data-handler="selectDay" data-event="click" data-month="7" data-year="2015"><a class="ui-state-default" href="#">16</a></td></tr><tr><td class=" " data-handler="selectDay" data-event="click" data-month="7" data-year="2015"><a class="ui-state-default" href="#">17</a></td><td class=" " data-handler="selectDay" data-event="click" data-month="7" data-year="2015"><a class="ui-state-default" href="#">18</a></td><td class=" " data-handler="selectDay" data-event="click" data-month="7" data-year="2015"><a class="ui-state-default" href="#">19</a></td><td class=" " data-handler="selectDay" data-event="click" data-month="7" data-year="2015"><a class="ui-state-default" href="#">20</a></td><td class=" " data-handler="selectDay" data-event="click" data-month="7" data-year="2015"><a class="ui-state-default" href="#">21</a></td><td class=" ui-datepicker-week-end " data-handler="selectDay" data-event="click" data-month="7" data-year="2015"><a class="ui-state-default" href="#">22</a></td><td class=" ui-datepicker-week-end " data-handler="selectDay" data-event="click" data-month="7" data-year="2015"><a class="ui-state-default" href="#">23</a></td></tr><tr><td class=" " data-handler="selectDay" data-event="click" data-month="7" data-year="2015"><a class="ui-state-default" href="#">24</a></td><td class=" " data-handler="selectDay" data-event="click" data-month="7" data-year="2015"><a class="ui-state-default" href="#">25</a></td><td class=" " data-handler="selectDay" data-event="click" data-month="7" data-year="2015"><a class="ui-state-default" href="#">26</a></td><td class=" " data-handler="selectDay" data-event="click" data-month="7" data-year="2015"><a class="ui-state-default" href="#">27</a></td><td class=" " data-handler="selectDay" data-event="click" data-month="7" data-year="2015"><a class="ui-state-default" href="#">28</a></td><td class=" ui-datepicker-week-end " data-handler="selectDay" data-event="click" data-month="7" data-year="2015"><a class="ui-state-default" href="#">29</a></td><td class=" ui-datepicker-week-end " data-handler="selectDay" data-event="click" data-month="7" data-year="2015"><a class="ui-state-default" href="#">30</a></td></tr><tr><td class=" " data-handler="selectDay" data-event="click" data-month="7" data-year="2015"><a class="ui-state-default" href="#">31</a></td><td class=" ui-datepicker-other-month ui-datepicker-unselectable ui-state-disabled">&nbsp;</td><td class=" ui-datepicker-other-month ui-datepicker-unselectable ui-state-disabled">&nbsp;</td><td class=" ui-datepicker-other-month ui-datepicker-unselectable ui-state-disabled">&nbsp;</td><td class=" ui-datepicker-other-month ui-datepicker-unselectable ui-state-disabled">&nbsp;</td><td class=" ui-datepicker-week-end ui-datepicker-other-month ui-datepicker-unselectable ui-state-disabled">&nbsp;</td><td class=" ui-datepicker-week-end ui-datepicker-other-month ui-datepicker-unselectable ui-state-disabled">&nbsp;</td></tr></tbody></table><div class="ui-datepicker-buttonpane ui-widget-content"><button type="button" class="ui-datepicker-current ui-state-default ui-priority-secondary ui-corner-all" data-handler="today" data-event="click">Hoy</button><button type="button" class="ui-datepicker-close ui-state-default ui-priority-primary ui-corner-all" data-handler="hide" data-event="click">Salir</button></div></div><span class="_hsShareImage hsShareImage" style="display: none;">&nbsp;</span></body></html>
