@@ -2,34 +2,10 @@
 [![codecov](https://codecov.io/gh/manolo-rocks/manolo_scraper/branch/master/graph/badge.svg)](https://codecov.io/gh/manolo-rocks/manolo_scraper)
 [![Code Issues](https://www.quantifiedcode.com/api/v1/project/396d38fe507441fa92d7286d07c8577a/badge.svg)](https://www.quantifiedcode.com/app/project/396d38fe507441fa92d7286d07c8577a)
 
-# All spiders go here
-Spiders are based on [Scrapy](https://github.com/scrapy/scrapy).
-
-# Configuration
-Create a file `config.yml` with the following info:
-
-```yaml
-    CRAWLERA_USER: abc
-    CRAWLERA_PASS: abc
-    drivername: postgres
-    username: postgres
-    host: localhost
-    port: 5432
-    password: pass
-    database: manolo
-    api_key: scrapinghub's api key
-    sh_project: scrapinghub's project
-    scraping_past_number_of_days: 14
-    SPLASH_URL: "198.0.0.100"
-
-    # spiders that are banned when working from scrapinghub.com
-    banned_spiders:
-      - inpe
+# Run scraper
+```shell
+python main.py
 ```
-
-The database credentials are needed so that the spider will upload data to the
-production database.
-
 
 ## List of Entities
 
@@ -98,12 +74,3 @@ production database.
 
 * [x] Ministerio de Vivienda
     * **url**: http://geo.vivienda.gob.pe/Visitas/controlVisitas/index.php?r=consultas/visitaConsulta/index
-
-# Run this way
-```shell
-scrapy crawl SPIDER_NAME -a date_start=DATE_ISO_FORMAT -a date_end=DATE_ISO_FORMAT
-```
-
-## Using splash
-
-Run our splash script located in `manolo_scraper/scripts/splash/run-splash.sh` and execute the spider.
