@@ -3,7 +3,9 @@ import re
 import time
 from calendar import Calendar
 from datetime import datetime, timedelta
+import hashlib
 
+from unidecode import unidecode
 from botasaurus import browser, AntiDetectDriver
 from selenium.webdriver.common.by import By
 from parsel import Selector
@@ -34,6 +36,30 @@ INSTITUTIONS = [
 ]
 
 
+def make_hash(item):
+    hash_input = ''
+    hash_input += str(item['institution'])
+
+    if 'full_name' in item:
+        hash_input += str(unidecode(item['full_name']))
+
+    if 'id_document' in item:
+        hash_input += str(unidecode(item['id_document']))
+
+    if 'id_number' in item:
+        hash_input += str(unidecode(item['id_number']))
+
+    hash_input += str(item['date'])
+
+    if 'time_start' in item:
+        hash_input += str(unidecode(item['time_start']))
+
+    hash_output = hashlib.sha1()
+    hash_output.update(hash_input.encode("utf-8"))
+    item['sha1'] = hash_output.hexdigest()
+    return item
+
+
 def get_dni(document_identity):
     id_document = ''
     id_number = ''
@@ -55,7 +81,7 @@ def get_dni(document_identity):
 
 
 @browser(
-    headless=False,
+    headless=True,
     user_agent=USER_AGENT,
 )
 def scrape(driver: AntiDetectDriver, data):
